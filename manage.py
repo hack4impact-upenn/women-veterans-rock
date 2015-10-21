@@ -26,6 +26,19 @@ manager.add_command('shell', Shell(make_context=make_shell_context))
 manager.add_command('db', MigrateCommand)
 
 
+def create_default_admin(first_name, last_name, email, password):
+    u = User(
+        first_name=first_name,
+        last_name=last_name,
+        email=email,
+        password=password,
+        confirmed=True,
+        role=Role.query.filter_by(name='Administrator').first()
+    )
+    db.session.add(u)
+    db.session.commit()
+
+
 @manager.command
 def test():
     """Run the unit tests."""
@@ -60,18 +73,10 @@ def add_fake_data(number_users):
 
 
 @manager.command
-def add_admin_user():
-    """
-    Adds a confirmed admin user to the database after prompting
-    for the first name, last name, email, and password.
-    """
-    User.create_admin_user()
-
-
-@manager.command
 def setup_dev():
     """Runs the set-up needed for local development."""
     setup_general()
+    create_default_admin('Default', 'Admin', 'wvr@gmail.com', 'password')
 
 
 @manager.command

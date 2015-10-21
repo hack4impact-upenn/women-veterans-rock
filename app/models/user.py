@@ -172,31 +172,6 @@ class User(UserMixin, db.Model):
             except IntegrityError:
                 db.session.rollback()
 
-    @staticmethod
-    def create_admin_user():
-        """Create a new admin from input prompts"""
-        from sqlalchemy.exc import IntegrityError
-        import getpass
-
-        first_name = raw_input("First Name: ")
-        last_name = raw_input("Last Name: ")
-        email = raw_input("Email: ")
-        password = getpass.getpass()
-        u = User(
-            first_name=first_name,
-            last_name=last_name,
-            email=email,
-            password=password,
-            confirmed=True,
-            role=Role.query.filter_by(
-                permissions=Permission.ADMINISTER).first()
-            )
-        db.session.add(u)
-        try:
-            db.session.commit()
-        except IntegrityError:
-            db.session.rollback()
-
     def __repr__(self):
         return '<User \'%s\'>' % self.full_name()
 
