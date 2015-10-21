@@ -27,6 +27,8 @@ manager.add_command('db', MigrateCommand)
 
 
 def create_default_admin(first_name, last_name, email, password):
+    if (User.query.filter_by(email=email).first() is not None):
+        return
     u = User(
         first_name=first_name,
         last_name=last_name,
