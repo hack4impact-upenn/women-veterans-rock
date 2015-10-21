@@ -26,21 +26,6 @@ manager.add_command('shell', Shell(make_context=make_shell_context))
 manager.add_command('db', MigrateCommand)
 
 
-def create_default_admin(first_name, last_name, email, password):
-    if (User.query.filter_by(email=email).first() is not None):
-        return
-    u = User(
-        first_name=first_name,
-        last_name=last_name,
-        email=email,
-        password=password,
-        confirmed=True,
-        role=Role.query.filter_by(name='Administrator').first()
-    )
-    db.session.add(u)
-    db.session.commit()
-
-
 @manager.command
 def test():
     """Run the unit tests."""
@@ -78,7 +63,13 @@ def add_fake_data(number_users):
 def setup_dev():
     """Runs the set-up needed for local development."""
     setup_general()
-    create_default_admin('Default', 'Admin', 'wvr@gmail.com', 'password')
+
+    admin_email = 'wvr@gmail.com'
+    if User.query.filter_by(email=admin_email).first() is None:
+        User.create_confirmed_admin('Default',
+                                    'Admin',
+                                    admin_email,
+                                    'password')
 
 
 @manager.command
