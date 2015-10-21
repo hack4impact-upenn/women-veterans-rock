@@ -60,6 +60,15 @@ def add_fake_data(number_users):
 
 
 @manager.command
+def add_admin_user():
+    """
+    Adds a confirmed admin user to the database after prompting
+    for the first name, last name, email, and password.
+    """
+    User.create_admin_user()
+
+
+@manager.command
 def setup_dev():
     """Runs the set-up needed for local development."""
     setup_general()
