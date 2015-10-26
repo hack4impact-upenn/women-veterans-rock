@@ -53,6 +53,20 @@ class UserLinks(db.Model):
     twitter_link = db.Column(db.String(100))
     instagram_link = db.Column(db.String(100))
 
+    def __repr__(self):
+        return '<UserLinks \'%i\'>' % self.id
+
+
+class DonorLevel(db.Model):
+    __tablename__ = 'donorlevels'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50))
+    description = db.Column(db.Text)
+    users = db.relationship('User', backref='donor_level', lazy='dynamic')
+
+    def __repr__(self):
+        return '<DonorLevel \'%s\'>' % self.name
+
 
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
@@ -63,15 +77,15 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(64), unique=True, index=True)
     password_hash = db.Column(db.String(128))
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
-    # zip_code = db.relationship('ZIPCode', backref='users', lazy='joined')
+    # zip_code_id = db.Column(db.Integer, db.ForeignKey('ZIPCodes.id'))
+    donor_level_id = db.Column(db.Integer, db.ForeignKey('donorlevels.id'))
     # missing affiliation
     age = db.Column(db.Integer)
     bio = db.Column(db.Text)
     causes = db.Column(db.Text)
-    userlinks = db.relationship('UserLinks', backref='user', lazy='joined',
-                                uselist=False)
+    user_links = db.relationship('UserLinks', lazy='joined', uselist=False)
+
     # photo ?
-    # donor level
     # regions
 
     def __init__(self, **kwargs):
