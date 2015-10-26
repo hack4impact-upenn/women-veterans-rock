@@ -44,6 +44,16 @@ class Role(db.Model):
         return '<Role \'%s\'>' % self.name
 
 
+class UserLinks(db.Model):
+    __tablename__ = 'userlinks'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    facebook_link = db.Column(db.String(100))
+    linkedin_link = db.Column(db.String(100))
+    twitter_link = db.Column(db.String(100))
+    instagram_link = db.Column(db.String(100))
+
+
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
@@ -53,6 +63,16 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(64), unique=True, index=True)
     password_hash = db.Column(db.String(128))
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
+    # zip_code = db.relationship('ZIPCode', backref='users', lazy='joined')
+    # missing affiliation
+    age = db.Column(db.Integer)
+    bio = db.Column(db.Text)
+    causes = db.Column(db.Text)
+    userlinks = db.relationship('UserLinks', backref='user', lazy='joined',
+                                uselist=False)
+    # photo ?
+    # donor level
+    # regions
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
