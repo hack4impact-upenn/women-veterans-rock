@@ -19,6 +19,7 @@
 
 {% macro account_items(current_user) %}
     {% if current_user.is_authenticated() %}
+        <a href="{{ url_for('account.profile') }}" class="item">My Profile</a>
         <a href="{{ url_for('account.manage') }}" class="item">Your Account</a>
         <a href="{{ url_for('account.logout') }}" class="item">Log out</a>
     {% else %}
