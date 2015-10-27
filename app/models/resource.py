@@ -13,3 +13,20 @@ class Resource(db.Model):
 
     def __repr__(self):
         return '<Resource \'%s\'>' % self.name
+
+
+class ResourceReview(db.Model):
+    __tablename__ = 'resource_reviews'
+    id = db.Column(db.Integer, primary_key=True)
+    resource = db.relationship('Resource', backref='resource_review',
+                               lazy='joined', uselist=False)
+    timestamp = db.Column(db.DateTime)
+    user = db.relationship('User', backref='user', lazy='joined',
+                           uselist=False)
+    content = db.Column(db.Text)
+    rating = db.Column(db.Integer)
+    count_likes = db.Column(db.Integer, default=0)
+    count_dislikes = db.Column(db.Integer, default=0)
+
+    def __repr__(self):
+        return '<Resource Review \'%s\' \'%s\'>' % self.resource, self.content
