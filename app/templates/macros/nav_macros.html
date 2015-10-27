@@ -19,6 +19,9 @@
 
 {% macro account_items(current_user) %}
     {% if current_user.is_authenticated() %}
+        <div class="ui small inverted transparent icon input">
+            <input type="text" placeholder="Search members...">
+        </div>
         <a href="{{ url_for('account.manage') }}" class="item">Your Account</a>
         <a href="{{ url_for('account.logout') }}" class="item">Log out</a>
     {% else %}
