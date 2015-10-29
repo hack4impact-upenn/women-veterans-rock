@@ -1,12 +1,12 @@
 from .. import db
 
 
-class ZIPCode(db.Model):
+class Zipcode(db.Model):
     __tablename__ = 'zip_codes'
     id = db.Column(db.Integer, primary_key=True)
     zip_code = db.Column(db.String, unique=True)
-    users = db.relationship('ZIPCode', backref='user', lazy='dynamic')
-    resources = db.relationship('ZIPCode', backref='resource', lazy='dynamic')
+    users = db.relationship('User', backref='zipcode', lazy='dynamic')
+    resources = db.relationship('Resource', backref='zipcode', lazy='dynamic')
 
     def __repr__(self):
         return '<ZIPCode \' %s \'>' % self.zip_code
