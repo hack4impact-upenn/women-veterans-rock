@@ -4,7 +4,7 @@ from .. import db
 class Zipcode(db.Model):
     __tablename__ = 'zip_codes'
     id = db.Column(db.Integer, primary_key=True)
-    zip_code = db.Column(db.String(9), unique=True)
+    zip_code = db.Column(db.String(10), unique=True)
     users = db.relationship('User', backref='zip_code', lazy='dynamic')
     resources = db.relationship('Resource', backref='zip_code', lazy='dynamic')
 
