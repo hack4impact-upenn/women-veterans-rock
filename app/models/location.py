@@ -4,9 +4,9 @@ from .. import db
 class Zipcode(db.Model):
     __tablename__ = 'zip_codes'
     id = db.Column(db.Integer, primary_key=True)
-    zip_code = db.Column(db.String, unique=True)
-    users = db.relationship('User', backref='zipcode', lazy='dynamic')
-    resources = db.relationship('Resource', backref='zipcode', lazy='dynamic')
+    zip_code = db.Column(db.String(9), unique=True)
+    users = db.relationship('User', backref='zip_code', lazy='dynamic')
+    resources = db.relationship('Resource', backref='zip_code', lazy='dynamic')
 
     def __repr__(self):
         return '<ZIPCode \' %s \'>' % self.zip_code
