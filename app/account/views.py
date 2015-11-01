@@ -8,7 +8,7 @@ from flask.ext.login import (
 from . import account
 from .. import db
 from ..email import send_email
-from ..models import User
+from ..models import User, Role
 from .forms import (
     LoginForm,
     RegistrationForm,
@@ -250,3 +250,14 @@ def unconfirmed():
     if current_user.is_anonymous() or current_user.confirmed:
         return redirect(url_for('main.index'))
     return render_template('account/unconfirmed.html')
+
+
+@account.route('/profile/<int:user_id>')
+@login_required
+def profile(user_id):
+    """Display a user's profile"""
+    user = User.query.get(int(user_id))
+    if user is None:
+        return render_template('errors/404.html')
+    role = Role.query.get(int(user.role_id))
+    return render_template('account/profile.html', user=user, role=role)
