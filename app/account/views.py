@@ -259,5 +259,17 @@ def profile(user_id):
     user = User.query.get(int(user_id))
     if user is None:
         return render_template('errors/404.html')
+    if user.id == current_user.id:
+        isCurrent = True
+    else:
+        isCurrent = False
     role = Role.query.get(int(user.role_id))
-    return render_template('account/profile.html', user=user, role=role)
+    return render_template('account/profile.html', user=user,
+                           role=role, isCurrent=isCurrent)
+
+
+@account.route('/profile/edit')
+@login_required
+def edit():
+    """User can edit their own profile"""
+    return render_template('account/edit_profile.html', user=current_user)

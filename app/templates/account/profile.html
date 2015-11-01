@@ -1,7 +1,6 @@
 {% extends 'layouts/base.html' %}
 {% import 'macros/form_macros.html' as f %}
 
-
 {% block content %}
 	<div> 
 		{{user.first_name}}
@@ -14,5 +13,10 @@
 	</div>
 	<div>
 		{{role.name}}
+	</div>
+	<div>
+		{% if isCurrent %}
+		<a href="{{ url_for('account.edit') }}"> <button class="ui button">Edit</button> </a>
+		{% endif %}
 	</div>
 {% endblock %}
