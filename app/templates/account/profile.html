@@ -1,0 +1,18 @@
+{% extends 'layouts/base.html' %}
+{% import 'macros/form_macros.html' as f %}
+
+
+{% block content %}
+	<div> 
+		{{user.first_name}}
+	</div>
+	<div>
+		{{user.last_name}}
+	</div>
+	<div>
+		{{user.email}}
+	</div>
+	<div>
+		{{role.name}}
+	</div>
+{% endblock %}
