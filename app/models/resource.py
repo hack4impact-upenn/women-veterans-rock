@@ -7,8 +7,10 @@ class Resource(db.Model):
     name = db.Column(db.String(64))
     description = db.Column(db.Text)
     website = db.Column(db.Text)
-    address_id = db.Column(db.Integer, db.ForeignKey('address.id'))
-    reviews = db.relationship('Review', backref='resource', lazy='dynamic')
+    address_id = db.Column(db.Integer, db.ForeignKey('addresses.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    reviews = db.relationship('ResourceReview', backref='resource',
+                              lazy='dynamic')
 
     def __repr__(self):
         return '<Resource \'%s\'>' % self.name
@@ -22,8 +24,8 @@ class ResourceReview(db.Model):
     rating = db.Column(db.Integer)
     count_likes = db.Column(db.Integer, default=0)
     count_dislikes = db.Column(db.Integer, default=0)
-    resource_id = db.Column(db.Integer, db.ForeignKey('resource.id'))
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    resource_id = db.Column(db.Integer, db.ForeignKey('resources.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     def __repr__(self):
         return '<Resource Review \'%s\' \'%s\'>' % self.resource, self.content
