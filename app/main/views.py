@@ -17,7 +17,8 @@ def search():
 
 @main.route('/search/<query>')
 def search_query(query):
-    users = User.query.all()
+    looking_for = "%" + query + "%"
+    users = User.query.filter(User.first_name.ilike(looking_for)).all()
     data = dict()
     data["results"] = []
     for u in users:
