@@ -7,13 +7,15 @@
                 <input class="prompt" type="text" placeholder="Common passwords...">
                 <i class="search icon"></i>
             </div>
-            <div class="results">
-                asdf
-            </div>
+            <div class="results"></div>
         </div>
     </div>
 
     <script>
+        $( ".ui.search" ).click(function() {
+            console.log( $(".prompt") );
+        });
+
         $('.ui.search')
               .search({
                 apiSettings: {
