@@ -27,4 +27,5 @@ class ResourceReview(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     def __repr__(self):
-        return '<ResourceReview \'%s\' \'%s\'>' % self.resource, self.content
+        return '<ResourceReview \'%s\' \'%s\'>' % self.resource_id,\
+               self.content
