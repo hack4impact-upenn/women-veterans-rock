@@ -10,6 +10,7 @@ class Resource(db.Model):
     # address_id = db.Column(db.Integer, db.ForeignKey('addresses.id'))
     reviews = db.relationship('ResourceReview', backref='resource',
                               lazy='dynamic')
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     def __repr__(self):
         return '<Resource \'%s\'>' % self.name
