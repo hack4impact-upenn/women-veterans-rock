@@ -250,3 +250,9 @@ def unconfirmed():
     if current_user.is_anonymous() or current_user.confirmed:
         return redirect(url_for('main.index'))
     return render_template('account/unconfirmed.html')
+
+
+@account.route('/donate')
+def donate():
+    """Display PayPal link for users to donate"""
+    return render_template('account/donate.html')
