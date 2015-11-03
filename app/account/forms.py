@@ -4,7 +4,9 @@ from wtforms.fields import (
     StringField,
     PasswordField,
     BooleanField,
-    SubmitField
+    SubmitField,
+    SelectMultipleField,
+    TextAreaField,
 )
 from wtforms.fields.html5 import EmailField
 from wtforms.validators import DataRequired, Length, Email, EqualTo
@@ -112,3 +114,32 @@ class ChangeEmailForm(Form):
     def validate_email(self, field):
         if User.query.filter_by(email=field.data).first():
             raise ValidationError('Email already registered.')
+
+
+class EditProfileForm(Form):
+    first_name = StringField('First name', validators=[
+        DataRequired(),
+        Length(1, 64)
+    ])
+    last_name = StringField('Last name', validators=[
+        DataRequired(),
+        Length(1, 64)
+    ])
+    affiliation_options = [
+        ('1', 'Veteran'),
+        ('2', 'Active Duty'),
+        ('3', 'National Guard'),
+        ('4', 'Reservist'),
+        ('5', 'Spouse'),
+        ('6', 'Dependent'),
+        ('7', 'Family Member'),
+        ('7', 'Supporter'),
+        ('8', 'Other')]
+    affiliation = SelectMultipleField(
+        'Affiliation',
+        choices=affiliation_options)
+    about_me = TextAreaField('About Me')
+    birthday = StringField(label='Birthday', default='YYYY/DD/MM')
+    facebook_link = StringField('Facebook Profile', default="http://")
+    linkedin_link = StringField('LinkedIn Profile', default="http://")
+    submit = SubmitField('Update profile')
