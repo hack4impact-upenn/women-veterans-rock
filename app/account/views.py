@@ -20,6 +20,7 @@ from .forms import (
 )
 
 
+# test
 @account.route('/login', methods=['GET', 'POST'])
 def login():
     """Log in an existing user."""
