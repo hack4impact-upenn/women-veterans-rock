@@ -7,6 +7,8 @@ class ZIPCode(db.Model):
     zip_code = db.Column(db.String(5), unique=True)
     users = db.relationship('User', backref='zip_code', lazy='dynamic')
     addresses = db.relationship('Address', backref='zip_code', lazy='dynamic')
+    longitude = db.Column(db.Float)
+    latitude = db.Column(db.Float)
 
     def __repr__(self):
         return '<ZIPCode \'%s\'>' % self.zip_code
