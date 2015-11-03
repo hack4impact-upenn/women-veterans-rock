@@ -19,7 +19,8 @@ def search():
 def search_query(query):
     looking_for = "%" + query + "%"
     users = User.query.filter((User.first_name.ilike(looking_for)) |
-                              User.last_name.ilike(looking_for)).all()
+                              User.last_name.ilike(looking_for))\
+        .order_by(User.first_name).all()
     data = dict()
     data["results"] = []
     for u in users:
