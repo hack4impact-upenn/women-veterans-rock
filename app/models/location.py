@@ -1,4 +1,5 @@
 from .. import db
+from geopy.geocoders import Nominatim
 
 
 class Zipcode(db.Model):
@@ -6,7 +7,17 @@ class Zipcode(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     zip_code = db.Column(db.String(10), unique=True)
     users = db.relationship('User', backref='zip_code', lazy='dynamic')
-    resources = db.relationship('Resource', backref='zip_code', lazy='dynamic')
+    addresses = db.relationship('Addresses', backref='zip_code',
+                                lazy='dynamic')
+    longitude = db.Column(db.Float)
+    latitude = db.Column(db.Float)
+
+    def __init__(self, *args, **kwargs):
+        super(db.Model, self).__init__(*args, **kwargs)
+        getcoords = Nominatim()
+        location = getcoords.geocode(Zipcode.zip_code)
+        self.longitude = location.longitude
+        self.latitude = location.latitude
 
     def __repr__(self):
         return '<ZIPCode \' %s \'>' % self.zip_code
@@ -20,7 +31,9 @@ class Address(db.Model):
     delivery_address_line = db.Column(db.Text)  # 1500 E MAIN AVE STE 201
     city = db.Column(db.Text)
     state = db.Column(db.String(2))
-    zip_code_id = db.Column(db.Integer, db.ForeignKey('zip_code.id'))
+    zip_code_id = db.Column(db.Integer, db.ForeignKey('zip_codes.id'))
+    resources = db.relationship('Resource',
+                                backref='addresses', lazy='dynamic')
 
     def __repr__(self):
         return '<Address \'%s\'>' % self.receipt_line
