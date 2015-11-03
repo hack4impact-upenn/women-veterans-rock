@@ -1,4 +1,5 @@
 from .. import db
+from geopy.geocoders import Nominatim
 
 
 class ZIPCode(db.Model):
@@ -9,6 +10,13 @@ class ZIPCode(db.Model):
     addresses = db.relationship('Address', backref='zip_code', lazy='dynamic')
     longitude = db.Column(db.Float)
     latitude = db.Column(db.Float)
+
+    def __init__(self, *args, **kwargs):
+        super(db.Model, self).__init__(*args, **kwargs)
+        getcoords = Nominatim()
+        loc = getcoords.geocode(ZIPCode.zip_code)
+        self.longitude = loc.longitude
+        self.latitude = loc.latitude
 
     def __repr__(self):
         return '<ZIPCode \'%s\'>' % self.zip_code
