@@ -16,7 +16,8 @@ from .forms import (
     ChangePasswordForm,
     ChangeEmailForm,
     RequestResetPasswordForm,
-    ResetPasswordForm
+    ResetPasswordForm,
+    EditProfileForm,
 )
 
 
@@ -268,8 +269,28 @@ def profile(user_id):
                            role=role, isCurrent=isCurrent)
 
 
-@account.route('/profile/edit')
+@account.route('/profile/edit', methods=['GET', 'POST'])
 @login_required
 def edit():
     """User can edit their own profile"""
-    return render_template('account/edit_profile.html', user=current_user)
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        # TODO: actually update user instance
+        current_user.first_name = form.first_name.data
+        current_user.last_name = form.last_name.data
+        db.session.add(current_user)
+        db.session.commit()
+        flash('Profile updated', 'success')
+        return render_template(
+            'account/profile.html',
+            user=current_user,
+            role=current_user.role.name,
+            isCurrent=True)
+    else:
+        # populating form with current user profile information
+        form.first_name.data = current_user.first_name
+        form.last_name.data = current_user.last_name
+    return render_template(
+        'account/edit_profile.html',
+        user=current_user,
+        form=form)
