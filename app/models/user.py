@@ -15,7 +15,7 @@ class Role(db.Model):
     __tablename__ = 'roles'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=True)
-    index = db.Column(db.String(64), unique=True)
+    index = db.Column(db.String(64))
     default = db.Column(db.Boolean, default=False, index=True)
     permissions = db.Column(db.Integer)
     users = db.relationship('User', backref='role', lazy='dynamic')
@@ -53,6 +53,9 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(64), unique=True, index=True)
     password_hash = db.Column(db.String(128))
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
+    resources = db.relationship('Resource', backref='user', lazy='dynamic')
+    resource_reviews = db.relationship('ResourceReview', backref='user',
+                                       lazy='dynamic')
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
@@ -151,17 +154,18 @@ class User(UserMixin, db.Model):
         """Generate a number of fake users for testing."""
         from sqlalchemy.exc import IntegrityError
         from random import seed, choice
-        import forgery_py
+        from faker import Faker
 
+        fake = Faker()
         roles = Role.query.all()
 
         seed()
         for i in range(count):
             u = User(
-                first_name=forgery_py.name.first_name(),
-                last_name=forgery_py.name.last_name(),
-                email=forgery_py.internet.email_address(),
-                password=forgery_py.lorem_ipsum.word(),
+                first_name=fake.first_name(),
+                last_name=fake.last_name(),
+                email=fake.email(),
+                password=fake.password(),
                 confirmed=True,
                 role=choice(roles),
                 **kwargs
