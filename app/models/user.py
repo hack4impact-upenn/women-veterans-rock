@@ -79,13 +79,13 @@ class User(UserMixin, db.Model):
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     # zip_code_id = db.Column(db.Integer, db.ForeignKey('ZIPCodes.id'))
     donor_level_id = db.Column(db.Integer, db.ForeignKey('donorlevels.id'))
-    # missing affiliation
     age = db.Column(db.Integer)
     bio = db.Column(db.Text)
     causes = db.Column(db.Text)
     user_links = db.relationship('UserLinks', lazy='joined', uselist=False)
 
-    # photo ?
+    # missing affiliation
+    # photo
     # regions
 
     def __init__(self, **kwargs):
