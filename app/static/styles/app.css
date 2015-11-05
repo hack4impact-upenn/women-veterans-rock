@@ -23,3 +23,13 @@ nav .mobile.only.row .ui.vertical.menu {
 table.selectable tr:hover {
   cursor: pointer !important;
 }
+
+#map{
+  display: block
+  width: 80%
+  height: 500px
+  margin: 0 auto
+  -moz-box-shadow: 0px 5px 10px #FF1A1A;
+  -webkit-box-shadow: 0px 5px 10px #FF1A1A;
+  box-shadow: 0px 5px 10px #FF1A1A;
+}
