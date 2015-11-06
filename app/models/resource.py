@@ -21,11 +21,12 @@ class ResourceReview(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     timestamp = db.Column(db.DateTime)
     content = db.Column(db.Text)
-    rating = db.Column(db.Integer)
+    rating = db.Column(db.Float)  # 0 to 5
     count_likes = db.Column(db.Integer, default=0)
     count_dislikes = db.Column(db.Integer, default=0)
     resource_id = db.Column(db.Integer, db.ForeignKey('resources.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     def __repr__(self):
-        return '<Resource Review \'%s\' \'%s\'>' % self.resource, self.content
+        return '<ResourceReview <Resource \'%s\'> \'%s\'>' % self.resource_id,\
+               self.content
