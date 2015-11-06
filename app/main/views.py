@@ -11,7 +11,7 @@ def index():
 
 @main.route('/mapusers', method='[POST]')
 def mapusers():
-    users = User.query('zip_code')
+    users = User.query('zip_code').all()
     for us in users:
         db.session.add(ZIPCode.latitude, ZIPCode.longitude)
     db.session.commit()
