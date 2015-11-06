@@ -34,8 +34,11 @@ class ResourceForm(Form):
     submit = SubmitField('Add Resource')
 
     def validate_website(self, field):
+        """ https://docs.python.org/2/library/urlparse.html
+        urlparse recognizes a netloc only if it is properly introduced by ‘//’.
+        Otherwise the input is presumed to be a relative URL and thus to start
+        with a path component.
+        """
         o = urlparse(field.data)
         if not o.netloc and not o.path:
             raise ValidationError('Website is invalid.')
-    #
-    # def validate_address(self, field):
