@@ -35,7 +35,7 @@ class ResourceForm(Form):
 
     def validate_website(self, field):
         """ https://docs.python.org/2/library/urlparse.html
-        urlparse recognizes a netloc only if it is properly introduced by ‘//’.
+        urlparse recognizes a netloc only if it is properly introduced by '//'.
         Otherwise the input is presumed to be a relative URL and thus to start
         with a path component.
         """
