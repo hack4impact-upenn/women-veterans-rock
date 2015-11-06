@@ -40,3 +40,12 @@ def add():
         flash('Resource has been added.')
         return redirect(url_for('resources/index'))
     return render_template('resources/add.html', form=form)
+
+
+@resources.route('/resource/<int:resource_id>')
+def show_resource(resource_id):
+    # show the resource with the given id, the id is an integer
+    resource = Resource.query.filter_by(id=resource_id).first()
+    if resource is None:
+        return redirect(url_for('resources/index'))
+    return render_template('resources/view.html', resource=resource)
