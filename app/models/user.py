@@ -52,7 +52,7 @@ class User(UserMixin, db.Model):
     last_name = db.Column(db.String(64), index=True)
     email = db.Column(db.String(64), unique=True, index=True)
     password_hash = db.Column(db.String(128))
-    zip_code = db.Column(db.String(5), db.ForeignKey('zip_codes.zip_code'))
+    zip_code_id = db.Column(db.String(5), db.ForeignKey('zip_codes.id'))
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     resources = db.relationship('Resource', backref='user', lazy='dynamic')
     resource_reviews = db.relationship('ResourceReview', backref='user',

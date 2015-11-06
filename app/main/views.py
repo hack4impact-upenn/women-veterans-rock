@@ -15,4 +15,5 @@ def mapusers():
     for us in users:
         db.session.add(ZIPCode.latitude, ZIPCode.longitude)
     db.session.commit()
+    return render_template('main/mapview.html')
     return 'OK 12', 200
