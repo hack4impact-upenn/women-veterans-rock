@@ -8,7 +8,7 @@ from flask.ext.login import (
 from . import account
 from .. import db
 from ..email import send_email
-from ..models import User, Role
+from ..models import User
 from .forms import (
     LoginForm,
     RegistrationForm,
@@ -257,21 +257,18 @@ def unconfirmed():
 @login_required
 def profile(user_id):
     """Display a user's profile"""
-    user = User.query.get(int(user_id))
+    user = User.query.get(user_id)
     if user is None:
+        # tried to change to abort(404) but threw errors
         return render_template('errors/404.html')
-    if user.id == current_user.id:
-        isCurrent = True
-    else:
-        isCurrent = False
-    role = Role.query.get(int(user.role_id))
+    is_current = user.id == current_user.id
     return render_template('account/profile.html', user=user,
-                           role=role, isCurrent=isCurrent)
+                           is_current=is_current)
 
 
 @account.route('/profile/edit', methods=['GET', 'POST'])
 @login_required
-def edit():
+def edit_profile():
     """User can edit their own profile"""
     form = EditProfileForm()
     if form.validate_on_submit():
