@@ -12,11 +12,12 @@
 		{{user.email}}
 	</div>
 	<div>
-		{{role.name}}
+		{{user.role.name}}
 	</div>
 	<div>
-		{% if isCurrent %}
-		<a href="{{ url_for('account.edit') }}"> <button class="ui button">Edit</button> </a>
+		{% if is_current %}
+		<a href="{{ url_for('account.edit_profile') }}"> <button
+				class="ui button">Edit</button> </a>
 		{% endif %}
 	</div>
 {% endblock %}
