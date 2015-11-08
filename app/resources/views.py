@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for, flash  # request
+from flask import render_template, redirect, url_for
 from flask.ext.login import login_required, current_user
 from . import resources
 from .. import db
@@ -22,7 +22,6 @@ def add():
             zip_code = ZIPCode(zip_code=form.zip_code.data)
             db.session.add(zip_code)
             db.session.commit()
-            print zip_code.id
         # based on form's address, zip's id, load or create Address, add to db
         address = Address.query.filter_by(
             name=form.name.data,
@@ -38,7 +37,6 @@ def add():
                               zip_code_id=zip_code.id)
             db.session.add(address)
             db.session.commit()
-            print address.id
         # based on form and address id, create a new resource
         resource = Resource(name=form.name.data,
                             description=form.description.data,
@@ -47,8 +45,6 @@ def add():
                             user_id=int(current_user.get_id()))
         db.session.add(resource)
         db.session.commit()
-        print resource.id
-        flash('Resource has been added.')
         return redirect(url_for('resources.index'))
     return render_template('resources/add.html', form=form)
 
