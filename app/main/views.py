@@ -17,7 +17,7 @@ def search():
 
 @main.route('/search/<query>')
 def search_query(query):
-    looking_for = "%"+query+"%"
+    looking_for = '%'+query+'%'
     users = User.query.filter((User.first_name.ilike(looking_for)) |
                               User.last_name.ilike(looking_for))\
         .order_by(User.first_name).all()
@@ -26,4 +26,4 @@ def search_query(query):
                         'url': '/account/profile/' + str(u.id)} for u in users]
     json_data = json.dumps(data)
     return Response(response=json_data, status=200,
-                    mimetype="application/json")
+                    mimetype='application/json')
