@@ -7,6 +7,7 @@ from wtforms.fields import (
     SubmitField,
     SelectMultipleField,
     TextAreaField,
+    DateField,
 )
 from wtforms.fields.html5 import EmailField
 from wtforms.validators import DataRequired, Length, Email, EqualTo
@@ -139,7 +140,10 @@ class EditProfileForm(Form):
         'Affiliation',
         choices=affiliation_options)
     about_me = TextAreaField('About Me')
-    birthday = StringField(label='Birthday', default='YYYY/DD/MM')
-    facebook_link = StringField('Facebook Profile', default="http://")
-    linkedin_link = StringField('LinkedIn Profile', default="http://")
+    birthday = DateField(
+        label='Birthday',
+        description="YYYY-MM-DD",
+        format="%Y-%m-%d")
+    facebook_link = StringField('Facebook Profile', description="https://")
+    linkedin_link = StringField('LinkedIn Profile', description="https://")
     submit = SubmitField('Update profile')
