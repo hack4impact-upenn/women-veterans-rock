@@ -126,6 +126,9 @@ class EditProfileForm(Form):
         DataRequired(),
         Length(1, 64)
     ])
+    ''' This will not be hardcoded in the future,
+        should be populated on the backend
+        and changeable by admin '''
     affiliation_options = [
         ('1', 'Veteran'),
         ('2', 'Active Duty'),
