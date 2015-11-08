@@ -1,4 +1,4 @@
-from flask import render_template, redirect, request, url_for, flash
+from flask import render_template, redirect, request, url_for, flash, abort
 from flask.ext.login import (
     login_required,
     login_user,
@@ -259,8 +259,7 @@ def profile(user_id):
     """Display a user's profile"""
     user = User.query.get(user_id)
     if user is None:
-        # tried to change to abort(404) but threw errors
-        return render_template('errors/404.html')
+        abort(404)
     is_current = user.id == current_user.id
     return render_template('account/profile.html', user=user,
                            is_current=is_current)
