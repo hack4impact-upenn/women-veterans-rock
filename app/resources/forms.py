@@ -4,8 +4,6 @@ from wtforms.fields import (
     SubmitField
 )
 from wtforms.validators import InputRequired, Length
-from wtforms import ValidationError
-from urlparse import urlparse
 
 
 class ResourceForm(Form):
@@ -32,16 +30,3 @@ class ResourceForm(Form):
         Length(5, 10)
     ])
     submit = SubmitField('Add Resource')
-
-    def validate_website(self, field):
-        """ https://docs.python.org/2/library/urlparse.html
-        urlparse recognizes a netloc only if it is properly introduced by '//'.
-        Otherwise the input is presumed to be a relative URL and thus to start
-        with a path component.
-        """
-        print field.data
-        if field.data:
-            o = urlparse(field.data)
-            print o
-            if not (o.netloc and o.path):
-                raise ValidationError('Website is invalid.')
