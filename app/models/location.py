@@ -25,7 +25,6 @@ class ZIPCode(db.Model):
 class Address(db.Model):
     __tablename__ = 'addresses'
     id = db.Column(db.Integer, primary_key=True)
-    # USPS Addressing Standards: http://pe.usps.com/text/pub28/28c2_001.htm
     name = db.Column(db.Text)         # ABC MOVERS
     street_address = db.Column(db.Text)  # 1500 E MAIN AVE STE 201
     city = db.Column(db.Text)

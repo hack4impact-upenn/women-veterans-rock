@@ -52,7 +52,7 @@ class User(UserMixin, db.Model):
     last_name = db.Column(db.String(64), index=True)
     email = db.Column(db.String(64), unique=True, index=True)
     password_hash = db.Column(db.String(128))
-    zip_code_id = db.Column(db.String(5), db.ForeignKey('zip_codes.id'))
+    zip_code_id = db.Column(db.Integer, db.ForeignKey('zip_codes.id'))
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     resources = db.relationship('Resource', backref='user', lazy='dynamic')
     resource_reviews = db.relationship('ResourceReview', backref='user',
@@ -67,6 +67,7 @@ class User(UserMixin, db.Model):
             if self.role is None:
                 self.role = Role.query.filter_by(default=True).first()
 
+    @property
     def full_name(self):
         return '%s %s' % (self.first_name, self.last_name)
 
@@ -74,6 +75,7 @@ class User(UserMixin, db.Model):
         return self.role is not None and \
             (self.role.permissions & permissions) == permissions
 
+    @property
     def is_admin(self):
         return self.can(Permission.ADMINISTER)
 

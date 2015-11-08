@@ -1,0 +1,22 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+    <div class="ui text container">
+        <div class="ui search">
+            <div class="ui icon input">
+                <input class="prompt" type="text" placeholder="Search for users...">
+                <i class="search icon"></i>
+            </div>
+            <div class="results"></div>
+        </div>
+    </div>
+
+    <script>
+        $('.ui.search')
+            .search({
+                apiSettings: {
+                    url: '/search/{query}'
+                }
+            });
+    </script>
+{% endblock %}
