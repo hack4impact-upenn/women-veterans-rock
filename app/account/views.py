@@ -274,6 +274,7 @@ def edit_profile():
         # TODO: actually update user instance
         current_user.first_name = form.first_name.data
         current_user.last_name = form.last_name.data
+        current_user.birthday = form.birthday.data
         db.session.add(current_user)
         db.session.commit()
         flash('Profile updated', 'success')

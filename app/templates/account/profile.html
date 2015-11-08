@@ -14,6 +14,9 @@
 	<div>
 		{{ user.role.name }}
 	</div>
+    <div>
+        {{ user.birthday }}
+    </div>
 	<div>
 		{% if is_current %}
 		<a href="{{ url_for('account.edit_profile') }}">
