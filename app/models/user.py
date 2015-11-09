@@ -45,7 +45,7 @@ class Role(db.Model):
 
 
 class UserLinks(db.Model):
-    __tablename__ = 'userlinks'
+    __tablename__ = 'user_links'
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     facebook_link = db.Column(db.String(100))
@@ -58,7 +58,7 @@ class UserLinks(db.Model):
 
 
 class DonorLevel(db.Model):
-    __tablename__ = 'donorlevels'
+    __tablename__ = 'donor_levels'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50))
     description = db.Column(db.Text)
@@ -77,8 +77,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(64), unique=True, index=True)
     password_hash = db.Column(db.String(128))
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
-
-    donor_level_id = db.Column(db.Integer, db.ForeignKey('donorlevels.id'))
+    donor_level_id = db.Column(db.Integer, db.ForeignKey('donor_levels.id'))
     age = db.Column(db.Integer)
     bio = db.Column(db.Text)
     causes = db.Column(db.Text)
