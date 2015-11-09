@@ -67,7 +67,6 @@ class User(UserMixin, db.Model):
             if self.role is None:
                 self.role = Role.query.filter_by(default=True).first()
 
-    @property
     def full_name(self):
         return '%s %s' % (self.first_name, self.last_name)
 
@@ -75,7 +74,6 @@ class User(UserMixin, db.Model):
         return self.role is not None and \
             (self.role.permissions & permissions) == permissions
 
-    @property
     def is_admin(self):
         return self.can(Permission.ADMINISTER)
 
