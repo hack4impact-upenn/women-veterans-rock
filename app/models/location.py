@@ -4,9 +4,31 @@ from .. import db
 class ZIPCode(db.Model):
     __tablename__ = 'zip_codes'
     id = db.Column(db.Integer, primary_key=True)
-    zip_code = db.Column(db.String(5), unique=True)
+    zip_code = db.Column(db.String(5), unique=True, index=True)
     users = db.relationship('User', backref='zip_code', lazy='dynamic')
     addresses = db.relationship('Address', backref='zip_code', lazy='dynamic')
+
+    def __init__(self, zip_code):
+        self.zip_code = zip_code
+
+    @staticmethod
+    def get_by_zip(zip_code):
+        """ Helper for searching by 5 digit zip codes"""
+        result = ZIPCode.query.filter_by(zip_code=zip_code).first()
+        return result
+
+    @staticmethod
+    def create_zip_code(zip_code):
+        """
+        Helper to create a ZIPCode entry. Returns the newly created ZIPCode
+        or the existing entry if zip_code is already in the table.
+        """
+        result = ZIPCode.get_by_zip(zip_code)
+        if result is None:
+            result = ZIPCode(zip_code)
+            db.session.add(result)
+            db.session.commit()
+        return result
 
     def __repr__(self):
         return '<ZIPCode \'%s\'>' % self.zip_code
