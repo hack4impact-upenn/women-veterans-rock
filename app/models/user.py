@@ -189,7 +189,8 @@ class User(UserMixin, db.Model):
         db.session.commit()
 
     @staticmethod
-    def create_confirmed_admin(first_name, last_name, email, password):
+    def create_confirmed_admin(first_name, last_name, email, password,
+                               zip_code):
         """Create a confirmed admin with the given input properties."""
         from sqlalchemy.exc import IntegrityError
 
@@ -198,6 +199,7 @@ class User(UserMixin, db.Model):
             last_name=last_name,
             email=email,
             password=password,
+            zip_code=zip_code,
             confirmed=True,
             role=Role.query.filter_by(
                 permissions=Permission.ADMINISTER).first()

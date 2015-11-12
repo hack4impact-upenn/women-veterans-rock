@@ -59,6 +59,9 @@ def add_fake_data(count):
     """
     User.generate_fake(count=count)
     ZIPCode.generate_fake(count=count)
+    # set a random zip for each user without one
+    User.set_random_zips(User.query.filter_by(zip_code=None).all(),
+                         ZIPCode.query.all())
 
 
 @manager.command
@@ -71,10 +74,8 @@ def setup_dev():
         User.create_confirmed_admin('Default',
                                     'Admin',
                                     admin_email,
-                                    'password')
-    # set a random zip for each user without one
-    User.set_random_zips(User.query.filter_by(zip_code=None).all(),
-                         ZIPCode.query.all())
+                                    'password',
+                                    ZIPCode.create_zip_code('19104'))
 
 
 @manager.command
