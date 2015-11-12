@@ -156,13 +156,12 @@ class User(UserMixin, db.Model):
     def generate_fake(count=100, **kwargs):
         """Generate a number of fake users for testing."""
         from sqlalchemy.exc import IntegrityError
-        from random import seed, choice
+        from random import choice
         from faker import Faker
 
         fake = Faker()
         roles = Role.query.all()
 
-        seed()
         for i in range(count):
             u = User(
                 first_name=fake.first_name(),
@@ -178,6 +177,16 @@ class User(UserMixin, db.Model):
                 db.session.commit()
             except IntegrityError:
                 db.session.rollback()
+
+    @staticmethod
+    def set_random_zips(users, zip_codes):
+        """Assign a random ZIPCode from zip_codes to each User in users."""
+        from random import choice
+
+        for user in users:
+            user.zip_code = choice(zip_codes)
+            db.session.add(user)
+        db.session.commit()
 
     @staticmethod
     def create_confirmed_admin(first_name, last_name, email, password):

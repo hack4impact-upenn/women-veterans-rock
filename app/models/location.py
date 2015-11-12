@@ -13,7 +13,7 @@ class ZIPCode(db.Model):
 
     @staticmethod
     def get_by_zip(zip_code):
-        """ Helper for searching by 5 digit zip codes"""
+        """Helper for searching by 5 digit zip codes."""
         result = ZIPCode.query.filter_by(zip_code=zip_code).first()
         return result
 
@@ -29,6 +29,16 @@ class ZIPCode(db.Model):
             db.session.add(result)
             db.session.commit()
         return result
+
+    @staticmethod
+    def generate_fake(count=10):
+        """Generate a number of fake ZIPCodes for testing."""
+        from faker import Faker
+
+        fake = Faker()
+
+        for i in range(count):
+            ZIPCode.create_zip_code(fake.zipcode())
 
     def __repr__(self):
         return '<ZIPCode \'%s\'>' % self.zip_code
