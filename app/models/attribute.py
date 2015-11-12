@@ -8,8 +8,7 @@ user_tag_associations_table = db.Table(
 
 resource_tag_associations_table = db.Table(
     'resource_tag_associations', db.Model.metadata,
-    db.Column('resource_tag_associations', db.Integer,
-              db.ForeignKey('tags.id')),
+    db.Column('tag_id', db.Integer, db.ForeignKey('tags.id')),
     db.Column('resource_id', db.Integer, db.ForeignKey('resources.id'))
 )
 
