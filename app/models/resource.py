@@ -12,8 +12,31 @@ class Resource(db.Model):
                               lazy='dynamic')
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
+    def __init__(self, name, description, website, address_id, reviews):
+        self.name = name
+        self.description = description
+        self.website = website
+        self.address_id = address_id
+        self.reviews = reviews
+
     def __repr__(self):
         return '<Resource \'%s\'>' % self.name
+
+    @staticmethod
+    def generate_fake(count=10):
+        """Generate count fake Resources for testing."""
+        from faker import Faker
+
+        fake = Faker()
+
+        for i in range(count):
+            r = Resource(
+                name=fake.name(),
+                description=fake.description(),
+                website=fake.website()
+            )
+            db.session.add(r)
+            db.session.commit()
 
 
 class ResourceReview(db.Model):
