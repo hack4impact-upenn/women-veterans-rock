@@ -78,7 +78,6 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     donor_level_id = db.Column(db.Integer, db.ForeignKey('donor_levels.id'))
-    age = db.Column(db.Integer)
     bio = db.Column(db.Text)
     causes = db.Column(db.Text)
     user_links = db.relationship('UserLinks', lazy='joined', uselist=False)
