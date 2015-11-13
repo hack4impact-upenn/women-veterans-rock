@@ -36,15 +36,6 @@
                 {{ f.render_form_field(form.postal_code) }}
             </div>
 
-            <!--{{ f.render_form_field(form.street_address) }}-->
-
-            <!--{{ f.render_form_field(form.city) }}-->
-
-            <!--<div class="two fields">-->
-                <!--{{ f.render_form_field(form.state) }}-->
-                <!--{{ f.render_form_field(form.zip_code) }}-->
-            <!--</div>-->
-
             {{ f.form_message(flashes['error'], header='Something went wrong.', class='error') }}
             {{ f.form_message(flashes['warning'], header='Check your email.', class='warning') }}
             {{ f.form_message(flashes['info'], header='Information', class='info') }}
