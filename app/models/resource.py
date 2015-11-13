@@ -13,11 +13,11 @@ class Resource(db.Model):
                               lazy='dynamic')
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
-    def __init__(self, name, description, website, address_id, reviews):
+    def __init__(self, name, description, website, address, reviews):
         self.name = name
         self.description = description
         self.website = website
-        self.address_id = address_id
+        self.address = address
         self.reviews = reviews
 
     def __repr__(self):
