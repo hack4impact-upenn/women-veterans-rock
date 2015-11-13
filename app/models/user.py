@@ -218,10 +218,11 @@ class User(UserMixin, db.Model):
     def set_random_affiliation_tags(users, affiliation_tags):
         """Assign a random AffiliationTag from affiliation_tags to each User in
         users."""
-        from random import choice
+        from random import choice, randint
 
         for user in users:
-            user.tags.append(choice(affiliation_tags))
+            for i in range(randint(1, 3)):
+                user.tags.append(choice(affiliation_tags))
             db.session.add(user)
         db.session.commit()
 

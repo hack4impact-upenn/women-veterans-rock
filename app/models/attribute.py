@@ -127,3 +127,13 @@ class AffiliationTag(Tag):
                     created = True
                 except ValueError:
                     created = False
+
+    @staticmethod
+    def generate_default():
+        """Generate default AffiliationTags."""
+        default_affiliation_tags = [
+            'Veteran', 'Active Duty', 'National Guard', 'Reservist', 'Spouse',
+            'Dependent', 'Family Member', 'Supporter', 'Other'
+        ]
+        for tag in default_affiliation_tags:
+            AffiliationTag.create_affiliation_tag(tag)
