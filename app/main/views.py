@@ -10,6 +10,11 @@ def index():
     return render_template('main/index.html')
 
 
+@main.route('/map', methods=['GET', 'POST'])
+def mapusers():
+    return render_template('main/mapview.html', users=User.query.all())
+
+
 @main.route('/search')
 def search():
     return render_template('main/search.html')

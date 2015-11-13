@@ -1,4 +1,5 @@
 from .. import db
+from geopy.geocoders import Nominatim
 
 
 class ZIPCode(db.Model):
@@ -7,6 +8,8 @@ class ZIPCode(db.Model):
     zip_code = db.Column(db.String(5), unique=True, index=True)
     users = db.relationship('User', backref='zip_code', lazy='dynamic')
     addresses = db.relationship('Address', backref='zip_code', lazy='dynamic')
+    longitude = db.Column(db.Float)
+    latitude = db.Column(db.Float)
 
     def __init__(self, zip_code):
         """
@@ -14,6 +17,10 @@ class ZIPCode(db.Model):
         should be used instead of explicitly using this constructor.
         """
         self.zip_code = zip_code
+        getcoords = Nominatim()
+        loc = getcoords.geocode(ZIPCode.zip_code)
+        self.longitude = loc.longitude
+        self.latitude = loc.latitude
 
     @staticmethod
     def get_by_zip_code(zip_code):
@@ -29,7 +36,7 @@ class ZIPCode(db.Model):
         """
         result = ZIPCode.get_by_zip_code(zip_code)
         if result is None:
-            result = ZIPCode(zip_code)
+            result = ZIPCode(zip_code=zip_code)
             db.session.add(result)
             db.session.commit()
         return result
