@@ -37,7 +37,7 @@ class Resource(db.Model):
                 description=fake.sentences(),
                 website=fake.url(),
                 address=choice(Address.query.all()),
-                reviews=[choice(ResourceReview.query.all())]
+                reviews=[]
             )
             db.session.add(r)
             db.session.commit()
