@@ -1,4 +1,5 @@
 from .. import db
+from . import Address
 
 
 class Resource(db.Model):
@@ -26,6 +27,7 @@ class Resource(db.Model):
     def generate_fake(count=10):
         """Generate count fake Resources for testing."""
         from faker import Faker
+        from random import choice
 
         fake = Faker()
 
@@ -33,7 +35,9 @@ class Resource(db.Model):
             r = Resource(
                 name=fake.name(),
                 description=fake.description(),
-                website=fake.website()
+                website=fake.website(),
+                address=choice(Address.query.all()),
+                reviews=choice(ResourceReview.query.all())
             )
             db.session.add(r)
             db.session.commit()

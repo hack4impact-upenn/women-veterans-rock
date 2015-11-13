@@ -59,6 +59,7 @@ def add_fake_data(count):
     """
     User.generate_fake(count=count)
     ZIPCode.generate_fake(count=count)
+    Address.generate_fake(count=count)
     # Set a random zip for each user without one.
     User.set_random_zip_codes(User.query.filter_by(zip_code=None).all(),
                               ZIPCode.query.all())
