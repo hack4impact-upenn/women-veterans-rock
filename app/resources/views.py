@@ -2,7 +2,7 @@ from flask import render_template, redirect, url_for
 from flask.ext.login import login_required, current_user
 from . import resources
 from .. import db
-from ..models import Resource, ZIPCode, Address
+from ..models import Resource, ZIPCode, Address, User
 from .forms import ResourceForm
 
 
@@ -53,6 +53,9 @@ def add():
 def show_resource(resource_id):
     # show the resource with the given id, the id is an integer
     resource = Resource.query.filter_by(id=resource_id).first()
+    address = Address.query.filter_by(id=resource.address_id).first()
+    user = User.query.filter_by(id=resource.user_id).first()
     if resource is None:
         return redirect(url_for('resources.index'))
-    return render_template('resources/view.html', resource=resource)
+    return render_template('resources/view.html', resource=resource,
+                           address=address, user=user)
