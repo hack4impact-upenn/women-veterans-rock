@@ -22,6 +22,66 @@ class Tag(db.Model):
     resources = db.relationship('Resource',
                                 secondary=resource_tag_associations_table,
                                 backref='tags', lazy='dynamic')
+    type = db.Column(db.String(50))
+
+    __mapper_args__ = {
+        'polymorphic_identity': 'tag',
+        'polymorphic_on': type
+    }
+
+    def __init__(self, name):
+        """
+        If possible, the helper methods get_by_name and create_tag
+        should be used instead of explicitly using this constructor.
+        """
+        self.name = name
+
+    '''@staticmethod
+    def get_by_name(name):
+        """Helper for searching by Tag name."""
+        result = Tag.query.filter_by(name=name).first()
+        return result
+
+    @staticmethod
+    def create_tag(name):
+        """
+        Helper to create a Tag entry. Returns the newly created Tag
+        or the existing entry if name is already in the table.
+        """
+        result = Tag.get_by_name(name)
+        if result is None:
+            result = Tag(name)
+            db.session.add(result)
+            db.session.commit()
+        return result'''
+
+    '''@staticmethod
+    def generate_fake(count=10):
+        """Generate count fake Tags for testing."""
+        from faker import Faker
+
+        fake = Faker()
+
+        for i in range(count):
+            Tag.create_zip_code(fake.word())'''
 
     def __repr__(self):
         return '<Tag \'%s\'>' % self.name
+
+
+class ResourceCategoryTag(Tag):
+    __tablename__ = 'resource_category_tags'
+    id = db.Column(db.Integer, db.ForeignKey('tags.id'), primary_key=True)
+
+    __mapper_args__ = {
+        'polymorphic_identity': 'resource_category_tag',
+    }
+
+
+class AffiliationTag(Tag):
+    __tablename__ = 'affiliation_tags'
+    id = db.Column(db.Integer, db.ForeignKey('tags.id'), primary_key=True)
+
+    __mapper_args__ = {
+        'polymorphic_identity': 'affiliation_tag',
+    }

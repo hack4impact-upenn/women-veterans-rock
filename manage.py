@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 import os
 from app import create_app, db
-from app.models import User, Role, ZIPCode, Address
+from app.models import User, Role, ZIPCode, Address, Tag, \
+    ResourceCategoryTag, AffiliationTag
 from flask.ext.script import Manager, Shell
 from flask.ext.migrate import Migrate, MigrateCommand
 
@@ -20,7 +21,9 @@ migrate = Migrate(app, db)
 
 def make_shell_context():
     return dict(app=app, db=db, User=User, Role=Role, ZIPCode=ZIPCode,
-                Address=Address)
+                Address=Address, Tag=Tag,
+                ResourceCategoryTag=ResourceCategoryTag,
+                AffiliationTag=AffiliationTag)
 
 
 manager.add_command('shell', Shell(make_context=make_shell_context))
