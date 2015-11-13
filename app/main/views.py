@@ -27,7 +27,7 @@ def search_query(query):
                               User.last_name.ilike(looking_for))\
         .order_by(User.first_name).all()
     data = dict()
-    data['results'] = [{'title': u.full_name,
+    data['results'] = [{'title': u.full_name(),
                         'url': '/account/profile/' + str(u.id)} for u in users]
     json_data = json.dumps(data)
     return Response(response=json_data, status=200,

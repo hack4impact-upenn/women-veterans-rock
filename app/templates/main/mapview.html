@@ -39,6 +39,10 @@
           lng: -98.5795
         });
         map.setZoom(4);
+        map.addMarker({
+          lat: -40.467313,
+          lng: -86.910321,
+          });
         {% for us in users %}
         map.addMarker({
           lat: us.zip_code_id.latitude,
