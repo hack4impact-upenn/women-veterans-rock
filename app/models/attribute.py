@@ -54,6 +54,30 @@ class ResourceCategoryTag(Tag):
         'polymorphic_identity': 'resource_category_tag',
     }
 
+    @staticmethod
+    def create_resource_category_tag(name):
+        """
+        Helper to create a ResourceCategoryTag entry. Returns the newly
+        created ResourceCategoryTag or the existing entry if name is already
+        in the table.
+        """
+        result = Tag.get_by_name(name)
+        if result is None:
+            result = ResourceCategoryTag(name)
+            db.session.add(result)
+            db.session.commit()
+        return result
+
+    @staticmethod
+    def generate_fake(count=10):
+        """Generate count fake Tags for testing."""
+        from faker import Faker
+
+        fake = Faker()
+
+        for i in range(count):
+            ResourceCategoryTag.create_resource_category_tag(fake.word())
+
 
 class AffiliationTag(Tag):
     __tablename__ = 'affiliation_tags'
