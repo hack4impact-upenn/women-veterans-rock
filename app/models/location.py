@@ -36,7 +36,7 @@ class ZIPCode(db.Model):
 
     @staticmethod
     def generate_fake(count=10):
-        """Generate a number of fake ZIPCodes for testing."""
+        """Generate count fake ZIPCodes for testing."""
         from faker import Faker
 
         fake = Faker()
