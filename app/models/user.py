@@ -85,10 +85,6 @@ class User(UserMixin, db.Model):
     resources = db.relationship('Resource', backref='user', lazy='dynamic')
     resource_reviews = db.relationship('ResourceReview', backref='user',
                                        lazy='dynamic')
-    # zip_code_id = db.Column(db.Integer, db.ForeignKey('ZIPCodes.id'))
-    # affiliation
-    # photo
-    # regions
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
