@@ -44,6 +44,30 @@ class Role(db.Model):
         return '<Role \'%s\'>' % self.name
 
 
+class UserLinks(db.Model):
+    __tablename__ = 'user_links'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    facebook_link = db.Column(db.String(100))
+    linkedin_link = db.Column(db.String(100))
+    twitter_link = db.Column(db.String(100))
+    instagram_link = db.Column(db.String(100))
+
+    def __repr__(self):
+        return '<UserLinks \'%i\'>' % self.id
+
+
+class DonorLevel(db.Model):
+    __tablename__ = 'donor_levels'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50))
+    description = db.Column(db.Text)
+    users = db.relationship('User', backref='donor_level', lazy='dynamic')
+
+    def __repr__(self):
+        return '<DonorLevel \'%s\'>' % self.name
+
+
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
@@ -54,6 +78,10 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     zip_code_id = db.Column(db.Integer, db.ForeignKey('zip_codes.id'))
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
+    donor_level_id = db.Column(db.Integer, db.ForeignKey('donor_levels.id'))
+    bio = db.Column(db.Text)
+    causes = db.Column(db.Text)
+    user_links = db.relationship('UserLinks', lazy='joined', uselist=False)
     resources = db.relationship('Resource', backref='user', lazy='dynamic')
     resource_reviews = db.relationship('ResourceReview', backref='user',
                                        lazy='dynamic')
