@@ -114,7 +114,7 @@ class AffiliationTag(Tag):
 
     @staticmethod
     def generate_fake(count=10):
-        """Generate count fake Tags for testing."""
+        """Generate count fake AffiliationTags for testing."""
         from faker import Faker
 
         fake = Faker()

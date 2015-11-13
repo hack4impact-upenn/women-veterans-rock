@@ -62,9 +62,13 @@ def add_fake_data(count):
     """
     User.generate_fake(count=count)
     ZIPCode.generate_fake(count=count)
+    AffiliationTag.generate_fake(count=count)
     # Set a random zip for each user without one.
     User.set_random_zip_codes(User.query.filter_by(zip_code=None).all(),
                               ZIPCode.query.all())
+    # Set a random affiliation tag for each user.
+    User.set_random_affiliation_tags(User.query.all(),
+                                     AffiliationTag.query.all())
 
 
 @manager.command
