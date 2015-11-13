@@ -78,7 +78,14 @@ class ResourceCategoryTag(Tag):
         fake = Faker()
 
         for i in range(count):
-            ResourceCategoryTag.create_resource_category_tag(fake.word())
+            created = False
+            while not created:
+                try:
+                    ResourceCategoryTag.\
+                        create_resource_category_tag(fake.word())
+                    created = True
+                except ValueError:
+                    created = False
 
 
 class AffiliationTag(Tag):
@@ -113,4 +120,10 @@ class AffiliationTag(Tag):
         fake = Faker()
 
         for i in range(count):
-            ResourceCategoryTag.create_resource_category_tag(fake.word())
+            created = False
+            while not created:
+                try:
+                    AffiliationTag.create_affiliation_tag(fake.word())
+                    created = True
+                except ValueError:
+                    created = False
