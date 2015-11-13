@@ -19,7 +19,7 @@ class ZIPCode(db.Model):
         getcoords = Nominatim(country_bias='us')
         loc = getcoords.geocode(zip_code)
         if loc is None:
-            raise ValueError('zip code \'%s\' is invalid' % self.zip_code)
+            raise ValueError('zip code \'%s\' is invalid' % zip_code)
         self.longitude = loc.longitude
         self.latitude = loc.latitude
         self.zip_code = zip_code
