@@ -11,12 +11,12 @@ class ZIPCode(db.Model):
     longitude = db.Column(db.Float)
     latitude = db.Column(db.Float)
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, zip_code):
         """
         If possible, the helper methods get_by_zip_code and create_zip_code
         should be used instead of explicitly using this constructor.
         """
-        super(db.Model, self).__init__(*args, **kwargs)
+        self.zip_code = zip_code
         getcoords = Nominatim()
         loc = getcoords.geocode(ZIPCode.zip_code)
         self.longitude = loc.longitude
@@ -36,7 +36,7 @@ class ZIPCode(db.Model):
         """
         result = ZIPCode.get_by_zip_code(zip_code)
         if result is None:
-            result = ZIPCode(zip_code)
+            result = ZIPCode(zip_code=zip_code)
             db.session.add(result)
             db.session.commit()
         return result

@@ -1,53 +1,52 @@
 {% extends 'layouts/base.html' %}
 {% block content %}
 
-<h1 align = "center">User Map</h1>
+
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
   <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=true"></script>
   <script type="text/javascript" src="http://hpneo.github.io/gmaps/gmaps.js"></script>
   <style type="text/css">
+
     #map {
       display: block;
       width: 70%;
       height: 500px;
-      margin: 0 auto;
       -moz-box-shadow: 0px 5px 20px #ccc;
       -webkit-box-shadow: 0px 5px 20px #ccc;
       box-shadow: 0px 5px 20px #ccc;
-      padding: 50;
     }
 
     .ui.button{
-      align: center;
       text-align: center;
       margin: 0 auto;
       }
 
   </style>
-<div class="right floated left aligned column">
-    <div class="column">
-        <button class="ui left attached button" >Users</button>
-        <button class="right attached ui button">Resources</button>
+<div class="ui centered grid">
+    <div class=" fourteen wide column">
+        <div class="centered row">
+            <h1>User Map</h1>
+        </div>
+        <div class="centered row">
+            <button class="ui left attached button" >Users</button>
+            <button class="right attached ui button">Resources</button>
+        </div>
+        <div class="centered row">
+            <div id = "map">
+                <script>
+                    var map = new GMaps({
+                      div: '#map',
+                      lat: 39.8282,
+                      lng: -98.5795
+                    });
+                    map.setZoom(4);
+                    map.addMarker({
+                      lat: 40.467313,
+                      lng: -86.910321,
+                      });
+                </script>
+            </div>
+        </div>
     </div>
-  </div>
-
-    <div id = "map">
-        <script>
-        var map = new GMaps({
-          div: '#map',
-          lat: 39.8282,
-          lng: -98.5795
-        });
-        map.setZoom(4);
-        map.addMarker({
-          lat: -40.467313,
-          lng: -86.910321,
-          });
-        {% for us in users %}
-        map.addMarker({
-          lat: us.zip_code_id.latitude,
-          lng: us.zip_code_id.longitude,})
-        {% endfor %}
-        </script>
-    </div>
+</div>
 {% endblock %}
