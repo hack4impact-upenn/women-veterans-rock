@@ -40,10 +40,18 @@
                       lng: -98.5795
                     });
                     map.setZoom(4);
-                    map.addMarker({
-                      lat: 40.467313,
-                      lng: -86.910321,
+                   {% for user in users %}
+                      var longitude = {{ user.zip_code.longitude }};
+                      var latitude = {{ user.zip_code.latitude }};
+                      map.addMarker({
+                      lat: latitude,
+                      lng: longitude,
+                      infoWindow: {
+                      content: "{{user.zip_code.zip_code}}"
+                      }
                       });
+                      console.log("{{user.zip_code.zip_code}}");
+                   {% endfor %}
                 </script>
             </div>
         </div>

@@ -16,11 +16,13 @@ class ZIPCode(db.Model):
         If possible, the helper methods get_by_zip_code and create_zip_code
         should be used instead of explicitly using this constructor.
         """
-        self.zip_code = zip_code
-        getcoords = Nominatim()
-        loc = getcoords.geocode(ZIPCode.zip_code)
+        getcoords = Nominatim(country_bias='us')
+        loc = getcoords.geocode(zip_code)
+        if loc is None:
+            raise ValueError('zip code \'%s\' is invalid' % self.zip_code)
         self.longitude = loc.longitude
         self.latitude = loc.latitude
+        self.zip_code = zip_code
 
     @staticmethod
     def get_by_zip_code(zip_code):
@@ -42,14 +44,12 @@ class ZIPCode(db.Model):
         return result
 
     @staticmethod
-    def generate_fake(count=10):
+    def generate_fake():
         """Generate count fake ZIPCodes for testing."""
-        from faker import Faker
+        zippy = ['19104', '01810', '02420', '75205', '94305', '47906', '60521']
 
-        fake = Faker()
-
-        for i in range(count):
-            ZIPCode.create_zip_code(fake.zipcode())
+        for zip in zippy:
+            ZIPCode.create_zip_code(zip)
 
     def __repr__(self):
         return '<ZIPCode \'%s\'>' % self.zip_code
