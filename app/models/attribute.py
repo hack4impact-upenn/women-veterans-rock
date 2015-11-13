@@ -62,6 +62,8 @@ class ResourceCategoryTag(Tag):
         in the table.
         """
         result = Tag.get_by_name(name)
+        if result is not None and result.type != 'resource_category_tag':
+            raise ValueError("A tag with this name already exists.")
         if result is None:
             result = ResourceCategoryTag(name)
             db.session.add(result)
@@ -86,3 +88,29 @@ class AffiliationTag(Tag):
     __mapper_args__ = {
         'polymorphic_identity': 'affiliation_tag',
     }
+
+    @staticmethod
+    def create_affiliation_tag(name):
+        """
+        Helper to create a AffiliationTag entry. Returns the newly
+        created AffiliationTag or the existing entry if name is already
+        in the table.
+        """
+        result = Tag.get_by_name(name)
+        if result is not None and result.type != 'affiliation_tag':
+            raise ValueError("A tag with this name already exists.")
+        if result is None:
+            result = AffiliationTag(name)
+            db.session.add(result)
+            db.session.commit()
+        return result
+
+    @staticmethod
+    def generate_fake(count=10):
+        """Generate count fake Tags for testing."""
+        from faker import Faker
+
+        fake = Faker()
+
+        for i in range(count):
+            ResourceCategoryTag.create_resource_category_tag(fake.word())
