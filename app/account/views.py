@@ -253,6 +253,7 @@ def unconfirmed():
 
 
 @account.route('/donate')
+@login_required
 def donate():
-    """Display PayPal link for users to donate"""
+    """Display donate page with PayPal link."""
     return render_template('account/donate.html')
