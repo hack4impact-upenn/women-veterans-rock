@@ -179,7 +179,7 @@ class User(UserMixin, db.Model):
                 db.session.rollback()
 
     @staticmethod
-    def set_random_zips(users, zip_codes):
+    def set_random_zip_codes(users, zip_codes):
         """Assign a random ZIPCode from zip_codes to each User in users."""
         from random import choice
 
