@@ -17,27 +17,26 @@ def add():
     form = ResourceForm()
     if form.validate_on_submit():
         # based on form's zip code, load or create ZIPCode and add to db
-        zip_code = ZIPCode.query.filter_by(zip_code=form.zip_code.data).first()
-        if zip_code is None:
-            zip_code = ZIPCode(zip_code=form.zip_code.data)
-            db.session.add(zip_code)
-            db.session.commit()
+        zip_code = ZIPCode.create_zip_code(form.postal_code.data)
         # based on form's address, zip's id, load or create Address, add to db
+        street_num_and_route = form.street_number.data + ' ' + form.route.data
+        # should create helper method in models/location.py
         address = Address.query.filter_by(
             name=form.name.data,
-            street_address=form.street_address.data,
-            city=form.street_address.data,
-            state=form.state.data,
+            street_address=street_num_and_route,
+            city=form.locality.data,
+            state=form.administrative_area_level_1.data,
             zip_code_id=zip_code.id).first()
         if address is None:
             address = Address(name=form.name.data,
-                              street_address=form.street_address.data,
-                              city=form.city.data,
-                              state=form.state.data,
+                              street_address=street_num_and_route,
+                              city=form.locality.data,
+                              state=form.administrative_area_level_1.data,
                               zip_code_id=zip_code.id)
             db.session.add(address)
             db.session.commit()
         # based on form and address id, create a new resource
+        # should create helper method in models/resource.py
         resource = Resource(name=form.name.data,
                             description=form.description.data,
                             website=form.website.data,
