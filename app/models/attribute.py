@@ -36,34 +36,11 @@ class Tag(db.Model):
         """
         self.name = name
 
-    '''@staticmethod
+    @staticmethod
     def get_by_name(name):
         """Helper for searching by Tag name."""
         result = Tag.query.filter_by(name=name).first()
         return result
-
-    @staticmethod
-    def create_tag(name):
-        """
-        Helper to create a Tag entry. Returns the newly created Tag
-        or the existing entry if name is already in the table.
-        """
-        result = Tag.get_by_name(name)
-        if result is None:
-            result = Tag(name)
-            db.session.add(result)
-            db.session.commit()
-        return result'''
-
-    '''@staticmethod
-    def generate_fake(count=10):
-        """Generate count fake Tags for testing."""
-        from faker import Faker
-
-        fake = Faker()
-
-        for i in range(count):
-            Tag.create_zip_code(fake.word())'''
 
     def __repr__(self):
         return '<Tag \'%s\'>' % self.name
