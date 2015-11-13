@@ -35,7 +35,7 @@ class Resource(db.Model):
             r = Resource(
                 name=fake.name(),
                 description=fake.sentences(),
-                website=fake.website(),
+                website=fake.url(),
                 address=choice(Address.query.all()),
                 reviews=choice(ResourceReview.query.all())
             )
