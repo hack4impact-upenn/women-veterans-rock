@@ -34,7 +34,7 @@ class Resource(db.Model):
         for i in range(count):
             r = Resource(
                 name=fake.name(),
-                description=fake.description(),
+                description=fake.sentences(),
                 website=fake.website(),
                 address=choice(Address.query.all()),
                 reviews=choice(ResourceReview.query.all())
