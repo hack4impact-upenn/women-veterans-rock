@@ -67,7 +67,7 @@ class ResourceReview(db.Model):
         for i in range(count):
             r = ResourceReview(
                 timestamp=fake.date_time(),
-                content=fake.sentences(),
+                content=fake.text(),
                 rating=randint(1, 5),
                 count_likes=randint(1, 500),
                 count_dislikes=randint(1, 500)
