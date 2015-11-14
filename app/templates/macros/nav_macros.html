@@ -19,7 +19,13 @@
 
 {% macro action_items(current_user) %}
     {% if current_user.is_authenticated() %}
-        <a class="item">Search Users</a>
+        <div class="item ui mini search">
+          <div class="ui icon input">
+            <input class="prompt" type="text" placeholder="Search...">
+            <i class="search icon"></i>
+          </div>
+          <div class="results"></div>
+        </div>
         <a class="item">Resources</a>
         <a class="item">Map</a>
         <a class="item">Donate</a>
