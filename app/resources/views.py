@@ -2,8 +2,8 @@ from flask import render_template, redirect, url_for
 from flask.ext.login import login_required, current_user
 from . import resources
 from .. import db
-from ..models import Resource, ZIPCode, Address, User
-from .forms import ResourceForm
+from ..models import Resource, ZIPCode, Address, User, ResourceReview
+from .forms import ResourceForm, ReviewForm
 
 
 @resources.route('/', methods=['GET'])
@@ -49,13 +49,38 @@ def add():
     return render_template('resources/add.html', form=form)
 
 
-@resources.route('/resource/<int:resource_id>')
-def show_resource(resource_id):
+@resources.route('/resource/<int:resource_id>', methods=['GET'])
+def show(resource_id):
     # show the resource with the given id, the id is an integer
     resource = Resource.query.filter_by(id=resource_id).first()
-    address = Address.query.filter_by(id=resource.address_id).first()
-    user = User.query.filter_by(id=resource.user_id).first()
     if resource is None:
         return redirect(url_for('resources.index'))
+    address = Address.query.filter_by(id=resource.address_id).first()
+    user = User.query.filter_by(id=resource.user_id).first()
+    current_user_id = int(current_user.get_id())
     return render_template('resources/view.html', resource=resource,
-                           address=address, user=user)
+                           address=address, user=user,
+                           current_user_id=current_user_id)
+
+
+@resources.route('/resource/<int:resource_id>/writeareview',
+                 methods=['GET', 'POST'])
+@login_required
+def review(resource_id):
+    resource = Resource.query.filter_by(id=resource_id).first()
+    if resource is None:
+        return redirect(url_for('resources.index', resource_id=resource.id))
+    address = Address.query.filter_by(id=resource.address_id).first()
+    user = User.query.filter_by(id=resource.user_id).first()
+    form = ReviewForm()
+    if form.validate_on_submit():
+        review = ResourceReview(content=form.content.data,
+                                rating=form.rating.data,
+                                resource_id=resource_id,
+                                user_id=int(current_user.get_id()))
+        db.session.add(review)
+        db.session.commit()
+        print review.id
+        return redirect(url_for('resources.show', resource_id=resource.id))
+    return render_template('resources/writeareview.html', resource=resource,
+                           address=address, user=user, form=form)
