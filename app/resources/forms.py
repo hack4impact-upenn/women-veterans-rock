@@ -37,3 +37,14 @@ class ResourceForm(Form):
     ])
 
     submit = SubmitField('Add Resource')
+
+
+class ReviewForm(Form):
+    rating = IntegerField('Rating', validators=[
+        InputRequired()
+        # Length(1,1)
+    ])
+    content = StringField('Content', validators=[
+        InputRequired()
+    ])
+    submit = SubmitField('Add Review')
