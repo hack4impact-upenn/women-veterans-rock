@@ -59,8 +59,8 @@
                 {{ render_menu_items(endpoints) }}
             {% endif %}
             {% if current_user.is_authenticated() %}
-                {{ account_loggedin_items(current_user) }}
                 {{ action_items(current_user) }}
+                {{ account_loggedin_items(current_user) }}
             {% else %}
                 {{ account_loggedout_items() }}
             {% endif %}
