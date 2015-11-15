@@ -4,6 +4,7 @@ from . import resources
 from .. import db
 from ..models import Resource, ZIPCode, Address, User, ResourceReview
 from .forms import ResourceForm, ReviewForm
+from datetime import datetime
 
 
 @resources.route('/', methods=['GET'])
@@ -52,9 +53,7 @@ def add():
 @resources.route('/resource/<int:resource_id>', methods=['GET'])
 def show(resource_id):
     # show the resource with the given id, the id is an integer
-    resource = Resource.query.filter_by(id=resource_id).first()
-    if resource is None:
-        return redirect(url_for('resources.index'))
+    resource = Resource.query.filter_by(id=resource_id).first_or_404()
     address = Address.query.filter_by(id=resource.address_id).first()
     user = User.query.filter_by(id=resource.user_id).first()
     current_user_id = int(current_user.get_id())
@@ -67,14 +66,14 @@ def show(resource_id):
                  methods=['GET', 'POST'])
 @login_required
 def review(resource_id):
-    resource = Resource.query.filter_by(id=resource_id).first()
-    if resource is None:
-        return redirect(url_for('resources.index', resource_id=resource.id))
+    resource = Resource.query.filter_by(id=resource_id).first_or_404()
     address = Address.query.filter_by(id=resource.address_id).first()
     user = User.query.filter_by(id=resource.user_id).first()
+
     form = ReviewForm()
     if form.validate_on_submit():
-        review = ResourceReview(content=form.content.data,
+        review = ResourceReview(timestamp=datetime.now(),
+                                content=form.content.data,
                                 rating=form.rating.data,
                                 resource_id=resource_id,
                                 user_id=int(current_user.get_id()))
@@ -93,3 +92,29 @@ def delete(resource_id, review_id):
     db.session.delete(review)
     db.session.commit()
     return redirect(url_for('resources.show', resource_id=resource_id))
+
+
+@resources.route('/resource/<int:resource_id>/editareview/<int:review_id>',
+                 methods=['GET', 'POST'])
+@login_required
+def edit(resource_id, review_id):
+    resource = Resource.query.filter_by(id=resource_id).first_or_404()
+    address = Address.query.filter_by(id=resource.address_id).first()
+    user = User.query.filter_by(id=resource.user_id).first()
+    form = ReviewForm()
+    review = ResourceReview.query.filter_by(id=review_id).first()
+    if form.validate_on_submit():
+        db.session.delete(review)
+        db.session.commit()
+        review = ResourceReview(timestamp=datetime.now(),
+                                content=form.content.data,
+                                rating=form.rating.data,
+                                resource_id=resource_id,
+                                user_id=int(current_user.get_id()))
+        db.session.add(review)
+        db.session.commit()
+        print review.id
+        return redirect(url_for('resources.show', resource_id=resource.id))
+    return render_template('resources/editareview.html', resource=resource,
+                           address=address, user=user, review=review,
+                           form=form)
