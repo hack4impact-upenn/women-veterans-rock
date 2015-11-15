@@ -9,9 +9,6 @@
                 <tr><td>Website</td><td>{{ resource.website }}</td></tr>
                 <tr><td>Address</td><td>{{ address.street_address }}</td></tr>
                 <tr><td>User</td><td>{{ user.first_name }} {{ user.last_name }}</td></tr>
-                <tr><td>Reviews</td><td>
-
-                </td></tr>
             </table>
             <a href="{{ url_for('resources.review', resource_id=resource.id ) }}">
                 <button class="ui button">Write a Review</button>
@@ -20,31 +17,23 @@
 
         {% for review in resource.reviews.all() %}
         <div class="twelve wide column">
-            <h3>{{ review.user_id }}</h3>
-            <table class="ui compact definition table">
+            <h1>Reviews</h1>
+            <h3>User ID: {{ review.user_id }}</h3>
+            <table class="ui compact definition table" id="{{ review.id }}">
                 <tr><td>Content</td>
-                    <td>{{ review.content }}
-                        {% if review.user_id is equalto current_user_id %}
-                            <i class="write icon"></i> <i class="trash icon"></i>
-                        {% endif %}
-                    </td></tr>
+                    <td id="{{ review.id }}content">{{ review.content }}</td></tr>
                 <tr><td>Rating</td>
-                    <td>{{ review.rating }}
-                        {% if review.user_id is equalto current_user_id %}
-                            <i class="write icon"></i> <i class="trash icon"></i>
-                        {% endif %}
-                    </td></tr>
+                    <td id="{{ review.id }}rating">{{ review.rating }}</td></tr>
             </table>
-            {% endfor %}
+            {% if review.user_id is equalto current_user_id %}
+                <a href="{{ url_for('resources.edit', resource_id=resource.id, review_id=review.id) }}">
+                    <button><i class="write icon"></i></button>
+                </a>
+                <a href="{{ url_for('resources.delete', resource_id=resource.id, review_id=review.id) }}">
+                    <button><i class="trash icon"></i></button>
+                </a>
+            {% endif %}
         </div>
+        {% endfor %}
     </div>
 {% endblock %}
-
-<script type="text/javascript">
-    $(".write").click(function() {
-        alert("Edit");
-    });
-    $(".trash").click(function() {
-        alert("Delete");
-    });
-</script>
