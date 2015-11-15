@@ -84,3 +84,12 @@ def review(resource_id):
         return redirect(url_for('resources.show', resource_id=resource.id))
     return render_template('resources/writeareview.html', resource=resource,
                            address=address, user=user, form=form)
+
+
+@resources.route('/resource/<int:resource_id>/deleteareview/<int:review_id>')
+@login_required
+def delete(resource_id, review_id):
+    review = ResourceReview.query.filter_by(id=review_id).first()
+    db.session.delete(review)
+    db.session.commit()
+    return redirect(url_for('resources.show', resource_id=resource_id))
