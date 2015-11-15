@@ -46,7 +46,7 @@ def add():
         db.session.add(resource)
         db.session.commit()
         print resource.id
-        return redirect(url_for('resources.index'))
+        return redirect(url_for('resources.show', resource_id=resource.id))
     return render_template('resources/add.html', form=form)
 
 
