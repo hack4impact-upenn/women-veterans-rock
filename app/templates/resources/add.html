@@ -15,35 +15,35 @@
 
             {{ f.begin_form(form, flashes) }}
 
-            <div class="two fields">
-                {{ f.render_form_field(form.name) }}
-                {{ f.render_form_field(form.website) }}
-            </div>
+                <div class="two fields">
+                    {{ f.render_form_field(form.name) }}
+                    {{ f.render_form_field(form.website) }}
+                </div>
 
-            {{ f.render_form_field(form.description) }}
+                {{ f.render_form_field(form.description) }}
 
-            {{ f.render_form_field(form.address_autocomplete) }}
+                {{ f.render_form_field(form.address_autocomplete) }}
 
-            <div class="two fields">
-                {{ f.render_form_field(form.street_number) }}
-                {{ f.render_form_field(form.route) }}
-            </div>
+                <div class="two fields">
+                    {{ f.render_form_field(form.street_number) }}
+                    {{ f.render_form_field(form.route) }}
+                </div>
 
-            {{ f.render_form_field(form.locality) }}
+                {{ f.render_form_field(form.locality) }}
 
-            <div class="two fields">
-                {{ f.render_form_field(form.administrative_area_level_1) }}
-                {{ f.render_form_field(form.postal_code) }}
-            </div>
+                <div class="two fields">
+                    {{ f.render_form_field(form.administrative_area_level_1) }}
+                    {{ f.render_form_field(form.postal_code) }}
+                </div>
 
-            {{ f.form_message(flashes['error'], header='Something went wrong.', class='error') }}
-            {{ f.form_message(flashes['warning'], header='Check your email.', class='warning') }}
-            {{ f.form_message(flashes['info'], header='Information', class='info') }}
-            {{ f.form_message(flashes['success'], header='Success!', class='success') }}
+                {{ f.form_message(flashes['error'], header='Something went wrong.', class='error') }}
+                {{ f.form_message(flashes['warning'], header='Check your email.', class='warning') }}
+                {{ f.form_message(flashes['info'], header='Information', class='info') }}
+                {{ f.form_message(flashes['success'], header='Success!', class='success') }}
 
-            {% for field in form | selectattr('type', 'equalto', 'SubmitField') %}
-                {{ f.render_form_field(field) }}
-            {% endfor %}
+                {% for field in form | selectattr('type', 'equalto', 'SubmitField') %}
+                    {{ f.render_form_field(field) }}
+                {% endfor %}
 
             {{ f.end_form(form) }}
         </div>
