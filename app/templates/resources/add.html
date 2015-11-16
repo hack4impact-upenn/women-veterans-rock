@@ -22,7 +22,7 @@
 
             {{ f.render_form_field(form.description) }}
 
-            {{ f.render_form_field(form.autocomplete) }}
+            {{ f.render_form_field(form.address_autocomplete) }}
 
             <div class="two fields">
                 {{ f.render_form_field(form.street_number) }}
@@ -52,7 +52,7 @@
 <script>
 // Set onFocus attribute for autocomplete field and disabled attribute for address fields
 $( document ).ready(function() {
-  $("#autocomplete").focus(geolocate())
+  $("#address_autocomplete").focus(geolocate())
 
   for (var component in componentForm) {
     document.getElementById(component).disabled = true;
@@ -77,7 +77,7 @@ function initAutocomplete() {
   // Create the autocomplete object, restricting the search to geographical
   // location types.
   autocomplete = new google.maps.places.Autocomplete(
-      /** @type {!HTMLInputElement} */(document.getElementById('autocomplete')),
+      /** @type {!HTMLInputElement} */(document.getElementById('address_autocomplete')),
       {types: ['geocode']});
 
   // When the user selects an address from the dropdown, populate the address

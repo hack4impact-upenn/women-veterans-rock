@@ -8,7 +8,7 @@ from wtforms.validators import InputRequired, Length
 
 
 class ResourceForm(Form):
-    autocomplete = StringField('Enter the address')
+    address_autocomplete = StringField('Enter the address')
 
     name = StringField('Name', validators=[
         InputRequired(),
