@@ -44,7 +44,7 @@ class RegistrationForm(Form):
     password2 = PasswordField('Confirm password', validators=[InputRequired()])
     zip_code = StringField('ZIP Code', validators=[
         InputRequired(),
-        Length(1, 6)
+        Length(5, 5)
     ])
     submit = SubmitField('Register')
 
