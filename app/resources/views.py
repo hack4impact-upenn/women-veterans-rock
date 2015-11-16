@@ -53,9 +53,9 @@ def add():
 @login_required
 def show_resource(resource_id):
     # Show the resource with the given id, the id is an integer.
-    resource = Resource.query.filter_by(id=resource_id).first()
-    address = Address.query.filter_by(id=resource.address_id).first()
-    user = User.query.filter_by(id=resource.user_id).first()
+    resource = Resource.query.get(resource_id)
+    address = Address.query.get(resource.address_id)
+    user = User.query.get(resource.user_id)
     if resource is None:
         return redirect(url_for('resources.index'))
     return render_template('resources/view.html', resource=resource,
