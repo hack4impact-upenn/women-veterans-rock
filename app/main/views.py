@@ -12,7 +12,7 @@ def index():
 
 @main.route('/map', methods=['GET', 'POST'])
 def user_map():
-    return render_template('main/mapview.html', users=User.query.all())
+    return render_template('main/map.html', users=User.query.all())
 
 
 @main.route('/search')
