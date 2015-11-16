@@ -6,7 +6,7 @@
             <table class="ui compact definition table">
                 <tr><td>Name</td><td>{{ resource.name }}</td></tr>
                 <tr><td>Description</td><td>{{ resource.description }}</td></tr>
-                <tr><td>Website</td><td>{{ resource.website }}</td></tr>
+                <tr><td>Website</td><td><a target="_blank" href="{{ resource.website }}">{{ resource.website }}</a></td></tr>
                 <tr><td>Address</td><td>{{ address.street_address }}</td></tr>
                 <tr><td>User</td><td>{{ user.first_name }} {{ user.last_name }}</td></tr>
                 <tr><td>Reviews</td><td>
