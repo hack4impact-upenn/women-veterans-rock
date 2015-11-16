@@ -7,6 +7,7 @@ from .forms import ResourceForm
 
 
 @resources.route('/', methods=['GET'])
+@login_required
 def index():
     return render_template('resources/index.html')
 
