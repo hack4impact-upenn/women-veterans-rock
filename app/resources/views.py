@@ -50,6 +50,7 @@ def add():
 
 
 @resources.route('/resource/<int:resource_id>')
+@login_required
 def show_resource(resource_id):
     # Show the resource with the given id, the id is an integer.
     resource = Resource.query.filter_by(id=resource_id).first()
