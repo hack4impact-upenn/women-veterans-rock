@@ -36,14 +36,12 @@
                     {{ f.render_form_field(form.postal_code) }}
                 </div>
 
+                {{ f.render_form_field(form.submit) }}
+
                 {{ f.form_message(flashes['error'], header='Something went wrong.', class='error') }}
                 {{ f.form_message(flashes['warning'], header='Check your email.', class='warning') }}
                 {{ f.form_message(flashes['info'], header='Information', class='info') }}
                 {{ f.form_message(flashes['success'], header='Success!', class='success') }}
-
-                {% for field in form | selectattr('type', 'equalto', 'SubmitField') %}
-                    {{ f.render_form_field(field) }}
-                {% endfor %}
 
             {{ f.end_form(form) }}
         </div>
