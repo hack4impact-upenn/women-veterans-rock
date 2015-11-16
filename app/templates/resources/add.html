@@ -83,7 +83,6 @@
             autocomplete.addListener('place_changed', fillInAddress);
         }
 
-        // [START region_fillform]
         function fillInAddress() {
             // Get the place details from the autocomplete object.
             var place = autocomplete.getPlace();
@@ -103,9 +102,7 @@
             }
             }
         }
-        // [END region_fillform]
 
-        // [START region_geolocation]
         // Bias the autocomplete object to the user's geographical location,
         // as supplied by the browser's 'navigator.geolocation' object.
         function geolocate() {
@@ -123,7 +120,6 @@
             });
             }
         }
-        // [END region_geolocation]
 
     </script>
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAlXMybJPNfZRNhFYI56BrZMyZxoHgVshI&signed_in=true&libraries=places&callback=initAutocomplete"
