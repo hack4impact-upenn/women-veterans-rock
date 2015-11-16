@@ -6,7 +6,7 @@ from ..models import Resource, ZIPCode, Address, User
 from .forms import ResourceForm
 
 
-@resources.route('/', methods=['GET'])
+@resources.route('/')
 @login_required
 def index():
     return render_template('resources/index.html')
