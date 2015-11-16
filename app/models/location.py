@@ -38,17 +38,19 @@ class ZIPCode(db.Model):
         """
         result = ZIPCode.get_by_zip_code(zip_code)
         if result is None:
-            result = ZIPCode(zip_code=zip_code)
+            result = ZIPCode(zip_code)
             db.session.add(result)
             db.session.commit()
         return result
 
     @staticmethod
     def generate_fake():
-        """Generate count fake ZIPCodes for testing."""
-        zippy = ['19104', '01810', '02420', '75205', '94305', '47906', '60521']
+        """Use a list of arbitrary but real zipcodes because the faker library
+            zipcodes are not verified & are not all valid"""
+        zip_codes = ['19104', '01810', '02420', '75205', '94305',
+                     '47906', '60521']
 
-        for zip in zippy:
+        for zip_code in zip_codes:
             ZIPCode.create_zip_code(zip)
 
     def __repr__(self):

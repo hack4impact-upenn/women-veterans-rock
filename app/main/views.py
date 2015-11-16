@@ -11,7 +11,7 @@ def index():
 
 
 @main.route('/map', methods=['GET', 'POST'])
-def mapusers():
+def user_map():
     return render_template('main/mapview.html', users=User.query.all())
 
 
