@@ -59,10 +59,10 @@
                                 <input name="donor level" type="hidden">
                                 <i class="dropdown icon"></i>
                                 <div class="default text">{{ u.donor_level.name }}</div>
-                                <div class="menu">
-                                    <div class="item" data-value="advocate">Advocate</div>
-                                    <div class="item" data-value="supporter">Supporter</div>
-                                    <div class="item" data-value="benefactor">Benefactor</div>
+                                <div id="select-donor-level" class="menu">
+                                    <div class="item" data-value="Advocate">Advocate</div>
+                                    <div class="item" data-value="Supporter">Supporter</div>
+                                    <div class="item" data-value="Benefactor">Benefactor</div>
                                 </div>
                             </div>
                         </td>
@@ -94,12 +94,14 @@
                     $('td.user.role').not(':contains(' + value + ')').closest('tr').addClass('hidden').hide();
                 }
             });
+
+             $('#select-donor-level').dropdown({
+                onChange: function (value, text, $selectedItem) {
+                    
+                }
+            });
         });
 
-        $('.ui.dropdown')
-            .dropdown()
-            onChange(value, text, $choice)
-         ;
 
     </script>
 {% endblock %}
