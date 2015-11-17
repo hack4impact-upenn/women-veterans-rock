@@ -17,14 +17,14 @@
     {% endif %}
 {% endmacro %}
 
-{% macro action_items(current_user) %}
+{% macro page_items(current_user) %}
     {% if current_user.is_authenticated() %}
         <div class="item ui mini search">
-          <div class="ui icon input">
-            <input class="prompt" type="text" placeholder="Search...">
-            <i class="search icon"></i>
-          </div>
-          <div class="results"></div>
+            <div class="ui icon input">
+                <input class="prompt" type="text" placeholder="Search...">
+                <i class="search icon"></i>
+            </div>
+            <div class="results"></div>
         </div>
         <a class="item">Resources</a>
         <a class="item">Map</a>
@@ -32,14 +32,14 @@
     {% endif %}
 {% endmacro %}
 
-{% macro account_loggedin_items(current_user) %}
+{% macro account_items_logged_in(current_user) %}
     <a class="item">View Profile</a>
     <a href="{{ url_for('account.manage') }}" class="item">Account Settings</a>
     <a class="item">Help</a>
     <a href="{{ url_for('account.logout') }}" class="item">Log out</a>
 {% endmacro %}
 
-{% macro account_loggedout_items() %}
+{% macro account_items_logged_out() %}
     <a href="{{ url_for('account.register') }}" class="item">Register</a>
     <a href="{{ url_for('account.login') }}" class="item">Log in</a>
 {% endmacro %}
@@ -59,10 +59,10 @@
                 {{ render_menu_items(endpoints) }}
             {% endif %}
             {% if current_user.is_authenticated() %}
-                {{ action_items(current_user) }}
-                {{ account_loggedin_items(current_user) }}
+                {{ page_items(current_user) }}
+                {{ account_items_logged_in(current_user) }}
             {% else %}
-                {{ account_loggedout_items() }}
+                {{ account_items_logged_out() }}
             {% endif %}
             
         </div>
@@ -79,16 +79,16 @@
 
                 <div class="right menu">
                     {% if current_user.is_authenticated() %}
-                        {{ action_items(current_user) }}
+                        {{ page_items(current_user) }}
                         <div class="ui dropdown item">
                             <div class="text">{{current_user.first_name}}</div>
                             <i class="dropdown icon"></i>
                             <div class="menu">
-                                {{ account_loggedin_items(current_user) }}
+                                {{ account_items_logged_in(current_user) }}
                             </div>
                         </div>
                     {% else %}
-                        {{ account_loggedout_items() }}
+                        {{ account_items_logged_out() }}
                     {% endif %}
                 </div>
             </div>
