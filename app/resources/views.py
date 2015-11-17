@@ -53,7 +53,7 @@ def add():
 @login_required
 def show_resource(resource_id):
     # Show the resource with the given id, the id is an integer.
-    resource = Resource.query.get(resource_id)
+    resource = Resource.query.get_or_404(resource_id)
     address = Address.query.get(resource.address_id)
     user = User.query.get(resource.user_id)
     if resource is None:
