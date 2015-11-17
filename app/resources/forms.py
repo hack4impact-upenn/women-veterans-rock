@@ -32,7 +32,8 @@ class ResourceForm(Form):
         InputRequired()
     ])
     administrative_area_level_1 = StringField('State', validators=[
-        InputRequired()
+        InputRequired(),
+        Length(2, 2)
     ])
     postal_code = StringField('ZIP Code', validators=[
         InputRequired(),
