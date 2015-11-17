@@ -56,7 +56,5 @@ def show_resource(resource_id):
     resource = Resource.query.get_or_404(resource_id)
     address = Address.query.get(resource.address_id)
     user = User.query.get(resource.user_id)
-    if resource is None:
-        return redirect(url_for('resources.index'))
     return render_template('resources/viewaresource.html', resource=resource,
                            address=address, user=user)
