@@ -1,12 +1,14 @@
 from flask.ext.wtf import Form
 from wtforms.fields import (
     StringField,
+    IntegerField,
     SubmitField
 )
-from wtforms.validators import InputRequired, Length
+from wtforms.validators import InputRequired, Length, URL, Optional
 
 
 class ResourceForm(Form):
+    address_autocomplete = StringField('Enter the address')
     name = StringField('Name', validators=[
         InputRequired(),
         Length(1, 64)
@@ -14,19 +16,26 @@ class ResourceForm(Form):
     description = StringField('Description', validators=[
         InputRequired(),
     ])
-    website = StringField('Website')
-    street_address = StringField('Street Address', validators=[
+    website = StringField('Website', validators=[
+        Optional(),
+        URL()
+    ])
+
+    street_number = IntegerField('Street Number', validators=[
         InputRequired()
     ])
-    city = StringField('City', validators=[
+    # Google Place Autocomplete example divs named for Google address schema.
+    route = StringField('Street Address', validators=[
         InputRequired()
     ])
-    state = StringField('State', validators=[
-        InputRequired(),
-        Length(2)
+    locality = StringField('City', validators=[
+        InputRequired()
     ])
-    zip_code = StringField('ZIP Code', validators=[
+    administrative_area_level_1 = StringField('State', validators=[
+        InputRequired()
+    ])
+    postal_code = StringField('ZIP Code', validators=[
         InputRequired(),
-        Length(5, 10)
+        Length(5, 5)
     ])
     submit = SubmitField('Add Resource')
