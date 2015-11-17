@@ -75,7 +75,7 @@
             // Create the autocomplete object, restricting the search to geographical
             // location types.
             autocomplete = new google.maps.places.Autocomplete(
-                $('#address_autocomplete'), // @type {!HTMLInputElement},
+                (document.getElementById('address_autocomplete')), // @type {!HTMLInputElement},
                 {types: ['geocode']}
             );
 
