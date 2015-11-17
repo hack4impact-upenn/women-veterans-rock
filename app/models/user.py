@@ -216,8 +216,10 @@ class User(UserMixin, db.Model):
 
     @staticmethod
     def set_random_affiliation_tags(users, affiliation_tags):
-        """Assign a random AffiliationTag from affiliation_tags to each User in
-        users."""
+        """
+        Assign a random AffiliationTag from affiliation_tags to each User in
+        users.
+        """
         from random import choice, randint
 
         for user in users:
