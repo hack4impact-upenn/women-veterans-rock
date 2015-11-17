@@ -1,16 +1,16 @@
 {% extends 'layouts/base.html' %}
 
 {% block content %}
-	<div> {{ user.first_name }} </div>
-    <div> {{ user.last_name }} </div>
-    <div> {{ user.email }} </div>
-    <div> {{ user.role.name }} </div>
-    <div> {{ user.birthday }} </div>
-    <div>
-		{% if is_current %}
-			<a href="{{ url_for('account.edit_profile') }}">
-				<button class="ui button">Edit</button>
-			</a>
-		{% endif %}
-	</div>
+    <div>{{ user.first_name }}</div>
+    <div>{{ user.last_name }}</div>
+    <div>{{ user.email }}</div>
+    <div>{{ user.role.name }}</div>
+    <div>{{ user.birthday }}</div>
+    {% if is_current %}
+        <div>
+            <a href="{{ url_for('account.edit_profile') }}">
+                <button class="ui button">Edit</button>
+            </a>
+        </div>
+    {% endif %}
 {% endblock %}
