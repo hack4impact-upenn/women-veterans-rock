@@ -25,7 +25,6 @@ class Tag(db.Model):
     type = db.Column(db.String(50))
 
     __mapper_args__ = {
-        'polymorphic_identity': 'tag',
         'polymorphic_on': type
     }
 
@@ -43,7 +42,7 @@ class Tag(db.Model):
         return result
 
     def __repr__(self):
-        return '<Tag \'%s\'>' % self.name
+        return '<%s \'%s\'>' % (self.type, self.name)
 
 
 class ResourceCategoryTag(Tag):
