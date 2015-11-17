@@ -147,10 +147,8 @@ class EditProfileForm(Form):
         label='Birthday',
         description="YYYY-MM-DD",
         format="%Y-%m-%d", validators=[ Optional() ])
-    facebook_link = StringField('Facebook Profile', description="https://", validators=[
-        URL(), Optional()
-    ])
-    linkedin_link = StringField('LinkedIn Profile', description="https://", validators=[
-        URL(), Optional()
-    ])
+    facebook_link = StringField('Facebook Profile', description="https://",
+        validators=[ URL(), Optional() ])
+    linkedin_link = StringField('LinkedIn Profile', description="https://",
+        validators=[ URL(), Optional() ])
     submit = SubmitField('Update profile')
