@@ -10,7 +10,7 @@ def index():
     return render_template('main/index.html')
 
 
-@main.route('/map', methods=['GET', 'POST'])
+@main.route('/map')
 def user_map():
     return render_template('main/map.html', users=User.query.all())
 
