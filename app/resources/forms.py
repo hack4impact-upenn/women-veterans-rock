@@ -35,6 +35,6 @@ class ResourceForm(Form):
     ])
     postal_code = StringField('ZIP Code', validators=[
         InputRequired(),
-        Length(5)
+        Length(5, 5)
     ])
     submit = SubmitField('Add Resource')
