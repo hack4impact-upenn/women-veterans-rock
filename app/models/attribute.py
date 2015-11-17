@@ -51,7 +51,7 @@ class ResourceCategoryTag(Tag):
     id = db.Column(db.Integer, db.ForeignKey('tags.id'), primary_key=True)
 
     __mapper_args__ = {
-        'polymorphic_identity': 'resource_category_tag',
+        'polymorphic_identity': 'ResourceCategoryTag',
     }
 
     @staticmethod
@@ -62,7 +62,10 @@ class ResourceCategoryTag(Tag):
         in the table.
         """
         result = Tag.get_by_name(name)
-        if result is not None and result.type != 'resource_category_tag':
+        # Tags must have unique names, so if a Tag that is not an
+        # ResourceCategoryTag already has the name `name`, then an error is
+        # raised.
+        if result is not None and result.type != 'ResourceCategoryTag':
             raise ValueError("A tag with this name already exists.")
         if result is None:
             result = ResourceCategoryTag(name)
@@ -93,7 +96,7 @@ class AffiliationTag(Tag):
     id = db.Column(db.Integer, db.ForeignKey('tags.id'), primary_key=True)
 
     __mapper_args__ = {
-        'polymorphic_identity': 'affiliation_tag',
+        'polymorphic_identity': 'AffiliationTag',
     }
 
     @staticmethod
@@ -104,7 +107,9 @@ class AffiliationTag(Tag):
         in the table.
         """
         result = Tag.get_by_name(name)
-        if result is not None and result.type != 'affiliation_tag':
+        # Tags must have unique names, so if a Tag that is not an
+        # AffiliationTag already has the name `name`, then an error is raised.
+        if result is not None and result.type != 'AffiliationTag':
             raise ValueError("A tag with this name already exists.")
         if result is None:
             result = AffiliationTag(name)
