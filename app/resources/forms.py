@@ -4,7 +4,7 @@ from wtforms.fields import (
     IntegerField,
     SubmitField
 )
-from wtforms.validators import InputRequired, Length, URL
+from wtforms.validators import InputRequired, Length, URL, Optional
 
 
 class ResourceForm(Form):
@@ -17,6 +17,7 @@ class ResourceForm(Form):
         InputRequired(),
     ])
     website = StringField('Website', validators=[
+        Optional(),
         URL()
     ])
 
