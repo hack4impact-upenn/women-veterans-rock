@@ -46,7 +46,7 @@ def add():
         db.session.add(resource)
         db.session.commit()
         return redirect(url_for('resources.index'))
-    return render_template('resources/add.html', form=form)
+    return render_template('resources/add_resource.html', form=form)
 
 
 @resources.route('/resource/<int:resource_id>')
