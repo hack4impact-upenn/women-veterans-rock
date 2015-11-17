@@ -50,7 +50,7 @@
     <script>
         // Set onFocus attribute for autocomplete field and disabled attribute for address fields.
         $( document ).ready(function() {
-            $("#address_autocomplete").focus(geolocate())
+            $("#address_autocomplete").focus(geolocate());
 
             for (var component in componentForm) {
                 document.getElementById(component).disabled = true;
