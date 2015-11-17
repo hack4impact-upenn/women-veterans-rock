@@ -23,7 +23,7 @@ class ResourceForm(Form):
     street_number = IntegerField('Street Number', validators=[
         InputRequired()
     ])
-    # Google Place Autocomplete example divs named for Google address schema
+    # Google Place Autocomplete example divs named for Google address schema.
     route = StringField('Street Address', validators=[
         InputRequired()
     ])
