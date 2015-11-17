@@ -21,23 +21,19 @@
                         <div class="column">{{ f.render_form_field(form.last_name) }}</div>
                     </div>
                 </div>
-                    {{ f.render_form_field(form.affiliation) }}
-                    {{ f.render_form_field(form.about_me) }}
-                    {{ f.render_form_field(form.birthday) }}
-                    {{ f.render_form_field(form.facebook_link) }}
-                    {{ f.render_form_field(form.linkedin_link) }}
-                    {{ f.form_message(flashes['error'], header='Something went wrong.', class='error') }}
-                    {{ f.form_message(flashes['warning'], header='Check your email.', class='warning') }}
-                    {{ f.form_message(flashes['info'], header='Information', class='info') }}
-                    {{ f.form_message(flashes['success'], header='Success!', class='success') }}
-
-                    {{ f.render_form_field(form.submit) }}
+                {{ f.render_form_field(form.affiliation) }}
+                {{ f.render_form_field(form.bio) }}
+                {{ f.render_form_field(form.birthday) }}
+                {{ f.render_form_field(form.facebook_link) }}
+                {{ f.render_form_field(form.linkedin_link) }}
                 
+                {{ f.form_message(flashes['error'], header='Something went wrong.', class='error') }}
+                {{ f.form_message(flashes['warning'], header='Check your email.', class='warning') }}
+                {{ f.form_message(flashes['info'], header='Information', class='info') }}
+                {{ f.form_message(flashes['success'], header='Success!', class='success') }}
+                {{ f.render_form_field(form.submit) }}
             {{ f.end_form(form) }}
         </div>
-        
     </div>
-
-    
 
 {% endblock %}

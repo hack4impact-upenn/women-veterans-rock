@@ -256,7 +256,7 @@ def unconfirmed():
 @account.route('/profile/<int:user_id>')
 @login_required
 def profile(user_id):
-    """Display a user's profile"""
+    """Display a user's profile."""
     user = User.query.get(user_id)
     if user is None:
         abort(404)
@@ -268,10 +268,9 @@ def profile(user_id):
 @account.route('/profile/edit', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
-    """User can edit their own profile"""
+    """User can edit their own profile."""
     form = EditProfileForm()
     if form.validate_on_submit():
-        # TODO: actually update user instance
         current_user.first_name = form.first_name.data
         current_user.last_name = form.last_name.data
         current_user.birthday = form.birthday.data
@@ -281,7 +280,6 @@ def edit_profile():
         return render_template(
             'account/profile.html',
             user=current_user,
-            role=current_user.role.name,
             isCurrent=True)
     else:
         # populating form with current user profile information

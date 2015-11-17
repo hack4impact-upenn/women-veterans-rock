@@ -10,7 +10,7 @@ from wtforms.fields import (
     DateField,
 )
 from wtforms.fields.html5 import EmailField
-from wtforms.validators import DataRequired, Length, Email, EqualTo
+from wtforms.validators import DataRequired, Length, Email, EqualTo, URL, InputRequired, Optional
 from wtforms import ValidationError
 from ..models import User
 
@@ -119,11 +119,11 @@ class ChangeEmailForm(Form):
 
 class EditProfileForm(Form):
     first_name = StringField('First name', validators=[
-        DataRequired(),
+        InputRequired(),
         Length(1, 64)
     ])
     last_name = StringField('Last name', validators=[
-        DataRequired(),
+        InputRequired(),
         Length(1, 64)
     ])
     ''' This will not be hardcoded in the future,
@@ -142,11 +142,15 @@ class EditProfileForm(Form):
     affiliation = SelectMultipleField(
         'Affiliation',
         choices=affiliation_options)
-    about_me = TextAreaField('About Me')
+    bio = TextAreaField('About Me')
     birthday = DateField(
         label='Birthday',
         description="YYYY-MM-DD",
-        format="%Y-%m-%d")
-    facebook_link = StringField('Facebook Profile', description="https://")
-    linkedin_link = StringField('LinkedIn Profile', description="https://")
+        format="%Y-%m-%d", validators=[ Optional() ])
+    facebook_link = StringField('Facebook Profile', description="https://", validators=[
+        URL(), Optional()
+    ])
+    linkedin_link = StringField('LinkedIn Profile', description="https://", validators=[
+        URL(), Optional()
+    ])
     submit = SubmitField('Update profile')
