@@ -9,11 +9,6 @@
                 <tr><td>Website</td><td><a target="_blank" href="{{ resource.website }}">{{ resource.website }}</a></td></tr>
                 <tr><td>Address</td><td>{{ address.street_address }}</td></tr>
                 <tr><td>User</td><td>{{ user.full_name() }}</td></tr>
-                <tr><td>Reviews</td><td>
-                    {% for review in resource.reviews.all() %}
-                        {{ review }}
-                    {% endfor %}
-                </td></tr>
             </table>
             <a href="{{ url_for('resources.review', resource_id=resource.id ) }}">
                 <button class="ui button">Write a Review</button>
@@ -26,9 +21,9 @@
             <h3>User ID: {{ review.user_id }}</h3>
             <table class="ui compact definition table" id="{{ review.id }}">
                 <tr><td>Content</td>
-                    <td id="{{ review.id }}content">{{ review.content }}</td></tr>
+                    <td>{{ review.content }}</td></tr>
                 <tr><td>Rating</td>
-                    <td id="{{ review.id }}rating">{{ review.rating }}</td></tr>
+                    <td>{{ review.rating }}</td></tr>
             </table>
             {% if review.user_id is equalto current_user_id %}
                 <a href="{{ url_for('resources.edit', resource_id=resource.id, review_id=review.id) }}">
