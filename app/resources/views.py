@@ -47,7 +47,7 @@ def add():
         db.session.add(resource)
         db.session.commit()
         return redirect(url_for('resources.show', resource_id=resource.id))
-    return render_template('resources/add.html', form=form)
+    return render_template('resources/add_resource.html', form=form)
 
 
 @resources.route('/resource/<int:resource_id>')
@@ -60,7 +60,7 @@ def show(resource_id):
     address = Address.query.get(resource.address_id)
     user = User.query.get(resource.user_id)
     current_user_id = int(current_user.get_id())
-    return render_template('resources/view.html', resource=resource,
+    return render_template('resources/view_resource.html', resource=resource,
                            address=address, user=user,
                            current_user_id=current_user_id)
 
@@ -69,9 +69,9 @@ def show(resource_id):
                  methods=['GET', 'POST'])
 @login_required
 def review(resource_id):
-    resource = Resource.query.filter_by(id=resource_id).first_or_404()
+    resource = Resource.query.get_or_404(resource_id)
     address = Address.query.get(resource.address_id)
-    user = User.query.get(id=resource.user_id)
+    user = User.query.get(resource.user_id)
     form = ReviewForm()
     if form.validate_on_submit():
         review = ResourceReview(timestamp=datetime.now(),
@@ -99,7 +99,7 @@ def delete(resource_id, review_id):
                  methods=['GET', 'POST'])
 @login_required
 def edit(resource_id, review_id):
-    resource = Resource.query.filter_by(id=resource_id).first_or_404()
+    resource = Resource.query.get_or_404(resource_id)
     address = Address.query.get(resource.address_id)
     user = User.query.get(resource.user_id)
     form = ReviewForm()
