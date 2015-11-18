@@ -89,7 +89,7 @@ def review(resource_id):
 @resources.route('/resource/<int:resource_id>/deleteareview/<int:review_id>')
 @login_required
 def delete(resource_id, review_id):
-    review = ResourceReview.query.filter_by(id=review_id).first()
+    review = ResourceReview.query.get(review_id)
     db.session.delete(review)
     db.session.commit()
     return redirect(url_for('resources.show', resource_id=resource_id))
