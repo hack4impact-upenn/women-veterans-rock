@@ -70,9 +70,8 @@ def show(resource_id):
 @login_required
 def review(resource_id):
     resource = Resource.query.filter_by(id=resource_id).first_or_404()
-    address = Address.query.filter_by(id=resource.address_id).first()
-    user = User.query.filter_by(id=resource.user_id).first()
-
+    address = Address.query.get(resource.address_id)
+    user = User.query.get(id=resource.user_id)
     form = ReviewForm()
     if form.validate_on_submit():
         review = ResourceReview(timestamp=datetime.now(),
@@ -82,7 +81,6 @@ def review(resource_id):
                                 user_id=int(current_user.get_id()))
         db.session.add(review)
         db.session.commit()
-        print review.id
         return redirect(url_for('resources.show', resource_id=resource.id))
     return render_template('resources/writeareview.html', resource=resource,
                            address=address, user=user, form=form)
