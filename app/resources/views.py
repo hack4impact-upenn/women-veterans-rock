@@ -100,10 +100,10 @@ def delete(resource_id, review_id):
 @login_required
 def edit(resource_id, review_id):
     resource = Resource.query.filter_by(id=resource_id).first_or_404()
-    address = Address.query.filter_by(id=resource.address_id).first()
-    user = User.query.filter_by(id=resource.user_id).first()
+    address = Address.query.get(resource.address_id)
+    user = User.query.get(resource.user_id)
     form = ReviewForm()
-    review = ResourceReview.query.filter_by(id=review_id).first()
+    review = ResourceReview.query.get(review_id)
     if form.validate_on_submit():
         db.session.delete(review)
         db.session.commit()
@@ -114,7 +114,6 @@ def edit(resource_id, review_id):
                                 user_id=int(current_user.get_id()))
         db.session.add(review)
         db.session.commit()
-        print review.id
         return redirect(url_for('resources.show', resource_id=resource.id))
     return render_template('resources/editareview.html', resource=resource,
                            address=address, user=user, review=review,
