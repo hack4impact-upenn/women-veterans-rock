@@ -50,7 +50,7 @@ def add():
     return render_template('resources/add.html', form=form)
 
 
-@resources.route('/resource/<int:resource_id>', methods=['GET'])
+@resources.route('/resource/<int:resource_id>')
 def show(resource_id):
     """
     Show the resource with the given id, the id is an integer.
