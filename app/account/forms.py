@@ -42,6 +42,10 @@ class RegistrationForm(Form):
         EqualTo('password2', 'Passwords must match')
     ])
     password2 = PasswordField('Confirm password', validators=[InputRequired()])
+    zip_code = StringField('ZIP Code', validators=[
+        InputRequired(),
+        Length(5, 5)
+    ])
     submit = SubmitField('Register')
 
     def validate_email(self, field):

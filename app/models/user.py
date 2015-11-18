@@ -215,6 +215,20 @@ class User(UserMixin, db.Model):
         db.session.commit()
 
     @staticmethod
+    def set_random_affiliation_tags(users, affiliation_tags):
+        """
+        Assign a random AffiliationTag from affiliation_tags to each User in
+        users.
+        """
+        from random import choice, randint
+
+        for user in users:
+            for i in range(randint(1, 3)):
+                user.tags.append(choice(affiliation_tags))
+            db.session.add(user)
+        db.session.commit()
+
+    @staticmethod
     def create_confirmed_admin(first_name, last_name, email, password,
                                zip_code):
         """Create a confirmed admin with the given input properties."""

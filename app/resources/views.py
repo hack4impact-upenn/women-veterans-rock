@@ -7,7 +7,8 @@ from .forms import ResourceForm, ReviewForm
 from datetime import datetime
 
 
-@resources.route('/', methods=['GET'])
+@resources.route('/')
+@login_required
 def index():
     return render_template('resources/index.html')
 
@@ -17,11 +18,11 @@ def index():
 def add():
     form = ResourceForm()
     if form.validate_on_submit():
-        # based on form's zip code, load or create ZIPCode and add to db
+        # Based on form's zip code, load or create ZIPCode and add to db.
         zip_code = ZIPCode.create_zip_code(form.postal_code.data)
-        # based on form's address, zip's id, load or create Address, add to db
+        # Based on form's address, zip's id, load or create Address, add to db.
         street_num_route = str(form.street_number.data) + ' ' + form.route.data
-        # should create helper method in models/location.py
+        # TODO: Create helper method in models/location.py.
         address = Address.query.filter_by(
             name=form.name.data,
             street_address=street_num_route,
@@ -36,8 +37,8 @@ def add():
                               zip_code_id=zip_code.id)
             db.session.add(address)
             db.session.commit()
-        # based on form and address id, create a new resource
-        # should create helper method in models/resource.py
+        # Based on form and address id, create a new resource.
+        # TODO: Create helper method in models/resource.py.
         resource = Resource(name=form.name.data,
                             description=form.description.data,
                             website=form.website.data,
@@ -45,17 +46,18 @@ def add():
                             user_id=int(current_user.get_id()))
         db.session.add(resource)
         db.session.commit()
-        print resource.id
         return redirect(url_for('resources.show', resource_id=resource.id))
     return render_template('resources/add.html', form=form)
 
 
 @resources.route('/resource/<int:resource_id>', methods=['GET'])
 def show(resource_id):
-    # show the resource with the given id, the id is an integer
-    resource = Resource.query.filter_by(id=resource_id).first_or_404()
-    address = Address.query.filter_by(id=resource.address_id).first()
-    user = User.query.filter_by(id=resource.user_id).first()
+    """
+    Show the resource with the given id, the id is an integer.
+    """
+    resource = Resource.query.get_or_404(resource_id)
+    address = Address.query.get(resource.address_id)
+    user = User.query.get(resource.user_id)
     current_user_id = int(current_user.get_id())
     return render_template('resources/view.html', resource=resource,
                            address=address, user=user,
