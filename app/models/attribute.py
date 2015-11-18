@@ -61,7 +61,7 @@ class ResourceCategoryTag(Tag):
         in the table.
         """
         result = Tag.get_by_name(name)
-        # Tags must have unique names, so if a Tag that is not an
+        # Tags must have unique names, so if a Tag that is not a
         # ResourceCategoryTag already has the name `name`, then an error is
         # raised.
         if result is not None and result.type != 'ResourceCategoryTag':
