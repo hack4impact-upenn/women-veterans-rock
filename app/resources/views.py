@@ -51,6 +51,7 @@ def add():
 
 
 @resources.route('/resource/<int:resource_id>')
+@login_required
 def show(resource_id):
     """
     Show the resource with the given id, the id is an integer.
