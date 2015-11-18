@@ -9,7 +9,7 @@
                 <tr><td>Description</td><td>{{ resource.description }}</td></tr>
                 <tr><td>Website</td><td>{{ resource.website }}</td></tr>
                 <tr><td>Address</td><td>{{ address.street_address }}</td></tr>
-                <tr><td>User</td><td>{{ user.first_name }} {{ user.last_name }}</td></tr>
+                <tr><td>User</td><td>{{ user.full_name }}</td></tr>
                 <tr><td>Reviews</td><td>
                     {% for review in resource.reviews.all() %}
                         {{ review.content }}
@@ -32,18 +32,14 @@
 
             {{ f.begin_form(form, flashes) }}
 
-            {{ f.render_form_field(form.rating) }}
+                {{ f.render_form_field(form.rating) }}
+                {{ f.render_form_field(form.content) }}
+                {{ f.render_form_field(form.submit) }}
 
-            {{ f.render_form_field(form.content) }}
-
-            {{ f.form_message(flashes['error'], header='Something went wrong.', class='error') }}
-            {{ f.form_message(flashes['warning'], header='Check your email.', class='warning') }}
-            {{ f.form_message(flashes['info'], header='Information', class='info') }}
-            {{ f.form_message(flashes['success'], header='Success!', class='success') }}
-
-            {% for field in form | selectattr('type', 'equalto', 'SubmitField') %}
-                {{ f.render_form_field(field) }}
-            {% endfor %}
+                {{ f.form_message(flashes['error'], header='Something went wrong.', class='error') }}
+                {{ f.form_message(flashes['warning'], header='Check your email.', class='warning') }}
+                {{ f.form_message(flashes['info'], header='Information', class='info') }}
+                {{ f.form_message(flashes['success'], header='Success!', class='success') }}
 
             {{ f.end_form(form) }}
         </div>
