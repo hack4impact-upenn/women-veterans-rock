@@ -64,7 +64,6 @@
             {% else %}
                 {{ account_items_logged_out() }}
             {% endif %}
-            
         </div>
     </div>
 {% endmacro %}
@@ -76,7 +75,6 @@
         <div class="ui fixed inverted red main menu">
             <div class="ui container">
                 {{ header_items(current_user) }}
-
                 <div class="right menu">
                     {% if current_user.is_authenticated() %}
                         {{ page_items(current_user) }}
