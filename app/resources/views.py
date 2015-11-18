@@ -21,7 +21,7 @@ def add():
         zip_code = ZIPCode.create_zip_code(form.postal_code.data)
         # Based on form's address, zip's id, load or create Address, add to db.
         street_num_route = str(form.street_number.data) + ' ' + form.route.data
-        # Should create helper method in models/location.py.
+        # TODO: Create helper method in models/location.py.
         address = Address.query.filter_by(
             name=form.name.data,
             street_address=street_num_route,
@@ -37,7 +37,7 @@ def add():
             db.session.add(address)
             db.session.commit()
         # Based on form and address id, create a new resource.
-        # Should create helper method in models/resource.py.
+        # TODO: Create helper method in models/resource.py.
         resource = Resource(name=form.name.data,
                             description=form.description.data,
                             website=form.website.data,
@@ -52,7 +52,9 @@ def add():
 @resources.route('/resource/<int:resource_id>')
 @login_required
 def show_resource(resource_id):
-    # Show the resource with the given id, the id is an integer.
+    """
+    Show the resource with the given id, the id is an integer.
+    """
     resource = Resource.query.get_or_404(resource_id)
     address = Address.query.get(resource.address_id)
     user = User.query.get(resource.user_id)
