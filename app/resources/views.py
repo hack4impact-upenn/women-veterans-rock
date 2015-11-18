@@ -82,7 +82,7 @@ def review(resource_id):
         db.session.add(review)
         db.session.commit()
         return redirect(url_for('resources.show', resource_id=resource.id))
-    return render_template('resources/writeareview.html', resource=resource,
+    return render_template('resources/write_review.html', resource=resource,
                            address=address, user=user, form=form)
 
 
@@ -115,6 +115,6 @@ def edit(resource_id, review_id):
         db.session.add(review)
         db.session.commit()
         return redirect(url_for('resources.show', resource_id=resource.id))
-    return render_template('resources/editareview.html', resource=resource,
+    return render_template('resources/edit_review.html', resource=resource,
                            address=address, user=user, review=review,
                            form=form)
