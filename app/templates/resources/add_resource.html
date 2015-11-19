@@ -46,8 +46,9 @@
         $( document ).ready(function() {
             $("#address_autocomplete").focus(geolocate());
 
+
             for (var component in componentForm) {
-                $("#" + component).attr("disabled","true");
+                $("#" + component).prop("disabled", true);
             }
         });
 
@@ -82,8 +83,8 @@
             var place = autocomplete.getPlace();
 
             for (var component in componentForm) {
-                $("#" + component).value = '';
-                $("#" + component).disabled = false;
+                $("#" + component).val('');
+                $("#" + component).prop("disabled", false);
             }
 
             // Get each component of the address from the place details
@@ -92,7 +93,7 @@
                 var addressType = place.address_components[i].types[0];
                 if (componentForm[addressType]) {
                     var val = place.address_components[i][componentForm[addressType]];
-                    $("#" + addressType).attr("value", val);
+                    $("#" + addressType).val(val);
                 }
             }
         }
