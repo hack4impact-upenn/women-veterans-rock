@@ -21,7 +21,7 @@
                     <div class="menu">
                         <div class="item" data-value="">All account types</div>
                         {% for r in roles %}
-                        <div class="item" data-value="{{ r.name }}">{{ r.name }}s</div>
+                            <div class="item" data-value="{{ r.name }}">{{ r.name }}s</div>
                         {% endfor %}
                     </div>
                 </div>
@@ -32,6 +32,7 @@
                     </div>
                 </div>
             </div>
+        </div>
 
         {# Use overflow-x: scroll so that mobile views don't freak out # when the table is too wide #}
         <div style="overflow-x: scroll;">
@@ -47,24 +48,24 @@
                 </thead>
                 <tbody>
                     {% for u in users | sort(attribute='last_name') %}
-                    <tr>
-                        <td onclick="window.location.href = '{{ url_for('admin.user_info', user_id=u.id) }}';">{{ u.first_name }}</td>
-                        <td onclick="window.location.href = '{{ url_for('admin.user_info', user_id=u.id) }}';">{{ u.last_name }}</td>
-                        <td onclick="window.location.href = '{{ url_for('admin.user_info', user_id=u.id) }}';">{{ u.email }}</td>
-                        <td class="user role">{{ u.role.name }}</td>
-                        <td class="user donor level">
-                            <div class="ui selection dropdown">
-                                <input name="donor level" type="hidden">
-                                <i class="dropdown icon"></i>
-                                <div class="default text">{{ u.donor_level.name }}</div>
-                                <div id="select-donor-level" class="menu">
-                                    <div class="item" data-value="Advocate">Advocate</div>
-                                    <div class="item" data-value="Supporter">Supporter</div>
-                                    <div class="item" data-value="Benefactor">Benefactor</div>
+                        <tr>
+                            <td onclick="window.location.href = '{{ url_for('admin.user_info', user_id=u.id) }}';">{{ u.first_name }}</td>
+                            <td onclick="window.location.href = '{{ url_for('admin.user_info', user_id=u.id) }}';">{{ u.last_name }}</td>
+                            <td onclick="window.location.href = '{{ url_for('admin.user_info', user_id=u.id) }}';">{{ u.email }}</td>
+                            <td class="user role">{{ u.role.name }}</td>
+                            <td class="user donor level">
+                                <div class="ui selection dropdown">
+                                    <input name="donor level" type="hidden">
+                                    <i class="dropdown icon"></i>
+                                    <div class="default text">{{ u.donor_level.name }}</div>
+                                    <div id="select-donor-level" class="menu">
+                                        {% for dl in donor_levels %}
+                                            <div class="item" data-value="Advocate">{{ dl.name }}</div>
+                                        {% endfor %}
+                                    </div>
                                 </div>
-                            </div>
-                        </td>
-                     </tr>
+                            </td>
+                        </tr>
                     {% endfor %}
                 </tbody>
             </table>
