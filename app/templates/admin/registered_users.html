@@ -12,27 +12,26 @@
                     View and manage currently registered users.
                 </div>
             </h2>
-        </div>
-        <div class="ui menu">
-            <div id="select-role" class="ui dropdown item">
-                <div class="text">
-                    All account types
+            <div class="ui menu">
+                <div id="select-role" class="ui dropdown item">
+                    <div class="text">
+                        All account types
+                    </div>
+                    <i class="dropdown icon"></i>
+                    <div class="menu">
+                        <div class="item" data-value="">All account types</div>
+                        {% for r in roles %}
+                        <div class="item" data-value="{{ r.name }}">{{ r.name }}s</div>
+                        {% endfor %}
+                    </div>
                 </div>
-                <i class="dropdown icon"></i>
-                <div class="menu">
-                    <div class="item" data-value="">All account types</div>
-                    {% for r in roles %}
-                    <div class="item" data-value="{{ r.name }}">{{ r.name }}s</div>
-                    {% endfor %}
+                <div class="ui right search item">
+                    <div class="ui transparent icon input">
+                        <input id="search-users" type="text" placeholder="Search users…">
+                        <i class="search icon"></i>
+                    </div>
                 </div>
             </div>
-            <div class="ui right search item">
-                <div class="ui transparent icon input">
-                    <input id="search-users" type="text" placeholder="Search users…">
-                    <i class="search icon"></i>
-                </div>
-            </div>
-        </div>
 
         {# Use overflow-x: scroll so that mobile views don't freak out # when the table is too wide #}
         <div style="overflow-x: scroll;">
