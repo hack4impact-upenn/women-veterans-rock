@@ -7,12 +7,11 @@
                 <i class="caret left icon"></i> Back to dashboard
             </a>
             <h2 class="ui header">
-                    Registered Users
-                    <div class="sub header">
-                        View and manage currently registered users.
-                    </div>
+                Registered Users
+                <div class="sub header">
+                    View and manage currently registered users.
+                </div>
             </h2>
-
         <div class="ui menu">
             <div id="select-role" class="ui dropdown item">
                 <div class="text">
@@ -49,7 +48,6 @@
                 <tbody>
                     {% for u in users | sort(attribute='last_name') %}
                     <tr>
-
                         <td onclick="window.location.href = '{{ url_for('admin.user_info', user_id=u.id) }}';">{{ u.first_name }}</td>
                         <td onclick="window.location.href = '{{ url_for('admin.user_info', user_id=u.id) }}';">{{ u.last_name }}</td>
                         <td onclick="window.location.href = '{{ url_for('admin.user_info', user_id=u.id) }}';">{{ u.email }}</td>
@@ -97,6 +95,11 @@
 
              $('#select-donor-level').dropdown({
                 onChange: function (value, text, $selectedItem) {
+                    var donor_level_json_obj = {
+                        user: {{ u }},
+                        donor_level: {{ value }},
+                    };
+
 
                 }
             });
