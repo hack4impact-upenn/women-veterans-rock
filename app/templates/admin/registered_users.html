@@ -12,6 +12,7 @@
                     View and manage currently registered users.
                 </div>
             </h2>
+        </div>
         <div class="ui menu">
             <div id="select-role" class="ui dropdown item">
                 <div class="text">
@@ -64,12 +65,13 @@
                                 </div>
                             </div>
                         </td>
-                        {% endfor %}
+                     </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>
     </div>
-</div>
+
 
     <script type="text/javascript">
         $(document).ready(function () {
@@ -96,7 +98,7 @@
              $('#select-donor-level').dropdown({
                 onChange: function (value, text, $selectedItem) {
                     var donor_level_json_obj = {
-                        user: {{ u }},
+                        user_id: {{ u.id }},
                         donor_level: {{ value }},
                     };
 

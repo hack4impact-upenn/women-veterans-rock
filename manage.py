@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import os
 from app import create_app, db
-from app.models import User, Role, ZIPCode, Address
+from app.models import User, Role, ZIPCode, Address, DonorLevel
 from flask.ext.script import Manager, Shell
 from flask.ext.migrate import Migrate, MigrateCommand
 
@@ -87,6 +87,7 @@ def setup_prod():
 def setup_general():
     """Runs the set-up needed for both local development and production."""
     Role.insert_roles()
+    DonorLevel.insert_donor_levels()
 
 if __name__ == '__main__':
     manager.run()

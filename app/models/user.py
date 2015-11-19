@@ -64,6 +64,20 @@ class DonorLevel(db.Model):
     description = db.Column(db.Text)
     users = db.relationship('User', backref='donor_level', lazy='dynamic')
 
+    @staticmethod
+    def insert_donor_levels():
+        donor_levels = {
+            'Advocate',
+            'Supporter',
+            'Benefactor'
+        }
+        for dl in donor_levels:
+            donor_level = DonorLevel.query.filter_by(name=dl).first()
+            if donor_level is None:
+                donor_level = DonorLevel(name=dl)
+            db.session.add(donor_level)
+        db.session.commit()
+
     def __repr__(self):
         return '<DonorLevel \'%s\'>' % self.name
 
