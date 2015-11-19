@@ -1,16 +1,16 @@
 {% extends 'layouts/base.html' %}
 
 {% block content %}
-<div class="ui stackable grid container">
-    <div class="sixteen wide tablet twelve wide computer centered column">
-        <a class="ui basic compact button" href="{{ url_for('admin.index') }}">
-            <i class="caret left icon"></i> Back to dashboard
-        </a>
-        <h2 class="ui header">
-                Registered Users
-                <div class="sub header">
-                    View and manage currently registered users.
-                </div>
+    <div class="ui stackable grid container">
+        <div class="sixteen wide tablet twelve wide computer centered column">
+            <a class="ui basic compact button" href="{{ url_for('admin.index') }}">
+                <i class="caret left icon"></i> Back to dashboard
+            </a>
+            <h2 class="ui header">
+                    Registered Users
+                    <div class="sub header">
+                        View and manage currently registered users.
+                    </div>
             </h2>
 
         <div class="ui menu">
@@ -97,7 +97,7 @@
 
              $('#select-donor-level').dropdown({
                 onChange: function (value, text, $selectedItem) {
-                    
+
                 }
             });
         });
