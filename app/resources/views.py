@@ -53,13 +53,11 @@ def add():
 @resources.route('/resource/<int:resource_id>')
 @login_required
 def show(resource_id):
-    """
-    Show the resource with the given id, the id is an integer.
-    """
     resource = Resource.query.get_or_404(resource_id)
     address = Address.query.get(resource.address_id)
     user = User.query.get(resource.user_id)
     current_user_id = int(current_user.get_id())
+    # TODO: base template for reviews.
     return render_template('resources/view_resource.html', resource=resource,
                            address=address, user=user,
                            current_user_id=current_user_id)
@@ -89,7 +87,9 @@ def review(resource_id):
 @resources.route('/resource/<int:resource_id>/deleteareview/<int:review_id>')
 @login_required
 def delete(resource_id, review_id):
+    # TODO: test that random user can't delete another user's review.
     review = ResourceReview.query.get(review_id)
+    # TODO: double check user wants to delete.
     db.session.delete(review)
     db.session.commit()
     return redirect(url_for('resources.show', resource_id=resource_id))
@@ -99,6 +99,7 @@ def delete(resource_id, review_id):
                  methods=['GET', 'POST'])
 @login_required
 def edit(resource_id, review_id):
+    # TODO: test that random user can't edit another user's review.
     resource = Resource.query.get_or_404(resource_id)
     address = Address.query.get(resource.address_id)
     user = User.query.get(resource.user_id)
