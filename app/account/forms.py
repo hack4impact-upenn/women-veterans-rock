@@ -5,7 +5,6 @@ from wtforms.fields import (
     PasswordField,
     BooleanField,
     SubmitField,
-    SelectMultipleField,
     TextAreaField,
     DateField,
 )
@@ -141,9 +140,15 @@ class EditProfileForm(Form):
     birthday = DateField(
         label='Birthday',
         description="YYYY-MM-DD",
-        format="%Y-%m-%d", validators=[ Optional() ])
-    facebook_link = StringField('Facebook Profile', description="https://",
-        validators=[ URL(), Optional() ])
-    linkedin_link = StringField('LinkedIn Profile', description="https://",
-        validators=[ URL(), Optional() ])
+        format="%Y-%m-%d", validators=[Optional()])
+    facebook_link = StringField(
+        'Facebook Profile',
+        description="https://",
+        validators=[URL(), Optional()]
+    )
+    linkedin_link = StringField(
+        'LinkedIn Profile',
+        description="https://",
+        validators=[URL(), Optional()]
+    )
     submit = SubmitField('Update profile')
