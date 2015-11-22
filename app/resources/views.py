@@ -101,8 +101,8 @@ def delete(resource_id, review_id):
 def edit(resource_id, review_id):
     # TODO: test that random user can't edit another user's review.
     resource = Resource.query.get_or_404(resource_id)
-    address = Address.query.get(resource.address_id)
-    user = User.query.get(resource.user_id)
+    address = resource.address
+    user = address.user
     form = ReviewForm()
     review = ResourceReview.query.get(review_id)
     if form.validate_on_submit():
