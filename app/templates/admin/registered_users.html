@@ -32,7 +32,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+       <!-- </div> -->
 
         {# Use overflow-x: scroll so that mobile views don't freak out # when the table is too wide #}
         <div style="overflow-x: scroll;">
@@ -59,9 +59,7 @@
                                     <i class="dropdown icon"></i>
                                     <div class="default text">{{ u.donor_level.name }}</div>
                                     <div id="select-donor-level" class="menu">
-                                        {% for dl in donor_levels %}
-                                            <div class="item" data-value="Advocate">{{ dl.name }}</div>
-                                        {% endfor %}
+                                        <div class="item" data-value="Advocate">"Advocate"</div>
                                     </div>
                                 </div>
                             </td>
@@ -70,6 +68,7 @@
                 </tbody>
             </table>
         </div>
+    </div>
     </div>
 
 
@@ -95,16 +94,6 @@
                 }
             });
 
-             $('#select-donor-level').dropdown({
-                onChange: function (value, text, $selectedItem) {
-                    var donor_level_json_obj = {
-                        user_id: {{ u.id }},
-                        donor_level: {{ value }},
-                    };
-
-
-                }
-            });
         });
 
 
