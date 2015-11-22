@@ -65,4 +65,7 @@ def create_app(config_name):
     from admin import admin as admin_blueprint
     app.register_blueprint(admin_blueprint, url_prefix='/admin')
 
+    from resources import resources as resources_blueprint
+    app.register_blueprint(resources_blueprint, url_prefix='/resources')
+
     return app

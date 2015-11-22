@@ -8,7 +8,7 @@ from flask.ext.login import (
 from . import account
 from .. import db
 from ..email import send_email
-from ..models import User
+from ..models import User, ZIPCode
 from .forms import (
     LoginForm,
     RegistrationForm,
@@ -41,10 +41,12 @@ def register():
     """Register a new user, and send them a confirmation email."""
     form = RegistrationForm()
     if form.validate_on_submit():
+        zip_code = ZIPCode.create_zip_code(form.zip_code.data)
         user = User(first_name=form.first_name.data,
                     last_name=form.last_name.data,
                     email=form.email.data,
-                    password=form.password.data)
+                    password=form.password.data,
+                    zip_code_id=zip_code.id)
         db.session.add(user)
         db.session.commit()
         token = user.generate_confirmation_token()
@@ -289,3 +291,10 @@ def edit_profile():
         'account/edit_profile.html',
         user=current_user,
         form=form)
+
+
+@account.route('/donate')
+@login_required
+def donate():
+    """Display donate page with PayPal link."""
+    return render_template('account/donate.html')
