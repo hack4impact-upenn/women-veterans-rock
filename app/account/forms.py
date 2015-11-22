@@ -126,22 +126,6 @@ class EditProfileForm(Form):
         InputRequired(),
         Length(1, 64)
     ])
-    ''' This will not be hardcoded in the future,
-        should be populated on the backend
-        and changeable by admin '''
-    affiliation_options = [
-        ('1', 'Veteran'),
-        ('2', 'Active Duty'),
-        ('3', 'National Guard'),
-        ('4', 'Reservist'),
-        ('5', 'Spouse'),
-        ('6', 'Dependent'),
-        ('7', 'Family Member'),
-        ('7', 'Supporter'),
-        ('8', 'Other')]
-    affiliation = SelectMultipleField(
-        'Affiliation',
-        choices=affiliation_options)
     bio = TextAreaField('About Me')
     birthday = DateField(
         label='Birthday',
