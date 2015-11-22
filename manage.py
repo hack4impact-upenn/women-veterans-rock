@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 import os
 from app import create_app, db
-from app.models import User, Role, ZIPCode, Address, Resource, ResourceReview
+from app.models import User, Role, ZIPCode, Address, Resource, \
+    ResourceReview, Tag, AffiliationTag, ResourceCategoryTag
 from flask.ext.script import Manager, Shell
 from flask.ext.migrate import Migrate, MigrateCommand
 
@@ -20,7 +21,9 @@ migrate = Migrate(app, db)
 
 def make_shell_context():
     return dict(app=app, db=db, User=User, Role=Role, ZIPCode=ZIPCode,
-                Address=Address)
+                Address=Address, Tag=Tag,
+                ResourceCategoryTag=ResourceCategoryTag,
+                AffiliationTag=AffiliationTag)
 
 
 manager.add_command('shell', Shell(make_context=make_shell_context))
@@ -62,9 +65,14 @@ def add_fake_data(count):
     Address.generate_fake(count=count)
     Resource.generate_fake(count=count)
     ResourceReview.generate_fake(count=count)
+    AffiliationTag.generate_default()
+
     # Set a random zip for each user without one.
     User.set_random_zip_codes(User.query.filter_by(zip_code=None).all(),
                               ZIPCode.query.all())
+    # Set a random affiliation tag for each user.
+    User.set_random_affiliation_tags(User.query.all(),
+                                     AffiliationTag.query.all())
 
 
 @manager.command

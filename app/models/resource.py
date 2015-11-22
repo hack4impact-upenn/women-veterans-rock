@@ -10,9 +10,9 @@ class Resource(db.Model):
     description = db.Column(db.Text)
     website = db.Column(db.Text)
     address_id = db.Column(db.Integer, db.ForeignKey('addresses.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     reviews = db.relationship('ResourceReview', backref='resource',
                               lazy='dynamic')
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     def __init__(self, name, description, website, address):
         self.name = name

@@ -23,3 +23,18 @@ nav .mobile.only.row .ui.vertical.menu {
 table.selectable tr:hover {
   cursor: pointer !important;
 }
+
+@media -sass-debug-info{filename{}line{font-family:\0000336}}
+.map-grid #map {
+  display: block;
+  width: 70%;
+  height: 500px;
+  -moz-box-shadow: 0px 5px 20px #ccc;
+  -webkit-box-shadow: 0px 5px 20px #ccc;
+  box-shadow: 0px 5px 20px #ccc;
+}
+@media -sass-debug-info{filename{}line{font-family:\0000344}}
+.map-grid .ui.button {
+  text-align: center;
+  margin: 0 auto;
+}
