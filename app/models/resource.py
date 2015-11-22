@@ -33,7 +33,7 @@ class Resource(db.Model):
 
         for i in range(count):
             r = Resource(
-                name=fake.name(),
+                name=fake.word(),
                 description=fake.text(),
                 website=fake.url(),
                 address=choice(Address.query.all())
