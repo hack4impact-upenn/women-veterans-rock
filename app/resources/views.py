@@ -104,7 +104,7 @@ def edit(resource_id, review_id):
     address = resource.address
     user = address.user
     form = ReviewForm()
-    review = ResourceReview.query.get(review_id)
+    review = ResourceReview.query.get_or_404(review_id)
     if form.validate_on_submit():
         db.session.delete(review)
         db.session.commit()
