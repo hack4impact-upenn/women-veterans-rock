@@ -1,9 +1,11 @@
 from flask import render_template, redirect, url_for
 from flask.ext.login import login_required, current_user
+from flask import Response
 from . import resources
 from .. import db
-from ..models import Resource, ZIPCode, Address, User
+from ..models import Resource, ZIPCode, Address, User, ResourceReview
 from .forms import ResourceForm
+import json
 
 
 @resources.route('/')
@@ -60,3 +62,17 @@ def show_resource(resource_id):
     user = User.query.get(resource.user_id)
     return render_template('resources/view_resource.html', resource=resource,
                            address=address, user=user)
+
+
+@resources.route('/resource/<int:resource_id>/<query>')
+@login_required
+def review_search(query, resource_id):
+    looking_for = '%'+query+'%'
+    reviews = ResourceReview.query.filter(
+        (ResourceReview.content.ilike(looking_for)))\
+        .orderby(ResourceReview.content).all()
+    data = dict()
+    data['results'] = [{'title': r.content()} for r in reviews]
+    json_data = json.dumps(data)
+    return Response(response=json_data, status=200,
+                    mimetype='application/json')
