@@ -72,3 +72,23 @@ class Address(db.Model):
 
     def __repr__(self):
         return '<Address \'%s\'>' % self.name
+
+    @staticmethod
+    def generate_fake(count=10):
+        """Generate count fake Addresses for testing."""
+        from faker import Faker
+        from random import choice
+
+        fake = Faker()
+
+        zip_codes = ZIPCode.query.all()
+        for i in range(count):
+            a = Address(
+                name=fake.name(),
+                street_address=fake.street_address(),
+                city=fake.city(),
+                state=fake.state(),
+                zip_code=choice(zip_codes)
+            )
+            db.session.add(a)
+            db.session.commit()

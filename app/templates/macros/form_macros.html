@@ -106,8 +106,15 @@
         {{ field(class='ui button') }}
     {% elif field.type == 'FormField' %}
         {{ render_form(field) }}
+    {% elif field.type == 'DateField' %}
+        {{ field.label }}
+        {{ field(placeholder=field.description) }}
     {% else %}
         {{ field.label }}
-        {{ field(placeholder=field.label.text) }}
+        {% if field.description != "" %}
+            {{ field(placeholder=field.description) }}
+        {% else %}
+            {{ field(placeholder=field.label.text) }}
+        {% endif %}
     {% endif %}
 {% endmacro %}
