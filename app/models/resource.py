@@ -21,7 +21,7 @@ class ResourceReview(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     timestamp = db.Column(db.DateTime)
     content = db.Column(db.Text)
-    rating = db.Column(db.Integer)  # 0 to 5
+    rating = db.Column(db.Integer)  # 1 to 5
     count_likes = db.Column(db.Integer, default=0)
     count_dislikes = db.Column(db.Integer, default=0)
     resource_id = db.Column(db.Integer, db.ForeignKey('resources.id'))
