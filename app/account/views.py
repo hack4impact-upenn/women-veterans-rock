@@ -1,4 +1,4 @@
-from flask import render_template, redirect, request, url_for, flash
+from flask import render_template, redirect, request, url_for, flash, abort
 from flask.ext.login import (
     login_required,
     login_user,
@@ -16,7 +16,8 @@ from .forms import (
     ChangePasswordForm,
     ChangeEmailForm,
     RequestResetPasswordForm,
-    ResetPasswordForm
+    ResetPasswordForm,
+    EditProfileForm,
 )
 
 
@@ -252,6 +253,44 @@ def unconfirmed():
     if current_user.is_anonymous() or current_user.confirmed:
         return redirect(url_for('main.index'))
     return render_template('account/unconfirmed.html')
+
+
+@account.route('/profile/<int:user_id>')
+@login_required
+def profile(user_id):
+    """Display a user's profile."""
+    user = User.query.get(user_id)
+    if user is None:
+        abort(404)
+    is_current = user.id == current_user.id
+    return render_template('account/profile.html', user=user,
+                           is_current=is_current)
+
+
+@account.route('/profile/edit', methods=['GET', 'POST'])
+@login_required
+def edit_profile():
+    """User can edit their own profile."""
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        current_user.first_name = form.first_name.data
+        current_user.last_name = form.last_name.data
+        current_user.birthday = form.birthday.data
+        db.session.add(current_user)
+        db.session.commit()
+        flash('Profile updated', 'success')
+        return render_template(
+            'account/profile.html',
+            user=current_user,
+            isCurrent=True)
+    else:
+        # populating form with current user profile information
+        form.first_name.data = current_user.first_name
+        form.last_name.data = current_user.last_name
+    return render_template(
+        'account/edit_profile.html',
+        user=current_user,
+        form=form)
 
 
 @account.route('/donate')
