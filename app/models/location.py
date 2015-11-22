@@ -75,7 +75,7 @@ class Address(db.Model):
 
     @staticmethod
     def generate_fake(count=10):
-        """Generate count fake Resources for testing."""
+        """Generate count fake Addresses for testing."""
         from faker import Faker
         from random import choice
 
