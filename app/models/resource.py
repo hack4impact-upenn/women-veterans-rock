@@ -31,12 +31,13 @@ class Resource(db.Model):
 
         fake = Faker()
 
+        addresses = Address.query.all()
         for i in range(count):
             r = Resource(
                 name=fake.name(),
                 description=fake.text(),
                 website=fake.url(),
-                address=choice(Address.query.all())
+                address=choice(addresses)
             )
             db.session.add(r)
             db.session.commit()

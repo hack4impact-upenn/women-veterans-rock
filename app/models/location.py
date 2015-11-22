@@ -77,16 +77,18 @@ class Address(db.Model):
     def generate_fake(count=10):
         """Generate count fake Resources for testing."""
         from faker import Faker
+        from random import choice
 
         fake = Faker()
-        from random import choice
+
+        zip_codes = ZIPCode.query.all()
         for i in range(count):
             a = Address(
                 name=fake.name(),
                 street_address=fake.street_address(),
                 city=fake.city(),
                 state=fake.state(),
-                zip_code=choice(ZIPCode.query.all())
+                zip_code=choice(zip_codes)
             )
             db.session.add(a)
             db.session.commit()
