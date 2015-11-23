@@ -33,7 +33,7 @@
 {% endmacro %}
 
 {% macro account_items_logged_in(current_user) %}
-    <a class="item">View Profile</a>
+    <a href="{{ url_for('account.profile_current') }}" class="item">View Profile</a>
     <a href="{{ url_for('account.manage') }}" class="item">Account Settings</a>
     <a class="item">Help</a>
     <a href="{{ url_for('account.logout') }}" class="item">Log out</a>
@@ -79,7 +79,7 @@
                     {% if current_user.is_authenticated() %}
                         {{ page_items(current_user) }}
                         <div class="ui dropdown item">
-                            <div class="text">{{current_user.first_name}}</div>
+                            <div class="text">{{ current_user.first_name }}</div>
                             <i class="dropdown icon"></i>
                             <div class="menu">
                                 {{ account_items_logged_in(current_user) }}
