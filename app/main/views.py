@@ -3,11 +3,18 @@ from flask import Response
 from . import main
 import json
 from ..models import User
+from flask.ext.login import login_required
 
 
 @main.route('/')
 def index():
     return render_template('main/index.html')
+
+
+@main.route('/map')
+@login_required
+def user_map():
+    return render_template('main/map.html', users=User.query.all())
 
 
 @main.route('/search')

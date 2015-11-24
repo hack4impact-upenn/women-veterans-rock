@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 import os
 from app import create_app, db
-from app.models import User, Role, ZIPCode, Address, Tag, \
-    ResourceCategoryTag, AffiliationTag
+from app.models import User, Role, ZIPCode, Address, Resource, \
+    ResourceReview, Tag, AffiliationTag, ResourceCategoryTag
 from flask.ext.script import Manager, Shell
 from flask.ext.migrate import Migrate, MigrateCommand
 
@@ -62,7 +62,11 @@ def add_fake_data(count):
     """
     User.generate_fake(count=count)
     ZIPCode.generate_fake(count=count)
+    Address.generate_fake(count=count)
+    Resource.generate_fake(count=count)
+    ResourceReview.generate_fake(count=count)
     AffiliationTag.generate_default()
+
     # Set a random zip for each user without one.
     User.set_random_zip_codes(User.query.filter_by(zip_code=None).all(),
                               ZIPCode.query.all())

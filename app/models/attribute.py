@@ -23,17 +23,19 @@ class Tag(db.Model):
                                 secondary=resource_tag_associations_table,
                                 backref='tags', lazy='dynamic')
     type = db.Column(db.String(50))
+    is_primary = db.Column(db.Boolean, default=False)
 
     __mapper_args__ = {
         'polymorphic_on': type
     }
 
-    def __init__(self, name):
+    def __init__(self, name, is_primary=False):
         """
         If possible, the helper methods get_by_name and create_tag
         should be used instead of explicitly using this constructor.
         """
         self.name = name
+        self.is_primary = is_primary
 
     @staticmethod
     def get_by_name(name):
@@ -99,7 +101,7 @@ class AffiliationTag(Tag):
     }
 
     @staticmethod
-    def create_affiliation_tag(name):
+    def create_affiliation_tag(name, is_primary=False):
         """
         Helper to create a AffiliationTag entry. Returns the newly
         created AffiliationTag or the existing entry if name is already
@@ -111,7 +113,7 @@ class AffiliationTag(Tag):
         if result is not None and result.type != 'AffiliationTag':
             raise ValueError("A tag with this name already exists.")
         if result is None:
-            result = AffiliationTag(name)
+            result = AffiliationTag(name, is_primary)
             db.session.add(result)
             db.session.commit()
         return result
@@ -140,4 +142,4 @@ class AffiliationTag(Tag):
             'Dependent', 'Family Member', 'Supporter', 'Other'
         ]
         for tag in default_affiliation_tags:
-            AffiliationTag.create_affiliation_tag(tag)
+            AffiliationTag.create_affiliation_tag(tag, is_primary=True)
