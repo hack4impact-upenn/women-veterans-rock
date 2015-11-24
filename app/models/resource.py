@@ -9,6 +9,7 @@ class Resource(db.Model):
     name = db.Column(db.String(64))
     description = db.Column(db.Text)
     website = db.Column(db.Text)
+    marked_unavailable_count = db.Column(db.Integer)
     address_id = db.Column(db.Integer, db.ForeignKey('addresses.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     reviews = db.relationship('ResourceReview', backref='resource',
