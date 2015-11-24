@@ -88,7 +88,7 @@ def create_review(resource_id):
 def update_review(review_id):
     review = ResourceReview.query.get_or_404(review_id)
     resource = review.resource
-    if int(current_user.id) != review.user.id:
+    if int(current_user.get_id()) != review.user.id:
         flash('You cannot edit a review you did not write.', 'error')
         return redirect(url_for('resources.read_resource',
                                 resource_id=resource.id))
@@ -113,7 +113,7 @@ def update_review(review_id):
 def delete_review(review_id):
     review = ResourceReview.query.get_or_404(review_id)
     resource = review.resource
-    if int(current_user.id) != review.user.id:
+    if int(current_user.get_id()) != review.user.id:
         flash('You cannot delete a review you did not write.', 'error')
         return redirect(url_for('resources.read_resource',
                                 resource_id=resource.id))
