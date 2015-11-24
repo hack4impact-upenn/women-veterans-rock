@@ -16,24 +16,24 @@
         </div>
 
         {% for review in resource.reviews.all() %}
-        <div class="twelve wide column">
-            <h1>Reviews</h1>
-            <h3>User ID: {{ review.user_id }}</h3>
-            <table class="ui compact definition table" id="{{ review.id }}">
-                <tr><td>Content</td>
-                    <td>{{ review.content }}</td></tr>
-                <tr><td>Rating</td>
-                    <td>{{ review.rating }}</td></tr>
-            </table>
-            {% if review.user_id is equalto current_user_id %}
-                <a href="{{ url_for('resources.update_review', review_id=review.id) }}">
-                    <button class="ui button"><i class="write icon"></i></button>
-                </a>
-                <a href="{{ url_for('resources.delete_review', review_id=review.id) }}">
-                    <button class="ui button"><i class="trash icon"></i></button>
-                </a>
-            {% endif %}
-        </div>
+            <div class="twelve wide column">
+                <h1>Reviews</h1>
+                <h3>User ID: {{ review.user_id }}</h3>
+                <table class="ui compact definition table" id="{{ review.id }}">
+                    <tr><td>Content</td>
+                        <td>{{ review.content }}</td></tr>
+                    <tr><td>Rating</td>
+                        <td>{{ review.rating }}</td></tr>
+                </table>
+                {% if review.user_id is equalto current_user_id %}
+                    <a href="{{ url_for('resources.update_review', review_id=review.id) }}">
+                        <button class="ui button"><i class="write icon"></i></button>
+                    </a>
+                    <a href="{{ url_for('resources.delete_review', review_id=review.id) }}">
+                        <button class="ui button"><i class="trash icon"></i></button>
+                    </a>
+                {% endif %}
+            </div>
         {% endfor %}
     </div>
 {% endblock %}
