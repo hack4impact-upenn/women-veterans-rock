@@ -86,9 +86,12 @@ def create_review(resource_id):
 @resources.route('/review/update/<int:review_id>', methods=['GET', 'POST'])
 @login_required
 def update_review(review_id):
-    # TODO: test that random user can't edit another user's review.
     review = ResourceReview.query.get_or_404(review_id)
     resource = review.resource
+    if int(current_user.id) != review.user.id:
+        flash('You cannot edit a review you did not write.', 'error')
+        return redirect(url_for('resources.read_resource',
+                                resource_id=resource.id))
     address = resource.address
     user = review.user
     form = ReviewForm()
@@ -110,8 +113,10 @@ def update_review(review_id):
 def delete_review(review_id):
     review = ResourceReview.query.get_or_404(review_id)
     resource = review.resource
-    if current_user.id != review.user.id:
+    if int(current_user.id) != review.user.id:
         flash('You cannot delete a review you did not write.', 'error')
+        return redirect(url_for('resources.read_resource',
+                                resource_id=resource.id))
     else:
         # TODO: double check user wants to delete.
         db.session.delete(review)
