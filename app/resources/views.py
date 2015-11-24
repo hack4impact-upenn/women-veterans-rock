@@ -16,7 +16,6 @@ def index():
 @resources.route('/create', methods=['GET', 'POST'])
 @login_required
 def create_resource():
-    # TODO: FIX BEHAVIOR OF AUTOCOMPLETE.
     form = ResourceForm()
     if form.validate_on_submit():
         zip_code = ZIPCode.create_zip_code(form.postal_code.data)
