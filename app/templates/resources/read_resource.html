@@ -10,7 +10,7 @@
                 <tr><td>Address</td><td>{{ address.street_address }}</td></tr>
                 <tr><td>User</td><td>{{ user.full_name() }}</td></tr>
             </table>
-            <a href="{{ url_for('resources.review', resource_id=resource.id ) }}">
+            <a href="{{ url_for('resources.create_review', resource_id=resource.id) }}">
                 <button class="ui button">Write a Review</button>
             </a>
         </div>
@@ -26,10 +26,10 @@
                     <td>{{ review.rating }}</td></tr>
             </table>
             {% if review.user_id is equalto current_user_id %}
-                <a href="{{ url_for('resources.edit', resource_id=resource.id, review_id=review.id) }}">
+                <a href="{{ url_for('resources.update_review', review_id=review.id) }}">
                     <button><i class="write icon"></i></button>
                 </a>
-                <a href="{{ url_for('resources.delete', resource_id=resource.id, review_id=review.id) }}">
+                <a href="{{ url_for('resources.delete_review', review_id=review.id) }}">
                     <button><i class="trash icon"></i></button>
                 </a>
             {% endif %}

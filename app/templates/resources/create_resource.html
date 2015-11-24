@@ -90,8 +90,10 @@
             // and fill the corresponding field on the form.
             for (var i = 0; i < place.address_components.length; i++) {
                 var addressType = place.address_components[i].types[0];
+                console.log(addressType);
                 if (componentForm[addressType]) {
                     var val = place.address_components[i][componentForm[addressType]];
+                    console.log(val);
                     $("#" + addressType).attr("value", val);
                 }
             }

@@ -1,8 +1,8 @@
-from flask import render_template, redirect, url_for
+from flask import render_template, redirect, url_for, flash
 from flask.ext.login import login_required, current_user
 from . import resources
 from .. import db
-from ..models import Resource, ZIPCode, Address, User, ResourceReview
+from ..models import Resource, ZIPCode, Address, ResourceReview
 from .forms import ResourceForm, ReviewForm
 from datetime import datetime
 
@@ -13,14 +13,14 @@ def index():
     return render_template('resources/index.html')
 
 
-@resources.route('/add', methods=['GET', 'POST'])
+@resources.route('/create', methods=['GET', 'POST'])
 @login_required
-def add():
+def create_resource():
+    # TODO: FIX BEHAVIOR OF AUTOCOMPLETE.
     form = ResourceForm()
     if form.validate_on_submit():
-        # Based on form's zip code, load or create ZIPCode and add to db.
         zip_code = ZIPCode.create_zip_code(form.postal_code.data)
-        # Based on form's address, zip's id, load or create Address, add to db.
+        # Google Places API separates the street number and the route.
         street_num_route = str(form.street_number.data) + ' ' + form.route.data
         # TODO: Create helper method in models/location.py.
         address = Address.query.filter_by(
@@ -46,76 +46,76 @@ def add():
                             user_id=int(current_user.get_id()))
         db.session.add(resource)
         db.session.commit()
-        return redirect(url_for('resources.show', resource_id=resource.id))
-    return render_template('resources/add_resource.html', form=form)
+        return redirect(url_for('resources.read_resource',
+                                resource_id=resource.id))
+    return render_template('resources/create_resource.html', form=form)
 
 
-@resources.route('/resource/<int:resource_id>')
+@resources.route('/read/<int:resource_id>')
 @login_required
-def show(resource_id):
+def read_resource(resource_id):
     resource = Resource.query.get_or_404(resource_id)
-    address = Address.query.get(resource.address_id)
-    user = User.query.get(resource.user_id)
-    current_user_id = int(current_user.get_id())
+    address = resource.address
+    user = resource.user
     # TODO: base template for reviews.
-    return render_template('resources/view_resource.html', resource=resource,
+    return render_template('resources/read_resource.html', resource=resource,
                            address=address, user=user,
-                           current_user_id=current_user_id)
+                           current_user_id=int(current_user.get_id()))
 
 
-@resources.route('/resource/<int:resource_id>/writeareview',
-                 methods=['GET', 'POST'])
+@resources.route('/review/create/<int:resource_id>', methods=['GET', 'POST'])
 @login_required
-def review(resource_id):
+def create_review(resource_id):
     resource = Resource.query.get_or_404(resource_id)
-    address = Address.query.get(resource.address_id)
-    user = User.query.get(resource.user_id)
+    address = resource.address
+    user = resource.user
     form = ReviewForm()
     if form.validate_on_submit():
         review = ResourceReview(timestamp=datetime.now(),
                                 content=form.content.data,
                                 rating=form.rating.data,
-                                resource_id=resource_id,
+                                resource_id=resource.id,
                                 user_id=int(current_user.get_id()))
         db.session.add(review)
         db.session.commit()
-        return redirect(url_for('resources.show', resource_id=resource.id))
-    return render_template('resources/write_review.html', resource=resource,
+        return redirect(url_for('resources.read_resource',
+                                resource_id=resource.id))
+    return render_template('resources/create_review.html', resource=resource,
                            address=address, user=user, form=form)
 
 
-@resources.route('/resource/<int:resource_id>/deleteareview/<int:review_id>')
+@resources.route('/review/update/<int:review_id>', methods=['GET', 'POST'])
 @login_required
-def delete(resource_id, review_id):
-    # TODO: test that random user can't delete another user's review.
-    review = ResourceReview.query.get(review_id)
-    # TODO: double check user wants to delete.
-    db.session.delete(review)
-    db.session.commit()
-    return redirect(url_for('resources.show', resource_id=resource_id))
-
-
-@resources.route('/resource/<int:resource_id>/editareview/<int:review_id>',
-                 methods=['GET', 'POST'])
-@login_required
-def edit(resource_id, review_id):
+def update_review(review_id):
     # TODO: test that random user can't edit another user's review.
-    resource = Resource.query.get_or_404(resource_id)
-    address = resource.address
-    user = address.user
-    form = ReviewForm()
     review = ResourceReview.query.get_or_404(review_id)
+    resource = review.resource
+    address = resource.address
+    user = review.user
+    form = ReviewForm()
     if form.validate_on_submit():
-        db.session.delete(review)
-        db.session.commit()
-        review = ResourceReview(timestamp=datetime.now(),
-                                content=form.content.data,
-                                rating=form.rating.data,
-                                resource_id=resource_id,
-                                user_id=int(current_user.get_id()))
+        review.timestamp = datetime.now()
+        review.content = form.content.data
+        review.rating = form.rating.data
         db.session.add(review)
         db.session.commit()
-        return redirect(url_for('resources.show', resource_id=resource.id))
-    return render_template('resources/edit_review.html', resource=resource,
+        return redirect(url_for('resources.read_resource',
+                                resource_id=resource.id))
+    return render_template('resources/update_review.html', resource=resource,
                            address=address, user=user, review=review,
                            form=form)
+
+
+@resources.route('/review/delete/<int:review_id>')
+@login_required
+def delete_review(review_id):
+    review = ResourceReview.query.get_or_404(review_id)
+    resource = review.resource
+    if current_user.id != review.user.id:
+        flash('You cannot delete a review you did not write.', 'error')
+    else:
+        # TODO: double check user wants to delete.
+        db.session.delete(review)
+        db.session.commit()
+    return redirect(url_for('resources.read_resource',
+                            resource_id=resource.id))
