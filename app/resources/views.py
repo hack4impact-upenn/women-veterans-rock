@@ -66,6 +66,7 @@ def read_resource(resource_id):
 @login_required
 def create_review(resource_id):
     resource = Resource.query.get_or_404(resource_id)
+    reviews = resource.reviews.all()
     address = resource.address
     user = resource.user
     form = ReviewForm()
@@ -80,7 +81,8 @@ def create_review(resource_id):
         return redirect(url_for('resources.read_resource',
                                 resource_id=resource.id))
     return render_template('resources/create_review.html', resource=resource,
-                           address=address, user=user, form=form)
+                           reviews=reviews, address=address, user=user,
+                           form=form)
 
 
 @resources.route('/review/update/<int:review_id>', methods=['GET', 'POST'])
