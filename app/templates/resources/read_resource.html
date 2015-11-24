@@ -27,10 +27,10 @@
             </table>
             {% if review.user_id is equalto current_user_id %}
                 <a href="{{ url_for('resources.update_review', review_id=review.id) }}">
-                    <button><i class="write icon"></i></button>
+                    <button class="ui button"><i class="write icon"></i></button>
                 </a>
                 <a href="{{ url_for('resources.delete_review', review_id=review.id) }}">
-                    <button><i class="trash icon"></i></button>
+                    <button class="ui button"><i class="trash icon"></i></button>
                 </a>
             {% endif %}
         </div>
