@@ -15,7 +15,7 @@
             </a>
         </div>
 
-        {% for review in resource.reviews.all() %}
+        {% for review in reviews %}
             <div class="twelve wide column">
                 <h1>Reviews</h1>
                 <h3>User ID: {{ review.user_id }}</h3>

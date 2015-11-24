@@ -45,8 +45,9 @@ def create_resource():
                             user_id=int(current_user.get_id()))
         db.session.add(resource)
         db.session.commit()
+        reviews = resource.reviews
         return redirect(url_for('resources.read_resource',
-                                resource_id=resource.id))
+                                resource_id=resource.id, reviews=reviews))
     return render_template('resources/create_resource.html', form=form)
 
 
@@ -54,11 +55,12 @@ def create_resource():
 @login_required
 def read_resource(resource_id):
     resource = Resource.query.get_or_404(resource_id)
+    reviews = resource.reviews.all()
     address = resource.address
     user = resource.user
     # TODO: base template for reviews.
     return render_template('resources/read_resource.html', resource=resource,
-                           address=address, user=user,
+                           reviews=reviews, address=address, user=user,
                            current_user_id=int(current_user.get_id()))
 
 
@@ -90,10 +92,11 @@ def create_review(resource_id):
 def update_review(review_id):
     review = ResourceReview.query.get_or_404(review_id)
     resource = review.resource
+    reviews = resource.reviews.all()
     if int(current_user.get_id()) != review.user.id:
         flash('You cannot edit a review you did not write.', 'error')
         return redirect(url_for('resources.read_resource',
-                                resource_id=resource.id))
+                                resource_id=resource.id, reviews=reviews))
     address = resource.address
     user = review.user
     form = ReviewForm()
@@ -104,10 +107,10 @@ def update_review(review_id):
         db.session.add(review)
         db.session.commit()
         return redirect(url_for('resources.read_resource',
-                                resource_id=resource.id))
+                                resource_id=resource.id, reviews=reviews))
     return render_template('resources/update_review.html', resource=resource,
                            address=address, user=user, review=review,
-                           form=form)
+                           reviews=reviews, form=form)
 
 
 @resources.route('/review/delete/<int:review_id>')
@@ -115,13 +118,14 @@ def update_review(review_id):
 def delete_review(review_id):
     review = ResourceReview.query.get_or_404(review_id)
     resource = review.resource
+    reviews = resource.reviews
     if int(current_user.get_id()) != review.user.id:
         flash('You cannot delete a review you did not write.', 'error')
         return redirect(url_for('resources.read_resource',
-                                resource_id=resource.id))
+                                resource_id=resource.id, reviews=reviews))
     else:
         # TODO: double check user wants to delete.
         db.session.delete(review)
         db.session.commit()
     return redirect(url_for('resources.read_resource',
-                            resource_id=resource.id))
+                            resource_id=resource.id, reviews=reviews))

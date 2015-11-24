@@ -11,7 +11,7 @@
                 <tr><td>Address</td><td>{{ address.street_address }}</td></tr>
                 <tr><td>User</td><td>{{ user.full_name() }}</td></tr>
                 <tr><td>Reviews</td><td>
-                    {% for review in resource.reviews.all() %}
+                    {% for review in reviews %}
                         {{ review.content }}
                     {% endfor %}
                 </td></tr>
