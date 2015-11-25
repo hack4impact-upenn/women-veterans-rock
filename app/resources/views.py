@@ -42,7 +42,7 @@ def create_resource():
                             description=form.description.data,
                             website=form.website.data,
                             address_id=address.id,
-                            user_id=int(current_user.get_id()))
+                            user_id=current_user.id)
         db.session.add(resource)
         db.session.commit()
         reviews = resource.reviews
@@ -61,7 +61,7 @@ def read_resource(resource_id):
     # TODO: base template for reviews.
     return render_template('resources/read_resource.html', resource=resource,
                            reviews=reviews, address=address, user=user,
-                           current_user_id=int(current_user.get_id()))
+                           current_user_id=current_user.id)
 
 
 @resources.route('/review/create/<int:resource_id>', methods=['GET', 'POST'])
@@ -77,7 +77,7 @@ def create_review(resource_id):
                                 content=form.content.data,
                                 rating=form.rating.data,
                                 resource_id=resource.id,
-                                user_id=int(current_user.get_id()))
+                                user_id=current_user.id)
         db.session.add(review)
         db.session.commit()
         return redirect(url_for('resources.read_resource',
@@ -93,7 +93,7 @@ def update_review(review_id):
     review = ResourceReview.query.get_or_404(review_id)
     resource = review.resource
     reviews = resource.reviews.all()
-    if int(current_user.get_id()) != review.user.id:
+    if current_user.id != review.user.id:
         flash('You cannot edit a review you did not write.', 'error')
         return redirect(url_for('resources.read_resource',
                                 resource_id=resource.id, reviews=reviews))
@@ -119,7 +119,7 @@ def delete_review(review_id):
     review = ResourceReview.query.get_or_404(review_id)
     resource = review.resource
     reviews = resource.reviews
-    if int(current_user.get_id()) != review.user.id:
+    if current_user.id != review.user.id:
         flash('You cannot delete a review you did not write.', 'error')
         return redirect(url_for('resources.read_resource',
                                 resource_id=resource.id, reviews=reviews))
