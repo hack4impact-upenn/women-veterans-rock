@@ -255,6 +255,13 @@ def unconfirmed():
     return render_template('account/unconfirmed.html')
 
 
+@account.route('/profile')
+@login_required
+def profile_current():
+    """Display the current logged in User's profile."""
+    return redirect(url_for('account.profile', user_id=current_user.id))
+
+
 @account.route('/profile/<int:user_id>')
 @login_required
 def profile(user_id):
