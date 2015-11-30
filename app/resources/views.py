@@ -18,36 +18,27 @@ def index():
 def create_resource():
     form = ResourceForm()
     if form.validate_on_submit():
+        # Converting Google Places API names to our model names.
+        name = form.name.data
+        street_address = str(form.street_number.data) + ' ' + form.route.data
+        city = form.locality.data
+        state = form.administrative_area_level_1.data
         zip_code = ZIPCode.create_zip_code(form.postal_code.data)
-        # Google Places API separates the street number and the route.
-        street_num_route = str(form.street_number.data) + ' ' + form.route.data
-        # TODO: Create helper method in models/location.py.
-        address = Address.query.filter_by(
-            name=form.name.data,
-            street_address=street_num_route,
-            city=form.locality.data,
-            state=form.administrative_area_level_1.data,
-            zip_code_id=zip_code.id).first()
-        if address is None:
-            address = Address(name=form.name.data,
-                              street_address=street_num_route,
-                              city=form.locality.data,
-                              state=form.administrative_area_level_1.data,
-                              zip_code_id=zip_code.id)
-            db.session.add(address)
-            db.session.commit()
-        # Based on form and address id, create a new resource.
-        # TODO: Create helper method in models/resource.py.
-        resource = Resource(name=form.name.data,
-                            description=form.description.data,
-                            website=form.website.data,
-                            address_id=address.id,
-                            user_id=current_user.id)
-        db.session.add(resource)
-        db.session.commit()
-        reviews = resource.reviews
+        address = Address.create_address(name,
+                                         street_address,
+                                         city,
+                                         state,
+                                         zip_code.id)
+        description = form.description.data
+        website = form.website.data
+        user = current_user
+        resource = Resource.create_resource(name,
+                                            description,
+                                            website,
+                                            address,
+                                            user)
         return redirect(url_for('resources.read_resource',
-                                resource_id=resource.id, reviews=reviews))
+                                resource_id=resource.id))
     return render_template('resources/create_resource.html', form=form)
 
 
@@ -55,12 +46,11 @@ def create_resource():
 @login_required
 def read_resource(resource_id):
     resource = Resource.query.get_or_404(resource_id)
-    reviews = resource.reviews.all()
-    address = resource.address
-    user = resource.user
-    # TODO: base template for reviews.
-    return render_template('resources/read_resource.html', resource=resource,
-                           reviews=reviews, address=address, user=user,
+    return render_template('resources/read_resource.html',
+                           resource=resource,
+                           street_address=resource.address.street_address,
+                           full_name=resource.user.full_name(),
+                           reviews=resource.reviews,
                            current_user_id=current_user.id)
 
 
@@ -68,9 +58,6 @@ def read_resource(resource_id):
 @login_required
 def create_review(resource_id):
     resource = Resource.query.get_or_404(resource_id)
-    reviews = resource.reviews.all()
-    address = resource.address
-    user = resource.user
     form = ReviewForm()
     if form.validate_on_submit():
         review = ResourceReview(timestamp=datetime.now(),
@@ -82,8 +69,12 @@ def create_review(resource_id):
         db.session.commit()
         return redirect(url_for('resources.read_resource',
                                 resource_id=resource.id))
-    return render_template('resources/create_review.html', resource=resource,
-                           reviews=reviews, address=address, user=user,
+    return render_template('resources/create_review.html',
+                           resource=resource,
+                           street_address=resource.address.street_address,
+                           full_name=resource.user.full_name(),
+                           reviews=resource.reviews,
+                           current_user_id=current_user.id,
                            form=form)
 
 
@@ -92,13 +83,10 @@ def create_review(resource_id):
 def update_review(review_id):
     review = ResourceReview.query.get_or_404(review_id)
     resource = review.resource
-    reviews = resource.reviews.all()
     if current_user.id != review.user.id:
         flash('You cannot edit a review you did not write.', 'error')
         return redirect(url_for('resources.read_resource',
-                                resource_id=resource.id, reviews=reviews))
-    address = resource.address
-    user = review.user
+                                resource_id=resource.id))
     form = ReviewForm()
     if form.validate_on_submit():
         review.timestamp = datetime.now()
@@ -107,10 +95,14 @@ def update_review(review_id):
         db.session.add(review)
         db.session.commit()
         return redirect(url_for('resources.read_resource',
-                                resource_id=resource.id, reviews=reviews))
-    return render_template('resources/update_review.html', resource=resource,
-                           address=address, user=user, review=review,
-                           reviews=reviews, form=form)
+                                resource_id=resource.id))
+    return render_template('resources/update_review.html',
+                           resource=resource,
+                           street_address=resource.address.street_address,
+                           full_name=resource.user.full_name(),
+                           reviews=resource.reviews,
+                           current_user_id=current_user.id,
+                           form=form)
 
 
 @resources.route('/review/delete/<int:review_id>')
@@ -118,14 +110,10 @@ def update_review(review_id):
 def delete_review(review_id):
     review = ResourceReview.query.get_or_404(review_id)
     resource = review.resource
-    reviews = resource.reviews
     if current_user.id != review.user.id:
         flash('You cannot delete a review you did not write.', 'error')
-        return redirect(url_for('resources.read_resource',
-                                resource_id=resource.id, reviews=reviews))
     else:
-        # TODO: double check user wants to delete.
         db.session.delete(review)
         db.session.commit()
     return redirect(url_for('resources.read_resource',
-                            resource_id=resource.id, reviews=reviews))
+                            resource_id=resource.id))
