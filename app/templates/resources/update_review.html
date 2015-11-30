@@ -1,5 +1,6 @@
-{% extends 'layouts/create_review.html' %}
+{% extends 'resources/create_review.html' %}
 
+{% block script %}
 <script>
     $( document ).ready(function() {
         $("#rating").attr("value", "{{ review.rating }}");

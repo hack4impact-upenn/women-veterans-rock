@@ -1,4 +1,4 @@
-{% extends 'resources/base.html' %}
+{% extends 'resources/read_resource.html' %}
 {% import 'macros/form_macros.html' as f %}
 
 {% block form %}
@@ -25,4 +25,7 @@
 
         {{ f.end_form(form) }}
     </div>
+{% endblock %}
+
+{% block script %}
 {% endblock %}
