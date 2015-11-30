@@ -74,6 +74,38 @@ class Address(db.Model):
         return '<Address \'%s\'>' % self.name
 
     @staticmethod
+    def get_by_address(name, street_address, city, state, zip_code_id):
+        """Helper for searching by all address fields."""
+        result = Address.query.filter_by(
+            name=name,
+            street_address=street_address,
+            city=city,
+            state=state,
+            zip_code_id=zip_code_id).first()
+        return result
+
+    @staticmethod
+    def create_address(name, street_address, city, state, zip_code_id):
+        """
+        Helper to create an Address entry. Returns the newly created Address
+        or the existing entry if address is already in the table.
+        """
+        result = Address.get_by_address(name,
+                                        street_address,
+                                        city,
+                                        state,
+                                        zip_code_id)
+        if result is None:
+            result = Address(name=name,
+                             street_address=street_address,
+                             city=city,
+                             state=state,
+                             zip_code_id=zip_code_id)
+            db.session.add(result)
+            db.session.commit()
+        return result
+
+    @staticmethod
     def generate_fake(count=10):
         """Generate count fake Addresses for testing."""
         from faker import Faker
