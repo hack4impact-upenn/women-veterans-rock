@@ -1,5 +1,5 @@
 from .. import db
-from . import Address
+from . import Address, User
 from random import randint
 
 
@@ -27,7 +27,7 @@ class Resource(db.Model):
         result = Resource.query.filter_by(name=name,
                                           description=description,
                                           website=website,
-                                          address=address_id,
+                                          address_id=address_id,
                                           user_id=user_id).first()
         return result
 
@@ -46,8 +46,8 @@ class Resource(db.Model):
             result = Resource(name=name,
                               description=description,
                               website=website,
-                              address=address_id,
-                              user=user_id)
+                              address_id=address_id,
+                              user_id=user_id)
             db.session.add(result)
             db.session.commit()
         return result
@@ -61,12 +61,15 @@ class Resource(db.Model):
         fake = Faker()
 
         addresses = Address.query.all()
+        users = User.query.all()
         for i in range(count):
             r = Resource(
                 name=fake.name(),
                 description=fake.text(),
                 website=fake.url(),
-                address=choice(addresses)
+                # TODO: model is address_id and user_id -- why's "_id" left out
+                address=choice(addresses),
+                user=choice(users)
             )
             db.session.add(r)
             db.session.commit()
@@ -86,9 +89,12 @@ class ResourceReview(db.Model):
     resource_id = db.Column(db.Integer, db.ForeignKey('resources.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
-    def __repr__(self):
-        return '<ResourceReview <Resource \'%s\'> \'%s\'>' % self.resource_id,\
-               self.content
+    def __init__(self, timestamp, content, rating, resource_id, user_id):
+        self.timestamp = timestamp
+        self.content = content
+        self.rating = rating
+        self.resource_id = resource_id
+        self.user_id = user_id
 
     @staticmethod
     def generate_fake(count=10):
@@ -97,6 +103,7 @@ class ResourceReview(db.Model):
 
         fake = Faker()
 
+        # TODO: how can resource_id and user_id be left out of fake data?
         for i in range(count):
             r = ResourceReview(
                 timestamp=fake.date_time(),
@@ -107,3 +114,7 @@ class ResourceReview(db.Model):
             )
             db.session.add(r)
             db.session.commit()
+
+    def __repr__(self):
+        return '<ResourceReview <Resource \'%s\'> \'%s\'>' % self.resource_id,\
+               self.content
