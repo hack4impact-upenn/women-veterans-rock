@@ -14,40 +14,40 @@ class Resource(db.Model):
     reviews = db.relationship('ResourceReview', backref='resource',
                               lazy='dynamic')
 
-    def __init__(self, name, description, website, address, user):
+    def __init__(self, name, description, website, address_id, user_id):
         self.name = name
         self.description = description
         self.website = website
-        self.address = address
-        self.user = user
-
-    def __repr__(self):
-        return '<Resource \'%s\'>' % self.name
+        self.address_id = address_id
+        self.user_id = user_id
 
     @staticmethod
-    def get_by_resource(name, description, website, address, user):
+    def get_by_resource(name, description, website, address_id, user_id):
         """Helper for searching by all resource fields."""
         result = Resource.query.filter_by(name=name,
                                           description=description,
                                           website=website,
-                                          address=address,
-                                          user_id=user.id).first()
+                                          address=address_id,
+                                          user_id=user_id).first()
         return result
 
     @staticmethod
-    def create_resource(name, description, website, address, user):
+    def create_resource(name, description, website, address_id, user_id):
         """
-        Helper to create an Resource entry. Returns the newly created Address
-        or the existing entry if address is already in the table.
+        Helper to create an Resource entry. Returns the newly created Resource
+        or the existing entry if all resource fields are already in the table.
         """
-        result = Resource.get_by_resource(name, description, website, address,
-                                          user)
+        result = Resource.get_by_resource(name,
+                                          description,
+                                          website,
+                                          address_id,
+                                          user_id)
         if result is None:
             result = Resource(name=name,
                               description=description,
                               website=website,
-                              address=address,
-                              user=user)
+                              address=address_id,
+                              user=user_id)
             db.session.add(result)
             db.session.commit()
         return result
@@ -70,6 +70,9 @@ class Resource(db.Model):
             )
             db.session.add(r)
             db.session.commit()
+
+    def __repr__(self):
+        return '<Resource \'%s\'>' % self.name
 
 
 class ResourceReview(db.Model):
