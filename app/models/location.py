@@ -87,7 +87,7 @@ class Address(db.Model):
     def create_address(name, street_address, city, state, zip_code_id):
         """
         Helper to create an Address entry. Returns the newly created Address
-        or the existing entry if address is already in the table.
+        or the existing entry if all address fields are already in the table.
         """
         result = Address.get_by_address(name,
                                         street_address,
