@@ -40,3 +40,11 @@ class ResourceForm(Form):
         Length(5, 5)
     ])
     submit = SubmitField('Add Resource')
+
+
+class ClosedResourceForm(Form):
+    reason = StringField('Why is this resource no longer available?')
+    expertise = StringField(
+        'How do you know this resource is no longer available? What is your'
+        'connection to this resource?')
+    submit = SubmitField('Submit')
