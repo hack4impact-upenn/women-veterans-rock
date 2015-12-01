@@ -70,9 +70,6 @@ class Address(db.Model):
     zip_code_id = db.Column(db.Integer, db.ForeignKey('zip_codes.id'))
     resources = db.relationship('Resource', backref='address', lazy='dynamic')
 
-    def __repr__(self):
-        return '<Address \'%s\'>' % self.name
-
     @staticmethod
     def get_by_address(name, street_address, city, state, zip_code_id):
         """Helper for searching by all address fields."""
@@ -123,3 +120,6 @@ class Address(db.Model):
             )
             db.session.add(a)
             db.session.commit()
+
+    def __repr__(self):
+        return '<Address \'%s\'>' % self.name
