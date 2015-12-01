@@ -76,12 +76,11 @@ class Address(db.Model):
     @staticmethod
     def get_by_address(name, street_address, city, state, zip_code_id):
         """Helper for searching by all address fields."""
-        result = Address.query.filter_by(
-            name=name,
-            street_address=street_address,
-            city=city,
-            state=state,
-            zip_code_id=zip_code_id).first()
+        result = Address.query.filter_by(name=name,
+                                         street_address=street_address,
+                                         city=city,
+                                         state=state,
+                                         zip_code_id=zip_code_id).first()
         return result
 
     @staticmethod
