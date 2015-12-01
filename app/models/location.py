@@ -70,6 +70,17 @@ class Address(db.Model):
     zip_code_id = db.Column(db.Integer, db.ForeignKey('zip_codes.id'))
     resources = db.relationship('Resource', backref='address', lazy='dynamic')
 
+    def __init__(self, name, street_address, city, state, zip_code_id):
+        """
+        If possible, the helper methods get_by_address and create_address
+        should be used instead of explicitly using this constructor.
+        """
+        self.name = name
+        self.street_address = street_address
+        self.city = city
+        self.state = state
+        self.zip_code_id = zip_code_id
+
     @staticmethod
     def get_by_address(name, street_address, city, state, zip_code_id):
         """Helper for searching by all address fields."""
