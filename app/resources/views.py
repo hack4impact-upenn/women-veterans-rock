@@ -45,7 +45,6 @@ def create_resource():
 @login_required
 def read_resource(resource_id):
     resource = Resource.query.get_or_404(resource_id)
-    # TODO: check on reviews, which is dynamic?
     return render_template('resources/read_resource.html',
                            resource=resource,
                            reviews=resource.reviews,
