@@ -27,16 +27,16 @@ def create_resource():
         address = Address.create_address(name,
                                          street_address,
                                          city,
-                                         state,
-                                         zip_code.id)
+                                         state)
+        address.zip_code = zip_code
         description = form.description.data
         website = form.website.data
         user = current_user
         resource = Resource.create_resource(name,
                                             description,
-                                            website,
-                                            address,
-                                            user)
+                                            website)
+        resource.address = address
+        resource.user = user
         return redirect(url_for('resources.read_resource',
                                 resource_id=resource.id))
     return render_template('resources/create_resource.html', form=form)
@@ -46,10 +46,9 @@ def create_resource():
 @login_required
 def read_resource(resource_id):
     resource = Resource.query.get_or_404(resource_id)
+    # TODO: check on reviews, which is dynamic?
     return render_template('resources/read_resource.html',
                            resource=resource,
-                           street_address=resource.address.street_address,
-                           full_name=resource.user.full_name(),
                            reviews=resource.reviews,
                            current_user_id=current_user.id)
 
@@ -62,17 +61,15 @@ def create_review(resource_id):
     if form.validate_on_submit():
         review = ResourceReview(timestamp=datetime.now(),
                                 content=form.content.data,
-                                rating=form.rating.data,
-                                resource_id=resource.id,
-                                user_id=current_user.id)
+                                rating=form.rating.data)
+        review.resource = resource
+        review.user = current_user
         db.session.add(review)
         db.session.commit()
         return redirect(url_for('resources.read_resource',
                                 resource_id=resource.id))
     return render_template('resources/create_review.html',
                            resource=resource,
-                           street_address=resource.address.street_address,
-                           full_name=resource.user.full_name(),
                            reviews=resource.reviews,
                            current_user_id=current_user.id,
                            form=form)
@@ -83,6 +80,7 @@ def create_review(resource_id):
 def update_review(review_id):
     review = ResourceReview.query.get_or_404(review_id)
     resource = review.resource
+    # TODO: test this prevents
     if current_user.id != review.user.id:
         flash('You cannot edit a review you did not write.', 'error')
         return redirect(url_for('resources.read_resource',
@@ -98,8 +96,6 @@ def update_review(review_id):
                                 resource_id=resource.id))
     return render_template('resources/update_review.html',
                            resource=resource,
-                           street_address=resource.address.street_address,
-                           full_name=resource.user.full_name(),
                            reviews=resource.reviews,
                            current_user_id=current_user.id,
                            form=form)
