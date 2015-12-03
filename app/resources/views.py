@@ -61,7 +61,7 @@ def create_review(resource_id):
                                 content=form.content.data,
                                 rating=form.rating.data)
         review.resource = resource
-        review.user = current_user
+        review.user = current_user._get_current_object()
         db.session.add(review)
         db.session.commit()
         return redirect(url_for('resources.read_resource',
