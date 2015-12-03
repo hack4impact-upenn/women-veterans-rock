@@ -2,7 +2,7 @@ from flask import render_template, redirect, url_for, flash
 from flask.ext.login import login_required, current_user
 from . import resources
 from .. import db
-from ..models import Resource, ZIPCode, Address, ResourceReview
+from ..models import Resource, ZIPCode, Address, ResourceReview, User
 from .forms import ResourceForm, ReviewForm
 from datetime import datetime
 
@@ -31,12 +31,11 @@ def create_resource():
         address.zip_code = zip_code
         description = form.description.data
         website = form.website.data
-        user = current_user
         resource = Resource.create_resource(name,
                                             description,
                                             website)
         resource.address = address
-        resource.user = user
+        resource.user = User.query.get(current_user.id)
         return redirect(url_for('resources.read_resource',
                                 resource_id=resource.id))
     return render_template('resources/create_resource.html', form=form)
@@ -94,7 +93,10 @@ def update_review(review_id):
         db.session.commit()
         return redirect(url_for('resources.read_resource',
                                 resource_id=resource.id))
-    return render_template('resources/update_review.html',
+    else:
+        form.content.data = review.content
+        form.rating.data = review.rating
+    return render_template('resources/edit_review.html',
                            resource=resource,
                            reviews=resource.reviews,
                            current_user_id=current_user.id,
