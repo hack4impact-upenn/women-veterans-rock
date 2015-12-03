@@ -20,9 +20,9 @@
         {% block form %}
         {% endblock %}
 
-        <h1>Reviews</h1>
-        {% for review in reviews %}
             <div class="twelve wide column">
+                <h1>Reviews</h1>
+                {% for review in reviews %}
                 <h3>User: {{ review.user.full_name() }}</h3>
                 <table class="ui compact definition table" id="{{ review.id }}">
                     <tr><td>Content</td>
@@ -38,7 +38,7 @@
                         <button class="ui button"><i class="trash icon"></i></button>
                     </a>
                 {% endif %}
+                {% endfor %}
             </div>
-        {% endfor %}
     </div>
 {% endblock %}
