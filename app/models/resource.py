@@ -100,5 +100,5 @@ class ResourceReview(db.Model):
             db.session.commit()
 
     def __repr__(self):
-        return '<ResourceReview <Resource \'%s\'> \'%s\'>' % self.resource_id,\
-               self.content
+        return '<ResourceReview <Resource \'%s\'> \'%s\'>' %\
+               (self.resource_id, self.content)
