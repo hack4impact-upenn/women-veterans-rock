@@ -78,7 +78,6 @@ def create_review(resource_id):
 def update_review(review_id):
     review = ResourceReview.query.get_or_404(review_id)
     resource = review.resource
-    # TODO: test this prevents
     if current_user.id != review.user.id:
         flash('You cannot edit a review you did not write.', 'error')
         return redirect(url_for('resources.read_resource',

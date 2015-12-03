@@ -6,11 +6,26 @@
         <div class="ten wide column">
             <h1>Resource</h1>
             <table class="ui compact definition table">
-                <tr><td>Name</td><td>{{ resource.name }}</td></tr>
-                <tr><td>Description</td><td>{{ resource.description }}</td></tr>
-                <tr><td>Website</td><td><a target="_blank" href="{{ resource.website }}">{{ resource.website }}</a></td></tr>
-                <tr><td>Address</td><td>{{ resource.address.street_address }}</td></tr>
-                <tr><td>User</td><td>{{ resource.user.full_name() }}</td></tr>
+                <tr>
+                    <td>Name</td>
+                    <td>{{ resource.name }}</td>
+                </tr>
+                <tr>
+                    <td>Description</td>
+                    <td>{{ resource.description }}</td>
+                </tr>
+                <tr>
+                    <td>Website</td>
+                    <td><a target="_blank" href="{{ resource.website }}">{{ resource.website }}</a></td>
+                </tr>
+                <tr>
+                    <td>Address</td>
+                    <td>{{ resource.address.street_address }}</td>
+                </tr>
+                <tr>
+                    <td>User</td>
+                    <td>{{ resource.user.full_name() }}</td>
+                </tr>
             </table>
             <a href="{{ url_for('resources.create_review', resource_id=resource.id) }}">
                 <button class="ui button">Write a Review</button>
@@ -20,15 +35,19 @@
         {% block form %}
         {% endblock %}
 
-            <div class="ten wide column">
-                <h1>Reviews</h1>
-                {% for review in reviews %}
+        <div class="ten wide column">
+            <h1>Reviews</h1>
+            {% for review in reviews %}
                 <h3>User: {{ review.user.full_name() }}</h3>
                 <table class="ui compact definition table" id="{{ review.id }}">
-                    <tr><td>Content</td>
-                        <td>{{ review.content }}</td></tr>
-                    <tr><td>Rating</td>
-                        <td>{{ review.rating }}</td></tr>
+                    <tr>
+                        <td>Content</td>
+                        <td>{{ review.content }}</td>
+                    </tr>
+                    <tr>
+                        <td>Rating</td>
+                        <td>{{ review.rating }}</td>
+                    </tr>
                 </table>
                 {% if review.user_id is equalto current_user_id %}
                     <a href="{{ url_for('resources.update_review', review_id=review.id) }}">
@@ -38,7 +57,7 @@
                         <button class="ui button"><i class="trash icon"></i></button>
                     </a>
                 {% endif %}
-                {% endfor %}
-            </div>
+            {% endfor %}
+        </div>
     </div>
 {% endblock %}

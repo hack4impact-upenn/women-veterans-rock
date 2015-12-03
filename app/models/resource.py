@@ -87,7 +87,7 @@ class ResourceReview(db.Model):
 
         fake = Faker()
 
-        # TODO: make sure review has resource and user
+        # TODO: make sure fake reviews have users and resources
         for i in range(count):
             r = ResourceReview(
                 timestamp=fake.date_time(),
