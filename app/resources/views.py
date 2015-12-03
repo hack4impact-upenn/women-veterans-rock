@@ -95,7 +95,7 @@ def update_review(review_id):
     else:
         form.content.data = review.content
         form.rating.data = review.rating
-    return render_template('resources/edit_review.html',
+    return render_template('resources/create_review.html',
                            resource=resource,
                            reviews=resource.reviews,
                            current_user_id=current_user.id,
