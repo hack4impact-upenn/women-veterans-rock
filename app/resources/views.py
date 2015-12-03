@@ -2,7 +2,7 @@ from flask import render_template, redirect, url_for, flash
 from flask.ext.login import login_required, current_user
 from . import resources
 from .. import db
-from ..models import Resource, ZIPCode, Address, ResourceReview, User
+from ..models import Resource, ZIPCode, Address, ResourceReview
 from .forms import ResourceForm, ReviewForm
 from datetime import datetime
 
@@ -35,7 +35,7 @@ def create_resource():
                                             description,
                                             website)
         resource.address = address
-        resource.user = User.query.get(current_user.id)
+        resource.user = current_user._get_current_object()
         return redirect(url_for('resources.read_resource',
                                 resource_id=resource.id))
     return render_template('resources/create_resource.html', form=form)
