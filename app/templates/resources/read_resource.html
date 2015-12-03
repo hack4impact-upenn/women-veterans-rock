@@ -3,7 +3,7 @@
 
 {% block content %}
     <div class="ui stackable centered grid container">
-        <div class="twelve wide column">
+        <div class="ten wide column">
             <h1>Resource</h1>
             <table class="ui compact definition table">
                 <tr><td>Name</td><td>{{ resource.name }}</td></tr>
@@ -20,7 +20,7 @@
         {% block form %}
         {% endblock %}
 
-            <div class="twelve wide column">
+            <div class="ten wide column">
                 <h1>Reviews</h1>
                 {% for review in reviews %}
                 <h3>User: {{ review.user.full_name() }}</h3>

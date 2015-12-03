@@ -44,11 +44,11 @@ class ResourceForm(Form):
 
 
 class ReviewForm(Form):
-    rating = IntegerField('Rating', validators=[
+    rating = IntegerField('Rating (1-5)', validators=[
         InputRequired(),
         NumberRange(1, 5)
     ])
     content = StringField('Content', validators=[
         InputRequired()
     ])
-    submit = SubmitField('Finish Review')
+    submit = SubmitField('Finish Your Review')
