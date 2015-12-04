@@ -70,8 +70,43 @@ class Address(db.Model):
     zip_code_id = db.Column(db.Integer, db.ForeignKey('zip_codes.id'))
     resources = db.relationship('Resource', backref='address', lazy='dynamic')
 
-    def __repr__(self):
-        return '<Address \'%s\'>' % self.name
+    def __init__(self, name, street_address, city, state):
+        """
+        If possible, the helper methods get_by_address and create_address
+        should be used instead of explicitly using this constructor.
+        """
+        self.name = name
+        self.street_address = street_address
+        self.city = city
+        self.state = state
+
+    @staticmethod
+    def get_by_address(name, street_address, city, state):
+        """Helper for searching by all address fields."""
+        result = Address.query.filter_by(name=name,
+                                         street_address=street_address,
+                                         city=city,
+                                         state=state).first()
+        return result
+
+    @staticmethod
+    def create_address(name, street_address, city, state):
+        """
+        Helper to create an Address entry. Returns the newly created Address
+        or the existing entry if all address fields are already in the table.
+        """
+        result = Address.get_by_address(name,
+                                        street_address,
+                                        city,
+                                        state)
+        if result is None:
+            result = Address(name=name,
+                             street_address=street_address,
+                             city=city,
+                             state=state)
+            db.session.add(result)
+            db.session.commit()
+        return result
 
     @staticmethod
     def generate_fake(count=10):
@@ -92,3 +127,6 @@ class Address(db.Model):
             )
             db.session.add(a)
             db.session.commit()
+
+    def __repr__(self):
+        return '<Address \'%s\'>' % self.name

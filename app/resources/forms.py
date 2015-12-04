@@ -4,7 +4,8 @@ from wtforms.fields import (
     IntegerField,
     SubmitField
 )
-from wtforms.validators import InputRequired, Length, URL, Optional
+from wtforms.validators import InputRequired, Length, URL, Optional,\
+    NumberRange
 
 
 class ResourceForm(Form):
@@ -40,6 +41,17 @@ class ResourceForm(Form):
         Length(5, 5)
     ])
     submit = SubmitField('Add Resource')
+
+
+class ReviewForm(Form):
+    rating = IntegerField('Rating (1-5)', validators=[
+        InputRequired(),
+        NumberRange(1, 5)
+    ])
+    content = StringField('Content', validators=[
+        InputRequired()
+    ])
+    submit = SubmitField('Finish Your Review')
 
 
 class ClosedResourceForm(Form):

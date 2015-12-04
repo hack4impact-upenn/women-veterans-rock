@@ -1,5 +1,4 @@
 from .. import db
-from . import Address
 from random import randint
 
 
@@ -15,33 +14,55 @@ class Resource(db.Model):
     reviews = db.relationship('ResourceReview', backref='resource',
                               lazy='dynamic')
 
-    def __init__(self, name, description, website, address):
+    def __init__(self, name, description, website):
         self.name = name
         self.description = description
         self.website = website
-        self.address = address
 
-    def __repr__(self):
-        return '<Resource \'%s\'>' % self.name
+    @staticmethod
+    def get_by_resource(name, description, website):
+        """Helper for searching by all resource fields."""
+        result = Resource.query.filter_by(name=name,
+                                          description=description,
+                                          website=website).first()
+        return result
+
+    @staticmethod
+    def create_resource(name, description, website):
+        """
+        Helper to create an Resource entry. Returns the newly created Resource
+        or the existing entry if all resource fields are already in the table.
+        """
+        result = Resource.get_by_resource(name,
+                                          description,
+                                          website)
+        if result is None:
+            result = Resource(name=name,
+                              description=description,
+                              website=website)
+            db.session.add(result)
+            db.session.commit()
+        return result
 
     @staticmethod
     def generate_fake(count=10):
         """Generate count fake Resources for testing."""
         from faker import Faker
-        from random import choice
 
         fake = Faker()
 
-        addresses = Address.query.all()
+        # TODO: make sure fake resources have users and addresses
         for i in range(count):
             r = Resource(
                 name=fake.name(),
                 description=fake.text(),
-                website=fake.url(),
-                address=choice(addresses)
+                website=fake.url()
             )
             db.session.add(r)
             db.session.commit()
+
+    def __repr__(self):
+        return '<Resource \'%s\'>' % self.name
 
 
 class ResourceReview(db.Model):
@@ -55,9 +76,10 @@ class ResourceReview(db.Model):
     resource_id = db.Column(db.Integer, db.ForeignKey('resources.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
-    def __repr__(self):
-        return '<ResourceReview <Resource \'%s\'> \'%s\'>' % self.resource_id,\
-               self.content
+    def __init__(self, timestamp, content, rating):
+        self.timestamp = timestamp
+        self.content = content
+        self.rating = rating
 
     @staticmethod
     def generate_fake(count=10):
@@ -66,6 +88,7 @@ class ResourceReview(db.Model):
 
         fake = Faker()
 
+        # TODO: make sure fake reviews have users and resources
         for i in range(count):
             r = ResourceReview(
                 timestamp=fake.date_time(),
@@ -76,3 +99,7 @@ class ResourceReview(db.Model):
             )
             db.session.add(r)
             db.session.commit()
+
+    def __repr__(self):
+        return '<ResourceReview <Resource \'%s\'> \'%s\'>' %\
+               (self.resource_id, self.content)
