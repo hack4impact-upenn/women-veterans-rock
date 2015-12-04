@@ -110,15 +110,15 @@ class ResourceReview(db.Model):
 class ClosedResourceExplanation(db.Model):
     __tablename__ = 'closed_resource_explanations'
     id = db.Column(db.Integer, primary_key=True)
-    content = db.Column(db.Text)
+    explanation = db.Column(db.Text)
     connection = db.Column(db.Text)
     resource_id = db.Column(db.Integer, db.ForeignKey('resources.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
-    def __init__(self, content, connection):
-        self.content = content
+    def __init__(self, explanation, connection):
+        self.explanation = explanation
         self.connection = connection
 
     def __repr__(self):
         return '<ClosedResourceExplanation <Resource \'%s\'> \'%s\'>' %\
-               (self.resource_id, self.content)
+               (self.resource_id, self.explanation)

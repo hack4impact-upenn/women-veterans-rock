@@ -54,9 +54,7 @@ class ReviewForm(Form):
     submit = SubmitField('Finish Your Review')
 
 
-class ClosedResourceForm(Form):
-    reason = StringField('Why is this resource no longer available?')
-    expertise = StringField(
-        'How do you know this resource is no longer available? What is your'
-        'connection to this resource?')
+class ClosedResourceExplanationForm(Form):
+    explanation = StringField('Your Explanation')
+    connection = StringField('Your Connection')
     submit = SubmitField('Submit')
