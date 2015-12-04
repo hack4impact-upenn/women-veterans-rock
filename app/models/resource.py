@@ -8,11 +8,13 @@ class Resource(db.Model):
     name = db.Column(db.String(64))
     description = db.Column(db.Text)
     website = db.Column(db.Text)
-    marked_unavailable_count = db.Column(db.Integer)
     address_id = db.Column(db.Integer, db.ForeignKey('addresses.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     reviews = db.relationship('ResourceReview', backref='resource',
                               lazy='dynamic')
+    closed_resource_explanations = db.relationship(
+        'ClosedResourceExplanation',
+        backref='closed_resource_explanation')
 
     def __init__(self, name, description, website):
         self.name = name
@@ -102,4 +104,21 @@ class ResourceReview(db.Model):
 
     def __repr__(self):
         return '<ResourceReview <Resource \'%s\'> \'%s\'>' %\
+               (self.resource_id, self.content)
+
+
+class ClosedResourceExplanation(db.Model):
+    __tablename__ = 'closed_resource_explanations'
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.Text)
+    connection = db.Column(db.Text)
+    resource_id = db.Column(db.Integer, db.ForeignKey('resources.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+    def __init__(self, content, connection):
+        self.content = content
+        self.connection = connection
+
+    def __repr__(self):
+        return '<ClosedResourceExplanation <Resource \'%s\'> \'%s\'>' %\
                (self.resource_id, self.content)
