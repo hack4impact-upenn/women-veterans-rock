@@ -4,7 +4,27 @@
 {% block content %}
     <div class="ui stackable centered grid container">
         <div class="ten wide column">
-            <a href="/">Is this resource no longer available?</a>
+            <a href="#" id="unavailableLink">Is this resource no longer available?</a>
+
+            <div class="ui modal">
+              <i class="close icon"></i>
+              <div class="header">
+                Modal Title
+              </div>
+              <div class="image content">
+                <div class="image">
+                  An image can appear on left or an icon
+                </div>
+                <div class="description">
+                  A description can appear on the right
+                </div>
+              </div>
+              <div class="actions">
+                <div class="ui button">Cancel</div>
+                <div class="ui button">OK</div>
+              </div>
+            </div>
+
             <h1>Resource</h1>
             <table class="ui compact definition table">
                 <tr>
@@ -61,4 +81,12 @@
             {% endfor %}
         </div>
     </div>
+
+<script type="text/javascript">
+    $("#unavailableLink").click(function() {
+        $('.ui.modal')
+          .modal('show')
+        ;
+    });
+</script>
 {% endblock %}
