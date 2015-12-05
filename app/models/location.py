@@ -92,3 +92,73 @@ class Address(db.Model):
             )
             db.session.add(a)
             db.session.commit()
+
+    @staticmethod
+    def generate_real_fake(count=10):
+        """Generate addresses that actually exist for map testing"""
+        # from faker import Faker
+
+        # fake = Faker()
+
+        addresses = [
+            {
+                'street_address': '6511 Candlebrite Dr',
+                'city': 'San Antonio',
+                'state': 'TX',
+                'zip_code': '78244'
+            }, {
+                'street_address': '6111 Lausche Ave',
+                'city': 'Cleveland',
+                'state': 'OH',
+                'zip_code': '44103'
+            }, {
+                'street_address': '11600 Seminole Blvd',
+                'city': 'Largo',
+                'state': 'FL',
+                'zip_code': '33778'
+            }, {
+                'street_address': '6400 Westown Pkwy',
+                'city': 'W Des Moines',
+                'state': 'IA',
+                'zip_code': '50266'
+            }, {
+                'street_address': '3650 Spruce St',
+                'city': 'Philadelphia',
+                'state': 'PA',
+                'zip_code': '19104'
+            }, {
+                'street_address': '3650 Spruce St',
+                'city': 'Philadelphia',
+                'state': 'PA',
+                'zip_code': '19104'
+            }, {
+                'street_address': '6879 N Wildwood Ave',
+                'city': 'Chicago',
+                'state': 'IL',
+                'zip_code': '60646'
+            }, {
+                'street_address': '3809 Maple Ave',
+                'city': 'Castalia',
+                'state': 'OH',
+                'zip_code': '44824'
+            }, {
+                'street_address': '9001 Triple Ridge Rde',
+                'city': 'Fairfax Sta',
+                'state': 'VA',
+                'zip_code': '22039'
+            }, {
+                'street_address': '610 Lake Forbing Dr',
+                'city': 'Shreveport',
+                'state': 'LA ',
+                'zip_code': '71106'
+            }
+        ]
+        print(addresses)
+        # for i in range(count):
+        #     a = Address(
+        #         name=fake.name(),
+        #
+        #
+        #     )
+        #     db.session.add(a)
+        #     db.session.commit()
