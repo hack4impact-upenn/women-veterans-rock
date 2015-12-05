@@ -45,8 +45,8 @@ class Resource(db.Model):
         return result
 
     @staticmethod
-    def generate_fake(count=10):
-        # TODO: make sure fake resources have users and addresses
+    def generate_fake():
+        # TODO: make sure fake resources have users
 
         """Generate count fake Resources for testing."""
         from faker import Faker
