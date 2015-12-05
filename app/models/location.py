@@ -129,11 +129,11 @@ class Address(db.Model):
             db.session.commit()
 
     @staticmethod
-    def generate_real_fake(count=10):
+    def generate_real_fake():
         """Generate addresses that actually exist for map testing"""
-        # from faker import Faker
+        from faker import Faker
 
-        # fake = Faker()
+        fake = Faker()
 
         addresses = [
             {
@@ -188,15 +188,16 @@ class Address(db.Model):
                 'zip_code': '71106'
             }
         ]
-        print(addresses)
-        # for i in range(count):
-        #     a = Address(
-        #         name=fake.name(),
-        #
-        #
-        #     )
-        #     db.session.add(a)
-        #     db.session.commit()
+        for i in addresses:
+            a = Address.create_address(
+                name=fake.name(),
+                street_address=i['street_address'],
+                city=i['city'],
+                state=i['state']
+            )
+            a.zip_code = ZIPCode.create_zip_code(i['zip_code'])
+            db.session.add(a)
+            db.session.commit()
 
     def __repr__(self):
         return '<Address \'%s\'>' % self.name
