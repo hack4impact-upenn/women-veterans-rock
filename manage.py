@@ -61,7 +61,7 @@ def add_fake_data(count):
     Adds fake data to the database.
     """
     User.generate_fake(count=count)
-    ZIPCode.generate_fake(count=count)
+    ZIPCode.generate_fake()
     Address.generate_fake(count=count)
     Resource.generate_fake()
     ResourceReview.generate_fake(count=count)

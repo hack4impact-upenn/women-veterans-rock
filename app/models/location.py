@@ -123,8 +123,8 @@ class Address(db.Model):
                 street_address=fake.street_address(),
                 city=fake.city(),
                 state=fake.state(),
-                zip_code=choice(zip_codes)
             )
+            a.zip_code = choice(zip_codes)
             db.session.add(a)
             db.session.commit()
 

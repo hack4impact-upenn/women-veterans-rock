@@ -56,7 +56,7 @@ class Resource(db.Model):
         addresses = Address.query.all()
         unused_addresses = []
         for i in addresses:
-            resources = i.resources
+            resources = i.resources.all()
             if len(resources) == 0:
                 unused_addresses.append(i)
 
@@ -102,10 +102,10 @@ class ResourceReview(db.Model):
             r = ResourceReview(
                 timestamp=fake.date_time(),
                 content=fake.text(),
-                rating=randint(1, 5),
-                count_likes=randint(1, 500),
-                count_dislikes=randint(1, 500)
+                rating=randint(1, 5)
             )
+            r.count_likes = randint(1, 500)
+            r.count_dislikes = randint(1, 500)
             db.session.add(r)
             db.session.commit()
 
