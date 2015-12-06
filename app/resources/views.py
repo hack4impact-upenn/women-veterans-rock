@@ -51,13 +51,13 @@ def read_resource(resource_id):
     num_closed_explanations = len(closed_explanations)
     closed_form = ClosedResourceExplanationForm()
     if closed_form.validate_on_submit():
-        closed_resource_explanation = ClosedResourceExplanation(
+        closed_explanation = ClosedResourceExplanation(
             explanation=closed_form.explanation.data,
             connection=closed_form.connection.data
         )
-        closed_resource_explanation.resource_id = resource_id
-        closed_resource_explanation.user_id = current_user.id
-        db.session.add(closed_resource_explanation)
+        closed_explanation.resource_id = resource_id
+        closed_explanation.user_id = current_user.id
+        db.session.add(closed_explanation)
         db.session.commit()
         return redirect(url_for('resources.read_resource',
                         resource_id=resource_id))
