@@ -1,5 +1,6 @@
 from .. import db
 from random import randint
+from . import Address
 
 
 class Resource(db.Model):
@@ -47,19 +48,24 @@ class Resource(db.Model):
         return result
 
     @staticmethod
-    def generate_fake(count=10):
+    def generate_fake():
+        # TODO: make sure fake resources have users
+
         """Generate count fake Resources for testing."""
         from faker import Faker
 
         fake = Faker()
 
-        # TODO: make sure fake resources have users and addresses
-        for i in range(count):
+        unused_addresses = [address for address in Address.query.all()
+                            if len(address.resources.all()) == 0]
+
+        for address in unused_addresses:
             r = Resource(
                 name=fake.name(),
                 description=fake.text(),
                 website=fake.url()
             )
+            r.address = address
             db.session.add(r)
             db.session.commit()
 
@@ -95,10 +101,10 @@ class ResourceReview(db.Model):
             r = ResourceReview(
                 timestamp=fake.date_time(),
                 content=fake.text(),
-                rating=randint(1, 5),
-                count_likes=randint(1, 500),
-                count_dislikes=randint(1, 500)
+                rating=randint(1, 5)
             )
+            r.count_likes = randint(1, 500)
+            r.count_dislikes = randint(1, 500)
             db.session.add(r)
             db.session.commit()
 
