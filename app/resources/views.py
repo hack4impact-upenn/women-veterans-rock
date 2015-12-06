@@ -6,6 +6,7 @@ from ..models import Resource, ZIPCode, Address, ResourceReview,\
     ClosedResourceExplanation
 from .forms import ResourceForm, ReviewForm, ClosedResourceExplanationForm
 from datetime import datetime
+from sqlalchemy import desc
 
 
 @resources.route('/')
@@ -62,7 +63,8 @@ def read_resource(resource_id):
                         resource_id=resource_id))
     return render_template('resources/read_resource.html',
                            resource=resource,
-                           reviews=resource.reviews,
+                           reviews=resource.reviews.order_by(
+                               desc(ResourceReview.id)),
                            current_user_id=current_user.id,
                            closed_form=closed_form,
                            closed_explanations=closed_explanations,
@@ -101,7 +103,8 @@ def create_review(resource_id):
                         resource_id=resource_id))
     return render_template('resources/create_review.html',
                            resource=resource,
-                           reviews=resource.reviews,
+                           reviews=resource.reviews.order_by(
+                               desc(ResourceReview.id)),
                            current_user_id=current_user.id,
                            form=form,
                            closed_form=closed_form,
@@ -148,7 +151,8 @@ def update_review(review_id):
                         resource_id=resource_id))
     return render_template('resources/create_review.html',
                            resource=resource,
-                           reviews=resource.reviews,
+                           reviews=resource.reviews.order_by(
+                               desc(ResourceReview.id)),
                            current_user_id=current_user.id,
                            form=form,
                            closed_form=closed_form,
