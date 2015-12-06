@@ -85,17 +85,36 @@ def create_review(resource_id):
         db.session.commit()
         return redirect(url_for('resources.read_resource',
                                 resource_id=resource.id))
+    closed_explanations = ClosedResourceExplanation.query.filter_by(
+        resource_id=resource_id).all()
+    closed_form = ClosedResourceExplanationForm()
+    if closed_form.validate_on_submit():
+        closed_explanation = ClosedResourceExplanation(
+            explanation=closed_form.explanation.data,
+            connection=closed_form.connection.data
+        )
+        closed_explanation.resource_id = resource_id
+        closed_explanation.user_id = current_user.id
+        db.session.add(closed_explanation)
+        db.session.commit()
+        return redirect(url_for('resources.read_resource',
+                        resource_id=resource_id))
     return render_template('resources/create_review.html',
                            resource=resource,
                            reviews=resource.reviews,
                            current_user_id=current_user.id,
-                           form=form)
+                           form=form,
+                           closed_form=closed_form,
+                           closed_explanations=closed_explanations,
+                           num_closed_explanations=len(closed_explanations)
+                           )
 
 
 @resources.route('/review/update/<int:review_id>', methods=['GET', 'POST'])
 @login_required
 def update_review(review_id):
     review = ResourceReview.query.get_or_404(review_id)
+    resource_id = review.resource.id
     resource = review.resource
     if current_user.id != review.user.id:
         flash('You cannot edit a review you did not write.', 'error')
@@ -113,11 +132,29 @@ def update_review(review_id):
     else:
         form.content.data = review.content
         form.rating.data = review.rating
+        closed_explanations = ClosedResourceExplanation.query.filter_by(
+            resource_id=resource_id).all()
+    closed_form = ClosedResourceExplanationForm()
+    if closed_form.validate_on_submit():
+        closed_explanation = ClosedResourceExplanation(
+            explanation=closed_form.explanation.data,
+            connection=closed_form.connection.data
+        )
+        closed_explanation.resource_id = resource_id
+        closed_explanation.user_id = current_user.id
+        db.session.add(closed_explanation)
+        db.session.commit()
+        return redirect(url_for('resources.read_resource',
+                        resource_id=resource_id))
     return render_template('resources/create_review.html',
                            resource=resource,
                            reviews=resource.reviews,
                            current_user_id=current_user.id,
-                           form=form)
+                           form=form,
+                           closed_form=closed_form,
+                           closed_explanations=closed_explanations,
+                           num_closed_explanations=len(closed_explanations)
+                           )
 
 
 @resources.route('/review/delete/<int:review_id>')
