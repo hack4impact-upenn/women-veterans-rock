@@ -100,12 +100,12 @@
                 <h3>User: {{ review.user.full_name() }}</h3>
                 <table class="ui compact definition table" id="{{ review.id }}">
                     <tr>
-                        <td>Content</td>
-                        <td>{{ review.content }}</td>
-                    </tr>
-                    <tr>
                         <td>Rating</td>
                         <td>{{ review.rating }}</td>
+                    </tr>
+                    <tr>
+                        <td>Content</td>
+                        <td>{{ review.content }}</td>
                     </tr>
                 </table>
                 {% if review.user_id is equalto current_user_id %}
