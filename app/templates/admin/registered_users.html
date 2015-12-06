@@ -32,43 +32,44 @@
                     </div>
                 </div>
             </div>
-       <!-- </div> -->
 
-        {# Use overflow-x: scroll so that mobile views don't freak out # when the table is too wide #}
-        <div style="overflow-x: scroll;">
-            <table class="ui searchable sortable unstackable selectable celled table">
-                <thead>
-                    <tr>
-                        <th>First name</th>
-                        <th class="sorted ascending">Last name</th>
-                        <th>Email address</th>
-                        <th>Account type</th>
-                        <th>Donor Level</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for u in users | sort(attribute='last_name') %}
+            {# Use overflow-x: scroll so that mobile views don't freak out # when the table is too wide #}
+            <div style="overflow-x: scroll;">
+                <table class="ui searchable sortable unstackable selectable celled table">
+                    <thead>
                         <tr>
-                            <td onclick="window.location.href = '{{ url_for('admin.user_info', user_id=u.id) }}';">{{ u.first_name }}</td>
-                            <td onclick="window.location.href = '{{ url_for('admin.user_info', user_id=u.id) }}';">{{ u.last_name }}</td>
-                            <td onclick="window.location.href = '{{ url_for('admin.user_info', user_id=u.id) }}';">{{ u.email }}</td>
-                            <td class="user role">{{ u.role.name }}</td>
-                            <td class="user donor level">
-                                <div class="ui selection dropdown">
-                                    <input name="donor level" type="hidden">
-                                    <i class="dropdown icon"></i>
-                                    <div class="default text">{{ u.donor_level.name }}</div>
-                                    <div id="select-donor-level" class="menu">
-                                        <div class="item" data-value="Advocate">"Advocate"</div>
-                                    </div>
-                                </div>
-                            </td>
+                            <th>First name</th>
+                            <th class="sorted ascending">Last name</th>
+                            <th>Email address</th>
+                            <th>Account type</th>
+                            <th>Donor Level</th>
                         </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {% for u in users | sort(attribute='last_name') %}
+                            <tr>
+                                <td onclick="window.location.href = '{{ url_for('admin.user_info', user_id=u.id) }}';">{{ u.first_name }}</td>
+                                <td onclick="window.location.href = '{{ url_for('admin.user_info', user_id=u.id) }}';">{{ u.last_name }}</td>
+                                <td onclick="window.location.href = '{{ url_for('admin.user_info', user_id=u.id) }}';">{{ u.email }}</td>
+                                <td class="user role">{{ u.role.name }}</td>
+                                <td class="user donor level">
+                                    <div class="ui selection dropdown">
+                                        <input name="donor level" type="hidden">
+                                        <i class="dropdown icon"></i>
+                                        <div class="default text">{{ u.donor_level.name }}</div>
+                                        <div id="select-donor-level" class="menu">
+                                            {% for dl in donor_levels | sort(attribute='name') %}
+                                                <div class="item" data-dl="{{ dl.name }}" data-user="{{ u.id}} ">{{ dl.name }}</div>
+                                            {%endfor%}
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
     </div>
 
 
@@ -94,7 +95,18 @@
                 }
             });
 
+            $('#select-donor-level').dropdown({
+                onChange: function (dl, user, text, $selectedItem) {
+                    var donor_level_json_obj = {
+                        user_id: {{ user }},
+                        donor_level: {{ dl }},
+                    };
+                    $.post("{{ url_for('admin.update_donor_level') }}", donor_level_json_obj)
+                }
+            });
+
         });
+
 
 
     </script>
