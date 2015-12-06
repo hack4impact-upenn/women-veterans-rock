@@ -2,8 +2,9 @@ from flask import render_template, redirect, url_for, flash
 from flask.ext.login import login_required, current_user
 from . import resources
 from .. import db
-from ..models import Resource, ZIPCode, Address, ResourceReview
-from .forms import ResourceForm, ReviewForm
+from ..models import Resource, ZIPCode, Address, ResourceReview,\
+    ClosedResourceExplanation
+from .forms import ResourceForm, ReviewForm, ClosedResourceExplanationForm
 from datetime import datetime
 
 
@@ -41,14 +42,33 @@ def create_resource():
     return render_template('resources/create_resource.html', form=form)
 
 
-@resources.route('/read/<int:resource_id>')
+@resources.route('/read/<int:resource_id>', methods=['GET', 'POST'])
 @login_required
 def read_resource(resource_id):
     resource = Resource.query.get_or_404(resource_id)
+    closed_explanations = ClosedResourceExplanation.query.filter_by(
+        resource_id=resource_id).all()
+    num_closed_explanations = len(closed_explanations)
+    closed_form = ClosedResourceExplanationForm()
+    if closed_form.validate_on_submit():
+        closed_resource_explanation = ClosedResourceExplanation(
+            explanation=closed_form.explanation.data,
+            connection=closed_form.connection.data
+        )
+        closed_resource_explanation.resource_id = resource_id
+        closed_resource_explanation.user_id = current_user.id
+        db.session.add(closed_resource_explanation)
+        db.session.commit()
+        return redirect(url_for('resources.read_resource',
+                        resource_id=resource_id))
     return render_template('resources/read_resource.html',
                            resource=resource,
                            reviews=resource.reviews,
-                           current_user_id=current_user.id)
+                           current_user_id=current_user.id,
+                           closed_form=closed_form,
+                           closed_explanations=closed_explanations,
+                           num_closed_explanations=num_closed_explanations
+                           )
 
 
 @resources.route('/review/create/<int:resource_id>', methods=['GET', 'POST'])

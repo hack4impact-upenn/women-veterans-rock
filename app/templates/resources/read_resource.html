@@ -4,24 +4,62 @@
 {% block content %}
     <div class="ui stackable centered grid container">
         <div class="ten wide column">
+            {% if num_closed_explanations is not equalto 0  %}
+            <div class="ui accordion">
+                <div class="title">
+                    <i class="dropdown icon"></i>
+                    {% if num_closed_explanations is equalto 1 %}
+                    1 person has reported that this resource is no longer available.
+                    {% else %}
+                    {{ num_closed_explanations }} people have reported that this resource is no longer available.
+                    {% endif %}
+                </div>
+                <div class="content">
+                    {% for closed_explanation in closed_explanations %}
+                        {% if closed_explanation.explanation or closed_explanation.connection %}
+                        <p>
+                            {% if closed_explanation.explanation %}
+                                <strong>Explanation</strong>: {{ closed_explanation.explanation }} <br>
+                            {% endif %}
+                            {% if closed_explanation.connection %}
+                                <strong>Connection</strong>: {{ closed_explanation.connection }}
+                            {% endif %}
+                        </p>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div><br>
+            {% endif %}
+
             <a href="#" id="unavailableLink">Is this resource no longer available?</a>
 
             <div class="ui modal">
               <i class="close icon"></i>
               <div class="header">
-                Modal Title
+                Please tell us more about why this resource no longer available
               </div>
-              <div class="image content">
-                <div class="image">
-                  An image can appear on left or an icon
-                </div>
-                <div class="description">
-                  A description can appear on the right
-                </div>
-              </div>
-              <div class="actions">
-                <div class="ui button">Cancel</div>
-                <div class="ui button">OK</div>
+              <div class="content">
+                  <div class="description">
+                    {% set flashes = {
+                        'error':   get_flashed_messages(category_filter=['form-error']),
+                        'warning': get_flashed_messages(category_filter=['form-check-email']),
+                        'info':    get_flashed_messages(category_filter=['form-info']),
+                        'success': get_flashed_messages(category_filter=['form-success'])
+                    } %}
+
+                    {{ f.begin_form(closed_form, flashes) }}
+
+                        {{ f.render_form_field(closed_form.explanation) }}
+                        {{ f.render_form_field(closed_form.connection) }}
+                        {{ f.render_form_field(closed_form.submit) }}
+
+                        {{ f.form_message(flashes['error'], header='Something went wrong.', class='error') }}
+                        {{ f.form_message(flashes['warning'], header='Check your email.', class='warning') }}
+                        {{ f.form_message(flashes['info'], header='Information', class='info') }}
+                        {{ f.form_message(flashes['success'], header='Success!', class='success') }}
+
+                    {{ f.end_form(closed_form) }}
+                  </div>
               </div>
             </div>
 
@@ -88,5 +126,9 @@
           .modal('show')
         ;
     });
+
+    $('.ui.accordion')
+      .accordion()
+    ;
 </script>
 {% endblock %}
