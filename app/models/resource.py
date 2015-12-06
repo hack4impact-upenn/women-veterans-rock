@@ -53,20 +53,16 @@ class Resource(db.Model):
 
         fake = Faker()
 
-        addresses = Address.query.all()
-        unused_addresses = []
-        for i in addresses:
-            resources = i.resources.all()
-            if len(resources) == 0:
-                unused_addresses.append(i)
+        unused_addresses = [address for address in Address.query.all()
+                            if len(address.resources.all()) == 0]
 
-        for i in unused_addresses:
+        for address in unused_addresses:
             r = Resource(
                 name=fake.name(),
                 description=fake.text(),
                 website=fake.url()
             )
-            r.address = i
+            r.address = address
             db.session.add(r)
             db.session.commit()
 

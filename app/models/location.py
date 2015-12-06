@@ -109,28 +109,8 @@ class Address(db.Model):
         return result
 
     @staticmethod
-    def generate_fake(count=10):
-        """Generate count fake Addresses for testing."""
-        from faker import Faker
-        from random import choice
-
-        fake = Faker()
-
-        zip_codes = ZIPCode.query.all()
-        for i in range(count):
-            a = Address(
-                name=fake.name(),
-                street_address=fake.street_address(),
-                city=fake.city(),
-                state=fake.state(),
-            )
-            a.zip_code = choice(zip_codes)
-            db.session.add(a)
-            db.session.commit()
-
-    @staticmethod
-    def generate_real_fake():
-        """Generate addresses that actually exist for map testing"""
+    def generate_fake():
+        """Generate addresses that actually exist for map testing."""
         from faker import Faker
 
         fake = Faker()
@@ -188,14 +168,14 @@ class Address(db.Model):
                 'zip_code': '71106'
             }
         ]
-        for i in addresses:
+        for address in addresses:
             a = Address.create_address(
                 name=fake.name(),
-                street_address=i['street_address'],
-                city=i['city'],
-                state=i['state']
+                street_address=address['street_address'],
+                city=address['city'],
+                state=address['state']
             )
-            a.zip_code = ZIPCode.create_zip_code(i['zip_code'])
+            a.zip_code = ZIPCode.create_zip_code(address['zip_code'])
             db.session.add(a)
             db.session.commit()
 
