@@ -34,12 +34,12 @@
             <a href="#" id="unavailableLink">Is this resource no longer available?</a>
 
             <div class="ui modal">
-              <i class="close icon"></i>
-              <div class="header">
-                Please tell us more about why this resource no longer available
-              </div>
-              <div class="content">
-                  <div class="description">
+                <i class="close icon"></i>
+                <div class="header">
+                    Please tell us more about why this resource no longer available
+                </div>
+                <div class="content">
+                    <div class="description">
                     {% set flashes = {
                         'error':   get_flashed_messages(category_filter=['form-error']),
                         'warning': get_flashed_messages(category_filter=['form-check-email']),
@@ -59,8 +59,8 @@
                         {{ f.form_message(flashes['success'], header='Success!', class='success') }}
 
                     {{ f.end_form(closed_form) }}
-                  </div>
-              </div>
+                    </div>
+              </div>ß
             </div>
 
             <h1>Resource</h1>
@@ -122,13 +122,9 @@
 
 <script type="text/javascript">
     $("#unavailableLink").click(function() {
-        $('.ui.modal')
-          .modal('show')
-        ;
+        $('.ui.modal').modal('show');
     });
 
-    $('.ui.accordion')
-      .accordion()
-    ;
+    $('.ui.accordion').accordion();
 </script>
 {% endblock %}
