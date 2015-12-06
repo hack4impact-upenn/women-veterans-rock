@@ -48,7 +48,6 @@ def read_resource(resource_id):
     resource = Resource.query.get_or_404(resource_id)
     closed_explanations = ClosedResourceExplanation.query.filter_by(
         resource_id=resource_id).all()
-    num_closed_explanations = len(closed_explanations)
     closed_form = ClosedResourceExplanationForm()
     if closed_form.validate_on_submit():
         closed_explanation = ClosedResourceExplanation(
@@ -67,7 +66,7 @@ def read_resource(resource_id):
                            current_user_id=current_user.id,
                            closed_form=closed_form,
                            closed_explanations=closed_explanations,
-                           num_closed_explanations=num_closed_explanations
+                           num_closed_explanations=len(closed_explanations)
                            )
 
 
