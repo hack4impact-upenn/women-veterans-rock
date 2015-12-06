@@ -88,7 +88,7 @@ class User(UserMixin, db.Model):
     birthday = db.Column(db.Date, index=True)
     closed_resource_explanations = db.relationship(
         'ClosedResourceExplanation',
-        backref="closed_resource_explanation")
+        backref='user')
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
