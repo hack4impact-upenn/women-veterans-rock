@@ -153,13 +153,13 @@ class EditProfileForm(Form):
         validators=[URL(), Optional()]
     )
     affiliations = SelectMultipleField(
-        'Affiliations',
-        choices=[]
+        'Affiliations'
     )
     submit = SubmitField('Update profile')
 
     def __init__(self, *args):
         super(EditProfileForm, self).__init__(*args)
-        self.choices = [(str(affiliation.name), str(affiliation.id))
-                        for affiliation in AffiliationTag.query.all()]
-        print self.choices
+        self.affiliations.choices = (
+            [(str(affiliation.id), str(affiliation.name))
+             for affiliation in AffiliationTag.query.all()]
+        )
