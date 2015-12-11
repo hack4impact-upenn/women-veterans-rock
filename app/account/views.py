@@ -296,9 +296,10 @@ def edit_profile():
             user=current_user,
             isCurrent=True)
     else:
-        # populating form with current user profile information
+        # Populating form with current user profile information.
         form.first_name.data = current_user.first_name
         form.last_name.data = current_user.last_name
+        # form.affiliations.default = ['1']
     return render_template(
         'account/edit_profile.html',
         user=current_user,

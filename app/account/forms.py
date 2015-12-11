@@ -153,7 +153,8 @@ class EditProfileForm(Form):
         validators=[URL(), Optional()]
     )
     affiliations = SelectMultipleField(
-        'Affiliations'
+        'Affiliations',
+        default=['1']
     )
     submit = SubmitField('Update profile')
 
