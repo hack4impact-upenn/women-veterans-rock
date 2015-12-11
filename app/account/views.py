@@ -294,6 +294,9 @@ def edit_profile():
         # populating form with current user profile information
         form.first_name.data = current_user.first_name
         form.last_name.data = current_user.last_name
+        form.facebook_link.data = current_user.user_links.facebook_link
+        form.birthday.data = current_user.birthday
+        form.linkedin_link.data = current_user.user_links.linkedin_link
     return render_template(
         'account/edit_profile.html',
         user=current_user,
