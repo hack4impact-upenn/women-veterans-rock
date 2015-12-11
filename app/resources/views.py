@@ -59,8 +59,9 @@ def create_review(resource_id):
     resource = Resource.query.get_or_404(resource_id)
     address = Address.query.get(resource.address_id)
     user = User.query.get(resource.user_id)
-    return render_template('resources/view_resource.html', resource=resource,
-                           address=address, user=user)
+    form = ReviewForm()
+    return render_template('resources/create_review.html', resource=resource,
+                           form=form, address=address, user=user)
 
 
 @resources.route('/resource/<int:resource_id>/<query>')
