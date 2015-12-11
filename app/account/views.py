@@ -283,11 +283,18 @@ def edit_profile():
         current_user.first_name = form.first_name.data
         current_user.last_name = form.last_name.data
         current_user.birthday = form.birthday.data
+
+        # Remove current affiliation tags.
+        for affiliation_tag in current_user.tags:
+            if affiliation_tag.type == "AffiliationTag":
+                current_user.tags.remove(affiliation_tag)
+
+        # Add new affiliation tags.
         for affiliation_tag_id in form.affiliations.data:
             affiliation_tag = AffiliationTag.query.get(affiliation_tag_id)
-            if affiliation_tag not in current_user.tags:
-                current_user.tags.append(affiliation_tag)
-                db.session.add(affiliation_tag)
+            current_user.tags.append(affiliation_tag)
+            db.session.add(affiliation_tag)
+
         db.session.add(current_user)
         db.session.commit()
         flash('Profile updated', 'success')
@@ -302,6 +309,7 @@ def edit_profile():
         for affiliation_tag in current_user.tags:
             if affiliation_tag.type == "AffiliationTag":
                 form.affiliations.default.append(str(affiliation_tag.id))
+
     return render_template(
         'account/edit_profile.html',
         user=current_user,
