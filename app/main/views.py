@@ -11,7 +11,7 @@ def index():
     return render_template('main/index.html')
 
 
-@main.route('/map')
+@main.route('/users')
 @login_required
 def user_map():
     return render_template('main/map.html', users=User.query.all())
