@@ -299,7 +299,9 @@ def edit_profile():
         # Populating form with current user profile information.
         form.first_name.data = current_user.first_name
         form.last_name.data = current_user.last_name
-        # form.affiliations.default = ['1']
+        for affiliation_tag in current_user.tags:
+            if affiliation_tag.type == "AffiliationTag":
+                form.affiliations.default.append(str(affiliation_tag.id))
     return render_template(
         'account/edit_profile.html',
         user=current_user,

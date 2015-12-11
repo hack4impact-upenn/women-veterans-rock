@@ -154,7 +154,7 @@ class EditProfileForm(Form):
     )
     affiliations = SelectMultipleField(
         'Affiliations',
-        default=['1']
+        default=[]
     )
     submit = SubmitField('Update profile')
 
