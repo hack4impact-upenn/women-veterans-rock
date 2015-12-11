@@ -7,11 +7,13 @@
     <div>{{ user.role.name }}</div>
     <div>{{ user.birthday }}</div>
     <div>
-        {% if user.affiliation_tags %}
-            {% for affiliation in user.affiliation_tags %}
+        {% if user.tags %}
+            {% for affiliation in user.tags %}
+            {% if affiliation.type == "AffiliationTag" %}
                 <div>
-                    {{ affiliation }}
+                    {{ affiliation.name }}
                 </div>
+            {% endif %}
             {% endfor %}
         {% else %}
             No affiliations.

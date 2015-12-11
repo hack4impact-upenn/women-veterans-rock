@@ -283,6 +283,11 @@ def edit_profile():
         current_user.first_name = form.first_name.data
         current_user.last_name = form.last_name.data
         current_user.birthday = form.birthday.data
+        for affiliation_tag_id in form.affiliations.data:
+            affiliation_tag = AffiliationTag.query.get(affiliation_tag_id)
+            if affiliation_tag not in current_user.tags:
+                current_user.tags.append(affiliation_tag)
+                db.session.add(affiliation_tag)
         db.session.add(current_user)
         db.session.commit()
         flash('Profile updated', 'success')
