@@ -17,19 +17,36 @@
     {% endif %}
 {% endmacro %}
 
-{% macro account_items(current_user) %}
+{% macro page_items(current_user) %}
     {% if current_user.is_authenticated() %}
-        <a href="{{ url_for('account.manage') }}" class="item">Your Account</a>
-        <a href="{{ url_for('account.logout') }}" class="item">Log out</a>
-    {% else %}
-        <a href="{{ url_for('account.register') }}" class="item">Register</a>
-        <a href="{{ url_for('account.login') }}" class="item">Log in</a>
+        <div class="item ui mini search">
+            <div class="ui icon input">
+                <input class="prompt" type="text" placeholder="Search...">
+                <i class="search icon"></i>
+            </div>
+            <div class="results"></div>
+        </div>
+        <a class="item" href="/resources">Resources</a>
+        <a class="item" href="/map">Map</a>
+        <a class="item" href="/account/donate">Donate</a>
     {% endif %}
+{% endmacro %}
+
+{% macro account_items_logged_in(current_user) %}
+    <a href="{{ url_for('account.profile_current') }}" class="item">View Profile</a>
+    <a href="{{ url_for('account.manage') }}" class="item">Account Settings</a>
+    <a class="item">Help</a>
+    <a href="{{ url_for('account.logout') }}" class="item">Log out</a>
+{% endmacro %}
+
+{% macro account_items_logged_out() %}
+    <a href="{{ url_for('account.register') }}" class="item">Register</a>
+    <a href="{{ url_for('account.login') }}" class="item">Log in</a>
 {% endmacro %}
 
 {% macro mobile_nav(current_user, endpoints=None) %}
     <div class="mobile only row">
-        <div class="ui fixed inverted black main menu">
+        <div class="ui fixed inverted red main menu">
             {{ header_items(current_user) }}
             <div class="right menu">
                 <a class="icon item" id="open-nav"><i class="sidebar icon"></i></a>
@@ -41,7 +58,12 @@
             {% if endpoints %}
                 {{ render_menu_items(endpoints) }}
             {% endif %}
-            {{ account_items(current_user) }}
+            {% if current_user.is_authenticated() %}
+                {{ page_items(current_user) }}
+                {{ account_items_logged_in(current_user) }}
+            {% else %}
+                {{ account_items_logged_out() }}
+            {% endif %}
         </div>
     </div>
 {% endmacro %}
@@ -50,11 +72,22 @@
  # secondary menu. `count` should be the string (e.g. 'four') number of endpoints. #}
 {% macro desktop_nav(current_user, endpoints=None, count=None) %}
     <div class="computer tablet only row">
-        <div class="ui fixed inverted black main menu">
+        <div class="ui fixed inverted red main menu">
             <div class="ui container">
                 {{ header_items(current_user) }}
                 <div class="right menu">
-                    {{ account_items(current_user) }}
+                    {% if current_user.is_authenticated() %}
+                        {{ page_items(current_user) }}
+                        <div class="ui dropdown item">
+                            <div class="text">{{ current_user.first_name }}</div>
+                            <i class="dropdown icon"></i>
+                            <div class="menu">
+                                {{ account_items_logged_in(current_user) }}
+                            </div>
+                        </div>
+                    {% else %}
+                        {{ account_items_logged_out() }}
+                    {% endif %}
                 </div>
             </div>
         </div>

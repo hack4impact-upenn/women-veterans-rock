@@ -1,4 +1,4 @@
-from flask import render_template, redirect, request, url_for, flash
+from flask import render_template, redirect, request, url_for, flash, abort
 from flask.ext.login import (
     login_required,
     login_user,
@@ -8,7 +8,7 @@ from flask.ext.login import (
 from . import account
 from .. import db
 from ..email import send_email
-from ..models import User
+from ..models import User, ZIPCode
 from .forms import (
     LoginForm,
     RegistrationForm,
@@ -16,7 +16,8 @@ from .forms import (
     ChangePasswordForm,
     ChangeEmailForm,
     RequestResetPasswordForm,
-    ResetPasswordForm
+    ResetPasswordForm,
+    EditProfileForm,
 )
 
 
@@ -40,10 +41,12 @@ def register():
     """Register a new user, and send them a confirmation email."""
     form = RegistrationForm()
     if form.validate_on_submit():
+        zip_code = ZIPCode.create_zip_code(form.zip_code.data)
         user = User(first_name=form.first_name.data,
                     last_name=form.last_name.data,
                     email=form.email.data,
-                    password=form.password.data)
+                    password=form.password.data,
+                    zip_code_id=zip_code.id)
         db.session.add(user)
         db.session.commit()
         token = user.generate_confirmation_token()
@@ -250,3 +253,55 @@ def unconfirmed():
     if current_user.is_anonymous() or current_user.confirmed:
         return redirect(url_for('main.index'))
     return render_template('account/unconfirmed.html')
+
+
+@account.route('/profile')
+@login_required
+def profile_current():
+    """Display the current logged in User's profile."""
+    return redirect(url_for('account.profile', user_id=current_user.id))
+
+
+@account.route('/profile/<int:user_id>')
+@login_required
+def profile(user_id):
+    """Display a user's profile."""
+    user = User.query.get(user_id)
+    if user is None:
+        abort(404)
+    is_current = user.id == current_user.id
+    return render_template('account/profile.html', user=user,
+                           is_current=is_current)
+
+
+@account.route('/profile/edit', methods=['GET', 'POST'])
+@login_required
+def edit_profile():
+    """User can edit their own profile."""
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        current_user.first_name = form.first_name.data
+        current_user.last_name = form.last_name.data
+        current_user.birthday = form.birthday.data
+        db.session.add(current_user)
+        db.session.commit()
+        flash('Profile updated', 'success')
+        return render_template(
+            'account/profile.html',
+            user=current_user,
+            isCurrent=True)
+    else:
+        # populating form with current user profile information
+        form.first_name.data = current_user.first_name
+        form.last_name.data = current_user.last_name
+    return render_template(
+        'account/edit_profile.html',
+        user=current_user,
+        form=form)
+
+
+@account.route('/donate')
+@login_required
+def donate():
+    """Display donate page with PayPal link."""
+    return render_template('account/donate.html')

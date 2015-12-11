@@ -99,6 +99,7 @@ class User(UserMixin, db.Model):
     resources = db.relationship('Resource', backref='user', lazy='dynamic')
     resource_reviews = db.relationship('ResourceReview', backref='user',
                                        lazy='dynamic')
+    birthday = db.Column(db.Date, index=True)
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
@@ -225,6 +226,20 @@ class User(UserMixin, db.Model):
 
         for user in users:
             user.zip_code = choice(zip_codes)
+            db.session.add(user)
+        db.session.commit()
+
+    @staticmethod
+    def set_random_affiliation_tags(users, affiliation_tags):
+        """
+        Assign a random AffiliationTag from affiliation_tags to each User in
+        users.
+        """
+        from random import choice, randint
+
+        for user in users:
+            for i in range(randint(1, 3)):
+                user.tags.append(choice(affiliation_tags))
             db.session.add(user)
         db.session.commit()
 

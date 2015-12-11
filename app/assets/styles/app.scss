@@ -30,3 +30,19 @@ nav .mobile.only.row {
 table.selectable tr:hover {
     cursor: pointer !important;
 }
+
+// main/map.html
+.map-grid {
+     #map {
+        display: block;
+        width: 70%;
+        height: 500px;
+        -moz-box-shadow: 0px 5px 20px #ccc;
+        -webkit-box-shadow: 0px 5px 20px #ccc;
+        box-shadow: 0px 5px 20px #ccc;
+     }
+    .ui.button {
+        text-align: center;
+        margin: 0 auto;
+    }
+}

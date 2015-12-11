@@ -1,0 +1,39 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+    <div class="ui centered grid map-grid">
+        <div class="fourteen wide column">
+            <div class="centered row">
+                <h1>User Map</h1>
+            </div>
+            <div class="centered row">
+                <button class="ui left attached button" >Users</button>
+                <button class="right attached ui button">Resources</button>
+            </div>
+            <div class="centered row">
+                <div id="map"></div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=true"></script>
+    <script type="text/javascript" src="http://hpneo.github.io/gmaps/gmaps.js"></script>
+    <script>
+        var map = new GMaps({
+            div: '#map',
+            lat: 39.8282, // Default coordinates for the center of the continental US.
+            lng: -98.5795
+        });
+        map.setZoom(4);
+        {% for user in users %}
+            var longitude = {{ user.zip_code.longitude }};
+            var latitude = {{ user.zip_code.latitude }};
+            map.addMarker({
+                lat: latitude,
+                lng: longitude,
+                infoWindow: {
+                    content: "{{ user.zip_code.zip_code }}"
+                }
+            });
+        {% endfor %}
+    </script>
+{% endblock %}

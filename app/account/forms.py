@@ -4,10 +4,19 @@ from wtforms.fields import (
     StringField,
     PasswordField,
     BooleanField,
-    SubmitField
+    SubmitField,
+    TextAreaField,
+    DateField,
 )
 from wtforms.fields.html5 import EmailField
-from wtforms.validators import InputRequired, Length, Email, EqualTo
+from wtforms.validators import (
+    Length,
+    Email,
+    EqualTo,
+    URL,
+    InputRequired,
+    Optional,
+)
 from wtforms import ValidationError
 from ..models import User
 
@@ -42,6 +51,10 @@ class RegistrationForm(Form):
         EqualTo('password2', 'Passwords must match')
     ])
     password2 = PasswordField('Confirm password', validators=[InputRequired()])
+    zip_code = StringField('ZIP Code', validators=[
+        InputRequired(),
+        Length(5, 5)
+    ])
     submit = SubmitField('Register')
 
     def validate_email(self, field):
@@ -112,3 +125,30 @@ class ChangeEmailForm(Form):
     def validate_email(self, field):
         if User.query.filter_by(email=field.data).first():
             raise ValidationError('Email already registered.')
+
+
+class EditProfileForm(Form):
+    first_name = StringField('First name', validators=[
+        InputRequired(),
+        Length(1, 64)
+    ])
+    last_name = StringField('Last name', validators=[
+        InputRequired(),
+        Length(1, 64)
+    ])
+    bio = TextAreaField('About Me')
+    birthday = DateField(
+        label='Birthday',
+        description="YYYY-MM-DD",
+        format="%Y-%m-%d", validators=[Optional()])
+    facebook_link = StringField(
+        'Facebook Profile',
+        description="https://",
+        validators=[URL(), Optional()]
+    )
+    linkedin_link = StringField(
+        'LinkedIn Profile',
+        description="https://",
+        validators=[URL(), Optional()]
+    )
+    submit = SubmitField('Update profile')
