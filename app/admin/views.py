@@ -167,7 +167,7 @@ def delete_user(user_id):
 @admin_required
 def update_donor_level():
     user_id = request.form.get('user_id')
-    dl_name = request.form.get('dl')
+    dl_name = request.form.get('donor_level')
 
     user = User.query.filter_by(id=user_id).first()
     donor_level = DonorLevel.query.filter_by(name=dl_name).first()
