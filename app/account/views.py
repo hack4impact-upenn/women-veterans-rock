@@ -8,7 +8,7 @@ from flask.ext.login import (
 from . import account
 from .. import db
 from ..email import send_email
-from ..models import User, ZIPCode
+from ..models import User, ZIPCode, AffiliationTag
 from .forms import (
     LoginForm,
     RegistrationForm,
@@ -297,7 +297,8 @@ def edit_profile():
     return render_template(
         'account/edit_profile.html',
         user=current_user,
-        form=form)
+        form=form,
+        affiliations=AffiliationTag.query.all())
 
 
 @account.route('/donate')

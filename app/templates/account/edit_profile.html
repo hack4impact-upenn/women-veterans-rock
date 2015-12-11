@@ -25,12 +25,23 @@
                 {{ f.render_form_field(form.birthday) }}
                 {{ f.render_form_field(form.facebook_link) }}
                 {{ f.render_form_field(form.linkedin_link) }}
+
+                <select name="affiliations" multiple="" class="ui fluid dropdown">
+                    <option value="">Affiliations</option>
+                    {% for affiliation in affiliations %}
+                        <option value="{{ affiliation.id }}">{{ affiliation.name }}</option>
+                    {% endfor %}
+                </select>
                 
                 {{ f.form_message(flashes['error'], header='Something went wrong.', class='error') }}
                 {{ f.form_message(flashes['warning'], header='Check your email.', class='warning') }}
                 {{ f.form_message(flashes['info'], header='Information', class='info') }}
                 {{ f.form_message(flashes['success'], header='Success!', class='success') }}
+            
                 {{ f.render_form_field(form.submit) }}
+
+
+
             {{ f.end_form(form) }}
         </div>
     </div>
