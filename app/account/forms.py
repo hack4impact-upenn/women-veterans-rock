@@ -7,6 +7,7 @@ from wtforms.fields import (
     SubmitField,
     TextAreaField,
     DateField,
+    SelectMultipleField
 )
 from wtforms.fields.html5 import EmailField
 from wtforms.validators import (
@@ -18,7 +19,7 @@ from wtforms.validators import (
     Optional,
 )
 from wtforms import ValidationError
-from ..models import User
+from ..models import User, AffiliationTag
 
 
 class LoginForm(Form):
@@ -151,4 +152,14 @@ class EditProfileForm(Form):
         description="https://",
         validators=[URL(), Optional()]
     )
+    affiliations = SelectMultipleField(
+        'Affiliations',
+        choices=[]
+    )
     submit = SubmitField('Update profile')
+
+    def __init__(self, *args):
+        super(EditProfileForm, self).__init__(*args)
+        self.choices = [(str(affiliation.name), str(affiliation.id))
+                        for affiliation in AffiliationTag.query.all()]
+        print self.choices
