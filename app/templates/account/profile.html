@@ -6,6 +6,17 @@
     <div>{{ user.email }}</div>
     <div>{{ user.role.name }}</div>
     <div>{{ user.birthday }}</div>
+    <div>
+        {% if user.affiliation_tags %}
+            {% for affiliation in user.affiliation_tags %}
+                <div>
+                    {{ affiliation }}
+                </div>
+            {% endfor %}
+        {% else %}
+            No affiliations.
+        {% endif %}
+    </div>
     {% if is_current %}
         <div>
             <a href="{{ url_for('account.edit_profile') }}">
