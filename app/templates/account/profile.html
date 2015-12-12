@@ -32,11 +32,11 @@
                 {% if user.tags %}
                     <ul>
                     {% for affiliation in user.tags %}
-                    {% if affiliation.type == "AffiliationTag" %}
-                        <li>
-                            {{ affiliation.name }}
-                        </li>
-                    {% endif %}
+                        {% if affiliation.type == "AffiliationTag" %}
+                            <li>
+                                {{ affiliation.name }}
+                            </li>
+                        {% endif %}
                     {% endfor %}
                     </ul>
                 {% else %}
