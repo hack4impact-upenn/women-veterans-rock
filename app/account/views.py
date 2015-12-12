@@ -283,7 +283,7 @@ def edit_profile():
         current_user.first_name = form.first_name.data
         current_user.last_name = form.last_name.data
         current_user.birthday = form.birthday.data
-
+        current_user.bio = form.bio.data
         # Remove current affiliation tags.
         current_user.tags = [tag for tag in current_user.tags
                              if tag.type != "AffiliationTag"]
@@ -301,6 +301,8 @@ def edit_profile():
         # Populating form with current user profile information.
         form.first_name.data = current_user.first_name
         form.last_name.data = current_user.last_name
+        form.birthday.data = current_user.birthday
+        form.bio.data = current_user.bio
         for affiliation_tag in current_user.tags:
             if affiliation_tag.type == "AffiliationTag":
                 form.affiliations.default.append(str(affiliation_tag.id))
