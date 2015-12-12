@@ -9,24 +9,24 @@
         'success': get_flashed_messages(category_filter=['form-success'])
     } %}
 
-    <div class="ui stackable centered grid container">
+    <div class="ui stackable centered padded grid container">
         <div class="twelve wide column">
-            <h2 class="ui header">
+            <h2 class="ui dividing header">
                 Edit Profile
             </h2>
             {{ f.begin_form(form, flashes) }}  
-                <div class="row">
-                    <div class="ui two column grid">
-                        <div class="column">{{ f.render_form_field(form.first_name) }}</div>
-                        <div class="column">{{ f.render_form_field(form.last_name) }}</div>
-                    </div>
+                <div class="ui stackable two column padded grid">
+                    <div class="column">{{ f.render_form_field(form.first_name) }}</div>
+                    <div class="column">{{ f.render_form_field(form.last_name) }}</div>
                 </div>
-                {{ f.render_form_field(form.bio) }}
-                {{ f.render_form_field(form.birthday) }}
-                {{ f.render_form_field(form.facebook_link) }}
-                {{ f.render_form_field(form.linkedin_link) }}
-                {{ f.render_form_field(form.affiliations) }}
-
+                <div class="ui stackable one column padded grid">
+                    <div class="column">{{ f.render_form_field(form.bio) }}</div>
+                    <div class="column">{{ f.render_form_field(form.birthday) }}</div>
+                    <div class="column">{{ f.render_form_field(form.facebook_link) }}</div>
+                    <div class="column">{{ f.render_form_field(form.linkedin_link) }}</div>
+                    <div class="column">{{ f.render_form_field(form.affiliations) }}</div>
+                </div>
+           
                 {{ f.form_message(flashes['error'], header='Something went wrong.', class='error') }}
                 {{ f.form_message(flashes['warning'], header='Check your email.', class='warning') }}
                 {{ f.form_message(flashes['info'], header='Information', class='info') }}

@@ -10,7 +10,7 @@
 {% endmacro %}
 
 {% macro header_items(current_user) %}
-    <a class="header item" href="{{ url_for('main.index') }}">{{ config.APP_NAME }}</a>
+    <a class="header item" href="{{ url_for('main.index') }}">{{ config.APP_NAME }}!</a>
     {% if current_user.is_authenticated() %}
         {% set href = url_for(current_user.role.index + '.index') %}
         <a class="item" href="{{ href }}">{{ current_user.role.name }} Dashboard</a>
@@ -26,8 +26,14 @@
             </div>
             <div class="results"></div>
         </div>
-        <a class="item" href="/resources">Resources</a>
-        <a class="item" href="/map">Map</a>
+        <div class="ui dropdown item">
+            <div class="text">Resources</div>
+            <div class="menu">
+                <a href="{{ url_for('resources.index') }}" class="item">Search Resources</a>
+                <a href="{{ url_for('resources.create_resource') }}" class="item">Add Resource Listing</a>
+            </div>
+        </div>
+        <a class="item" href="/users">Users</a>
         <a class="item" href="/account/donate">Donate</a>
     {% endif %}
 {% endmacro %}
@@ -35,13 +41,14 @@
 {% macro account_items_logged_in(current_user) %}
     <a href="{{ url_for('account.profile_current') }}" class="item">View Profile</a>
     <a href="{{ url_for('account.manage') }}" class="item">Account Settings</a>
-    <a class="item">Help</a>
+    <a href="{{ url_for('main.help') }}" class="item">Help</a>
     <a href="{{ url_for('account.logout') }}" class="item">Log out</a>
 {% endmacro %}
 
 {% macro account_items_logged_out() %}
     <a href="{{ url_for('account.register') }}" class="item">Register</a>
     <a href="{{ url_for('account.login') }}" class="item">Log in</a>
+    <a href="{{ url_for('main.help') }}" class="item">Help</a>
 {% endmacro %}
 
 {% macro mobile_nav(current_user, endpoints=None) %}
