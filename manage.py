@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import os
 from app import create_app, db
-from app.models import User, Role, ZIPCode, Address, Resource, \
+from app.models import User, Role, ZIPCode, Address, DonorLevel, Resource, \
     ResourceReview, Tag, AffiliationTag, ResourceCategoryTag
 from flask.ext.script import Manager, Shell
 from flask.ext.migrate import Migrate, MigrateCommand
@@ -21,7 +21,7 @@ migrate = Migrate(app, db)
 
 def make_shell_context():
     return dict(app=app, db=db, User=User, Role=Role, ZIPCode=ZIPCode,
-                Address=Address, Tag=Tag,
+                Address=Address, DonorLevel=DonorLevel, Tag=Tag,
                 ResourceCategoryTag=ResourceCategoryTag,
                 AffiliationTag=AffiliationTag)
 
@@ -98,6 +98,7 @@ def setup_prod():
 def setup_general():
     """Runs the set-up needed for both local development and production."""
     Role.insert_roles()
+    DonorLevel.insert_donor_levels()
 
 if __name__ == '__main__':
     manager.run()

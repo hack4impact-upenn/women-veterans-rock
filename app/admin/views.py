@@ -1,6 +1,6 @@
 from ..decorators import admin_required
 
-from flask import render_template, abort, redirect, flash, url_for
+from flask import render_template, abort, redirect, flash, url_for, request
 from flask.ext.login import login_required, current_user
 
 from forms import (
@@ -10,7 +10,7 @@ from forms import (
     InviteUserForm,
 )
 from . import admin
-from ..models import User, Role
+from ..models import User, Role, DonorLevel
 from .. import db
 from ..email import send_email
 
@@ -74,8 +74,9 @@ def registered_users():
     """View all registered users."""
     users = User.query.all()
     roles = Role.query.all()
+    donor_levels = DonorLevel.query.all()
     return render_template('admin/registered_users.html', users=users,
-                           roles=roles)
+                           roles=roles, donor_levels=donor_levels)
 
 
 @admin.route('/user/<int:user_id>')
@@ -158,4 +159,25 @@ def delete_user(user_id):
         db.session.delete(user)
         db.session.commit()
         flash('Successfully deleted user %s.' % user.full_name(), 'success')
+    return redirect(url_for('admin.registered_users'))
+
+
+@admin.route('/users/update-donor-level', methods=['POST'])
+@login_required
+@admin_required
+def update_donor_level():
+    user_id = request.form.get('user_id')
+    donor_level_name = request.form.get('donor_level')
+
+    user = User.query.get(user_id)
+    if user is None:
+        abort(404)
+    donor_level = DonorLevel.query.filter_by(name=donor_level_name).first()
+    if donor_level is None:
+        abort(404)
+    user.donor_level_id = donor_level.id
+
+    db.session.add(user)
+    db.session.commit()
+
     return redirect(url_for('admin.registered_users'))

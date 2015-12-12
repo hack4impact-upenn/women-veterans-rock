@@ -4,8 +4,7 @@
     <div class="ui stackable grid container">
         <div class="sixteen wide tablet twelve wide computer centered column">
             <a class="ui basic compact button" href="{{ url_for('admin.index') }}">
-                <i class="caret left icon"></i>
-                Back to dashboard
+                <i class="caret left icon"></i> Back to dashboard
             </a>
             <h2 class="ui header">
                 Registered Users
@@ -13,7 +12,6 @@
                     View and manage currently registered users.
                 </div>
             </h2>
-
             <div class="ui menu">
                 <div id="select-role" class="ui dropdown item">
                     <div class="text">
@@ -41,22 +39,32 @@
                 <table class="ui searchable sortable unstackable selectable celled table">
                     <thead>
                         <tr>
-                            <th>First name</th>
-                            <th class="sorted ascending">Last name</th>
+                            <th>Full Name</th>
                             <th>Email address</th>
                             <th>Account type</th>
+                            <th>Donor Level</th>
                         </tr>
                     </thead>
                     <tbody>
-                    {% for u in users | sort(attribute='last_name') %}
-                        <tr onclick="window.location.href = '{{ url_for('admin.user_info', user_id=u.id) }}';">
-
-                            <td>{{ u.first_name }}</td>
-                            <td>{{ u.last_name }}</td>
-                            <td>{{ u.email }}</td>
-                            <td class="user role">{{ u.role.name }}</td>
-                        </tr>
-                    {% endfor %}
+                        {% for u in users | sort(attribute='last_name') %}
+                            <tr>
+                                <td><a href="{{ url_for('admin.user_info', user_id=u.id) }}">{{ u.full_name() }}</a></td>
+                                <td><a href="{{ url_for('admin.user_info', user_id=u.id) }}">{{ u.email }}</a></td>
+                                <td class="user role">{{ u.role.name }}</td>
+                                <td class="user donor level">
+                                    <div class="ui selection dropdown donor-level">
+                                        <input name="donor-level" type="hidden">
+                                        <i class="dropdown icon"></i>
+                                        <div class="text">{{ u.donor_level.name }}</div>
+                                        <div class="menu">
+                                            {% for donor_level in donor_levels | sort(attribute='name') %}
+                                                <div class="item" data-value="{{ donor_level.name }}" data-user="{{ u.id }}">{{ donor_level.name }}</div>
+                                            {%endfor%}
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>
@@ -84,6 +92,17 @@
                     $('td.user.role').not(':contains(' + value + ')').closest('tr').addClass('hidden').hide();
                 }
             });
+
+            $('.dropdown.donor-level').dropdown({
+                onChange: function(value, text, $selectedItem) {
+                    var donor_level_json_obj = {
+                        user_id: $selectedItem.data('user'),
+                        donor_level: value,
+                        csrf_token: "{{ csrf_token() }}"
+                    };
+                    $.post("{{ url_for('admin.update_donor_level') }}", donor_level_json_obj);
+                }
+             });
         });
     </script>
 {% endblock %}
