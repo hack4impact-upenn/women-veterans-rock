@@ -1,16 +1,32 @@
 {% extends 'layouts/base.html' %}
 
 {% block content %}
-    <div>{{ user.first_name }}</div>
-    <div>{{ user.last_name }}</div>
-    <div>{{ user.email }}</div>
-    <div>{{ user.role.name }}</div>
-    <div>{{ user.birthday }}</div>
-    {% if is_current %}
-        <div>
-            <a href="{{ url_for('account.edit_profile') }}">
-                <button class="ui button">Edit</button>
-            </a>
+    <div class="ui container">
+        <div class="ui stackable centered padded grid container">
+            <div class="ten wide column">
+                <h1 class="ui dividing header">{{ user.full_name() }}</h1>
+            </div>
+            <div class="two wide column">
+                {% if is_current %}
+                    <div>
+                        <a href="{{ url_for('account.edit_profile') }}">
+                            <button class="ui button">Edit</button>
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="twelve wide column">
+                <div class="ui red horizontal label">Email</div>
+                {{ user.email }}
+            </div>
+            <div class="twelve wide column">
+                <div class="ui red horizontal label">Role</div>
+                {{ user.role.name }}
+            </div>
+            <div class="twelve wide column">
+                <div class="ui red horizontal label">Birthday</div>
+                {{ user.birthday }}
+            </div>
         </div>
-    {% endif %}
+    </div>
 {% endblock %}
