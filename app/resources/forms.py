@@ -54,7 +54,8 @@ class ReviewForm(Form):
     submit = SubmitField('Finish Your Review')
 
 
-class ClosedResourceExplanationForm(Form):
+class ClosedResourceDetailForm(Form):
+    # TODO we probably want validation on this?
     explanation = StringField('Your Explanation')
     connection = StringField('Your Connection')
     submit = SubmitField('Submit')

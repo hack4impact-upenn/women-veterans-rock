@@ -3,10 +3,9 @@ from flask.ext.login import login_required, current_user
 from . import resources
 from .. import db
 from ..models import Resource, ZIPCode, Address, ResourceReview,\
-    ClosedResourceExplanation
-from .forms import ResourceForm, ReviewForm, ClosedResourceExplanationForm
+    ClosedResourceDetail
+from .forms import ResourceForm, ReviewForm, ClosedResourceDetailForm
 from datetime import datetime
-from sqlalchemy import desc
 
 
 @resources.route('/')
@@ -47,29 +46,23 @@ def create_resource():
 @login_required
 def read_resource(resource_id):
     resource = Resource.query.get_or_404(resource_id)
-    closed_explanations = ClosedResourceExplanation.query.filter_by(
+    closed_details = ClosedResourceDetail.query.filter_by(
         resource_id=resource_id).all()
-    closed_form = ClosedResourceExplanationForm()
+    closed_form = ClosedResourceDetailForm()
     if closed_form.validate_on_submit():
-        closed_explanation = ClosedResourceExplanation(
-            explanation=closed_form.explanation.data,
-            connection=closed_form.connection.data
-        )
-        closed_explanation.resource_id = resource_id
-        closed_explanation.user_id = current_user.id
-        db.session.add(closed_explanation)
-        db.session.commit()
+        ClosedResourceDetail.create_closed_resource(
+            closed_form.explanation.data,
+            closed_form.connection.data,
+            resource_id,
+            current_user.id)
         return redirect(url_for('resources.read_resource',
                         resource_id=resource_id))
     return render_template('resources/read_resource.html',
                            resource=resource,
-                           reviews=resource.reviews.order_by(
-                               desc(ResourceReview.id)),
+                           reviews=resource.reviews,
                            current_user_id=current_user.id,
                            closed_form=closed_form,
-                           closed_explanations=closed_explanations,
-                           num_closed_explanations=len(closed_explanations)
-                           )
+                           closed_details=closed_details)
 
 
 @resources.route('/review/create/<int:resource_id>', methods=['GET', 'POST'])
@@ -87,30 +80,24 @@ def create_review(resource_id):
         db.session.commit()
         return redirect(url_for('resources.read_resource',
                                 resource_id=resource.id))
-    closed_explanations = ClosedResourceExplanation.query.filter_by(
+    closed_details = ClosedResourceDetail.query.filter_by(
         resource_id=resource_id).all()
-    closed_form = ClosedResourceExplanationForm()
+    closed_form = ClosedResourceDetailForm()
     if closed_form.validate_on_submit():
-        closed_explanation = ClosedResourceExplanation(
-            explanation=closed_form.explanation.data,
-            connection=closed_form.connection.data
-        )
-        closed_explanation.resource_id = resource_id
-        closed_explanation.user_id = current_user.id
-        db.session.add(closed_explanation)
-        db.session.commit()
+        ClosedResourceDetail.create_closed_resource(
+            closed_form.explanation.data,
+            closed_form.connection.data,
+            resource_id,
+            current_user.id)
         return redirect(url_for('resources.read_resource',
                         resource_id=resource_id))
     return render_template('resources/create_review.html',
                            resource=resource,
-                           reviews=resource.reviews.order_by(
-                               desc(ResourceReview.id)),
+                           reviews=resource.reviews,
                            current_user_id=current_user.id,
                            form=form,
                            closed_form=closed_form,
-                           closed_explanations=closed_explanations,
-                           num_closed_explanations=len(closed_explanations)
-                           )
+                           closed_details=closed_details)
 
 
 @resources.route('/review/update/<int:review_id>', methods=['GET', 'POST'])
@@ -135,30 +122,24 @@ def update_review(review_id):
     else:
         form.content.data = review.content
         form.rating.data = review.rating
-        closed_explanations = ClosedResourceExplanation.query.filter_by(
+        closed_details = ClosedResourceDetail.query.filter_by(
             resource_id=resource_id).all()
-    closed_form = ClosedResourceExplanationForm()
+    closed_form = ClosedResourceDetailForm()
     if closed_form.validate_on_submit():
-        closed_explanation = ClosedResourceExplanation(
-            explanation=closed_form.explanation.data,
-            connection=closed_form.connection.data
-        )
-        closed_explanation.resource_id = resource_id
-        closed_explanation.user_id = current_user.id
-        db.session.add(closed_explanation)
-        db.session.commit()
+        ClosedResourceDetail.create_closed_resource(
+            closed_form.explanation.data,
+            closed_form.connection.data,
+            resource_id,
+            current_user.id)
         return redirect(url_for('resources.read_resource',
                         resource_id=resource_id))
     return render_template('resources/create_review.html',
                            resource=resource,
-                           reviews=resource.reviews.order_by(
-                               desc(ResourceReview.id)),
+                           reviews=resource.reviews,
                            current_user_id=current_user.id,
                            form=form,
                            closed_form=closed_form,
-                           closed_explanations=closed_explanations,
-                           num_closed_explanations=len(closed_explanations)
-                           )
+                           closed_details=closed_details)
 
 
 @resources.route('/review/delete/<int:review_id>')

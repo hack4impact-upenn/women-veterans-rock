@@ -86,9 +86,8 @@ class User(UserMixin, db.Model):
     resource_reviews = db.relationship('ResourceReview', backref='user',
                                        lazy='dynamic')
     birthday = db.Column(db.Date, index=True)
-    closed_resource_explanations = db.relationship(
-        'ClosedResourceExplanation',
-        backref='user')
+    closed_resource_explanations = db.relationship('ClosedResourceDetail',
+                                                   backref='user')
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
