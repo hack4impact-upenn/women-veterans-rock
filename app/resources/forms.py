@@ -55,6 +55,6 @@ class ReviewForm(Form):
 
 
 class ClosedResourceDetailForm(Form):
-    explanation = StringField('Your Explanation', validators=[InputRequired()])
-    connection = StringField('Your Connection', validators=[InputRequired()])
+    explanation = StringField('Your Explanation')
+    connection = StringField('Your Connection')
     submit = SubmitField('Submit')
