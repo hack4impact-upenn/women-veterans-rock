@@ -42,7 +42,7 @@ def create_resource():
     return render_template('resources/create_resource.html', form=form)
 
 
-@resources.route('/close/<int:resource_id>', methods=['POST'])
+@resources.route('/close/<int:resource_id>', methods=['GET', 'POST'])
 @login_required
 def close_resource(resource_id):
     resource = Resource.query.get_or_404(resource_id)
@@ -63,7 +63,8 @@ def close_resource(resource_id):
                            reviews=resource.reviews,
                            current_user_id=current_user.id,
                            closed_form=closed_form,
-                           closed_details=closed_details)
+                           closed_details=closed_details,
+                           show_modal=True)
 
 
 @resources.route('/read/<int:resource_id>')
