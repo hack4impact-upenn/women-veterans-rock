@@ -27,18 +27,21 @@
                 <div class="ui red horizontal label">Birthday</div>
                 {{ user.birthday }}
             </div>
-            <div>
-            {% if user.tags %}
-                {% for affiliation in user.tags %}
-                {% if affiliation.type == "AffiliationTag" %}
-                    <div>
-                        {{ affiliation.name }}
-                    </div>
+            <div class="twelve wide column">
+                <div class="ui red horizontal label">Affiliations</div>
+                {% if user.tags %}
+                    <ul>
+                    {% for affiliation in user.tags %}
+                    {% if affiliation.type == "AffiliationTag" %}
+                        <li>
+                            {{ affiliation.name }}
+                        </li>
+                    {% endif %}
+                    {% endfor %}
+                    </ul>
+                {% else %}
+                    No affiliations.
                 {% endif %}
-                {% endfor %}
-            {% else %}
-                No affiliations.
-            {% endif %}
             </div>
         </div>
     </div>
