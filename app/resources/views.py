@@ -1,11 +1,9 @@
 from flask import render_template, redirect, url_for, flash
 from flask.ext.login import login_required, current_user
-from flask import Response
 from . import resources
 from .. import db
-from ..models import Resource, ZIPCode, Address, User, ResourceReview
-import json
-from .forms import ResourceForm, ReviewForm
+from ..models import Resource, ZIPCode, Address, ResourceReview
+from .forms import ResourceForm, ReviewForm, SearchForm
 from datetime import datetime
 
 
@@ -43,48 +41,41 @@ def create_resource():
     return render_template('resources/create_resource.html', form=form)
 
 
-@resources.route('/read/<int:resource_id>')
+@resources.route('/read/<int:resource_id>', methods=['GET', 'POST'])
 @login_required
 def read_resource(resource_id):
     resource = Resource.query.get_or_404(resource_id)
-    return render_template('resources/read_resource.html',
-                           resource=resource,
-                           reviews=resource.reviews,
-                           current_user_id=current_user.id)
+    form = SearchForm()
+    if form.validate_on_submit():
+        content = form.content.data
+        reviews = ResourceReview.query.filter(
+            (ResourceReview.content.ilike(content)))\
+            .order_by(ResourceReview.content).all()
+        return render_template('resources/search_results.html',
+                               reviews=reviews)
+
+    else:
+        return render_template('resources/read_resource.html',
+                               resource=resource,
+                               reviews=resource.reviews, form=form,
+                               current_user_id=current_user.id)
 
 
 @resources.route('/review/create/<int:resource_id>', methods=['GET', 'POST'])
 @login_required
 def create_review(resource_id):
     resource = Resource.query.get_or_404(resource_id)
-    address = Address.query.get(resource.address_id)
-    user = User.query.get(resource.user_id)
-    form = ReviewForm()
-    return render_template('resources/create_review.html', resource=resource,
-                           form=form, address=address, user=user)
-
-
-@resources.route('/resource/<int:resource_id>/<query>')
-@login_required
-def review_search(query, resource_id):
-    looking_for = '%'+query+'%'
-    reviews = ResourceReview.query.filter(
-        (ResourceReview.content.ilike(looking_for)))\
-        .orderby(ResourceReview.content).all()
-    data = dict()
-    data['results'] = [{'title': r.content()} for r in reviews]
-    json_data = json.dumps(data)
-    return Response(response=json_data, status=200,
-                    mimetype='application/json')
     form = ReviewForm()
     if form.validate_on_submit():
         review = ResourceReview(timestamp=datetime.now(),
                                 content=form.content.data,
                                 rating=form.rating.data)
-        resource = review.resource
+        review.resource = resource
         review.user = current_user._get_current_object()
         db.session.add(review)
         db.session.commit()
+        return redirect(url_for('resources.read_resource',
+                                resource_id=resource.id))
     return render_template('resources/create_review.html',
                            resource=resource,
                            reviews=resource.reviews,
@@ -132,3 +123,10 @@ def delete_review(review_id):
         db.session.commit()
     return redirect(url_for('resources.read_resource',
                             resource_id=resource.id))
+
+
+@resources.route('/search/')
+@login_required
+def review_search(reviews):
+    return render_template('resources/search_results.html',
+                           reviews=reviews)

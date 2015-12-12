@@ -32,11 +32,30 @@
             </a>
         </div>
 
-        {% block form %}
-        {% endblock %}
 
         <div class="ten wide column">
             <h1>Reviews</h1>
+            <div class="ten wide column">
+                <h2 class="ui dividing header">Search Reviews</h2>
+            {% block form %}
+
+                {% set flashes = {
+                    'error':   get_flashed_messages(category_filter=['form-error']),
+                    'warning': get_flashed_messages(category_filter=['form-check-email']),
+                    'success': get_flashed_messages(category_filter=['form-success'])
+                } %}
+
+                {{ f.begin_form(form, flashes) }}
+
+                    {{ f.render_form_field(form.content) }}
+                    {{ f.render_form_field(form.submit) }}
+                    {{ f.form_message(flashes['error'], header='Something went wrong.', class='error') }}
+                    {{ f.form_message(flashes['warning'], header='Check your email.', class='warning') }}
+                    {{ f.form_message(flashes['info'], header='Information', class='info') }}
+                    {{ f.form_message(flashes['success'], header='Success!', class='success') }}
+
+                {{ f.end_form(form) }}
+            {% endblock %}
             {% for review in reviews %}
                 <h3>User: {{ review.user.full_name() }}</h3>
                 <table class="ui compact definition table" id="{{ review.id }}">

@@ -52,3 +52,10 @@ class ReviewForm(Form):
         InputRequired()
     ])
     submit = SubmitField('Finish Your Review')
+
+
+class SearchForm(Form):
+    content = StringField('Search Query', validators=[
+        InputRequired()
+    ])
+    submit = SubmitField('Search')

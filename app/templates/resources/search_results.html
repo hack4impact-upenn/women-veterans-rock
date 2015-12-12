@@ -1,0 +1,27 @@
+{% extends 'layouts/base.html' %}
+{% import 'macros/form_macros.html' as f %}
+    <div class="ten wide column">
+        <h1>Reviews</h1>
+            {% for review in reviews %}
+                <h3>User: {{ review.user.full_name() }}</h3>
+                <table class="ui compact definition table" id="{{ review.id }}">
+                    <tr>
+                        <td>Content</td>
+                        <td>{{ review.content }}</td>
+                    </tr>
+                    <tr>
+                        <td>Rating</td>
+                        <td>{{ review.rating }}</td>
+                    </tr>
+                </table>
+                {% if review.user_id is equalto current_user_id %}
+                    <a href="{{ url_for('resources.update_review', review_id=review.id) }}">
+                        <button class="ui button"><i class="write icon"></i></button>
+                    </a>
+                    <a href="{{ url_for('resources.delete_review', review_id=review.id) }}">
+                        <button class="ui button"><i class="trash icon"></i></button>
+                    </a>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
