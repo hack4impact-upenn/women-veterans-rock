@@ -35,7 +35,7 @@
 {% macro account_items_logged_in(current_user) %}
     <a href="{{ url_for('account.profile_current') }}" class="item">View Profile</a>
     <a href="{{ url_for('account.manage') }}" class="item">Account Settings</a>
-    <a class="item">Help</a>
+    <a href="{{ url_for('main.help') }}" class="item">Help</a>
     <a href="{{ url_for('account.logout') }}" class="item">Log out</a>
 {% endmacro %}
 
