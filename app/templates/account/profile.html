@@ -4,7 +4,7 @@
     <div class="ui container">
         <div class="ui stackable centered padded grid container">
             <div class="ten wide column">
-                <h1 class="ui dividing header">{{ user.first_name }}&nbsp;{{ user.last_name }}</h1>
+                <h1 class="ui dividing header">{{ user.full_name() }}</h1>
             </div>
             <div class="two wide column">
                 {% if is_current %}
@@ -17,15 +17,15 @@
             </div>
             <div class="twelve wide column">
                 <div class="ui red horizontal label">Email</div>
-                    {{ user.email }}
+                {{ user.email }}
             </div>
             <div class="twelve wide column">
                 <div class="ui red horizontal label">Role</div>
-                    {{ user.role.name }}
+                {{ user.role.name }}
             </div>
             <div class="twelve wide column">
                 <div class="ui red horizontal label">Birthday</div>
-                    {{ user.birthday }}
+                {{ user.birthday }}
             </div>
         </div>
     </div>
