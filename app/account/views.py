@@ -296,10 +296,7 @@ def edit_profile():
         db.session.add(current_user)
         db.session.commit()
         flash('Profile updated', 'success')
-        return render_template(
-            'account/profile.html',
-            user=current_user,
-            isCurrent=True)
+        return redirect(url_for('account.profile', user_id=current_user.id))
     else:
         # Populating form with current user profile information.
         form.first_name.data = current_user.first_name
