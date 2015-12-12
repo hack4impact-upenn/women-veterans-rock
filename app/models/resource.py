@@ -14,7 +14,7 @@ class Resource(db.Model):
     reviews = db.relationship('ResourceReview', backref='resource',
                               lazy='dynamic')
     closed_resource_details = db.relationship('ClosedResourceDetail',
-                                              backref='closed_resource_detail')
+                                              backref='resource')
 
     def __init__(self, name, description, website):
         self.name = name
@@ -113,7 +113,7 @@ class ResourceReview(db.Model):
 
 
 class ClosedResourceDetail(db.Model):
-    __tablename__ = 'closed_resource_explanations'
+    __tablename__ = 'closed_resource_details'
     id = db.Column(db.Integer, primary_key=True)
     explanation = db.Column(db.Text)
     connection = db.Column(db.Text)
@@ -123,7 +123,7 @@ class ClosedResourceDetail(db.Model):
     @staticmethod
     def create_closed_resource(explanation, connection,
                                resource_id=None, user_id=None):
-        """Helper to create an ClosedResourceDetail entry."""
+        """Helper to create a ClosedResourceDetail entry."""
         result = ClosedResourceDetail(explanation=explanation,
                                       connection=connection)
 

@@ -104,7 +104,6 @@ def create_review(resource_id):
 @login_required
 def update_review(review_id):
     review = ResourceReview.query.get_or_404(review_id)
-    resource_id = review.resource.id
     resource = review.resource
     if current_user.id != review.user.id:
         flash('You cannot edit a review you did not write.', 'error')
@@ -123,16 +122,16 @@ def update_review(review_id):
         form.content.data = review.content
         form.rating.data = review.rating
         closed_details = ClosedResourceDetail.query.filter_by(
-            resource_id=resource_id).all()
+            resource_id=resource.id).all()
     closed_form = ClosedResourceDetailForm()
     if closed_form.validate_on_submit():
         ClosedResourceDetail.create_closed_resource(
             closed_form.explanation.data,
             closed_form.connection.data,
-            resource_id,
+            resource.id,
             current_user.id)
         return redirect(url_for('resources.read_resource',
-                        resource_id=resource_id))
+                        resource_id=resource.id))
     return render_template('resources/create_review.html',
                            resource=resource,
                            reviews=resource.reviews,
