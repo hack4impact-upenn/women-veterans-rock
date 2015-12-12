@@ -52,3 +52,9 @@ class ReviewForm(Form):
         InputRequired()
     ])
     submit = SubmitField('Finish Your Review')
+
+
+class ClosedResourceDetailForm(Form):
+    explanation = StringField('Your Explanation')
+    connection = StringField('Your Connection')
+    submit = SubmitField('Submit')

@@ -13,6 +13,8 @@ class Resource(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     reviews = db.relationship('ResourceReview', backref='resource',
                               lazy='dynamic')
+    closed_resource_details = db.relationship('ClosedResourceDetail',
+                                              backref='resource')
 
     def __init__(self, name, description, website):
         self.name = name
@@ -108,3 +110,35 @@ class ResourceReview(db.Model):
     def __repr__(self):
         return '<ResourceReview <Resource \'%s\'> \'%s\'>' %\
                (self.resource_id, self.content)
+
+
+class ClosedResourceDetail(db.Model):
+    __tablename__ = 'closed_resource_details'
+    id = db.Column(db.Integer, primary_key=True)
+    explanation = db.Column(db.Text)
+    connection = db.Column(db.Text)
+    resource_id = db.Column(db.Integer, db.ForeignKey('resources.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+    @staticmethod
+    def create_closed_resource(explanation, connection,
+                               resource_id=None, user_id=None):
+        """Helper to create a ClosedResourceDetail entry."""
+        result = ClosedResourceDetail(explanation=explanation,
+                                      connection=connection)
+
+        if resource_id:
+            result.resource_id = resource_id
+        if user_id:
+            result.user_id = user_id
+        db.session.add(result)
+        db.session.commit()
+        return result
+
+    def __init__(self, explanation, connection):
+        self.explanation = explanation
+        self.connection = connection
+
+    def __repr__(self):
+        return '<ClosedResourceDetail <Resource \'%s\'> \'%s\'>' %\
+               (self.resource_id, self.explanation)

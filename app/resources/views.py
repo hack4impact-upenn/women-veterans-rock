@@ -2,8 +2,9 @@ from flask import render_template, redirect, url_for, flash
 from flask.ext.login import login_required, current_user
 from . import resources
 from .. import db
-from ..models import Resource, ZIPCode, Address, ResourceReview
-from .forms import ResourceForm, ReviewForm
+from ..models import Resource, ZIPCode, Address, ResourceReview,\
+    ClosedResourceDetail
+from .forms import ResourceForm, ReviewForm, ClosedResourceDetailForm
 from datetime import datetime
 
 
@@ -42,14 +43,44 @@ def create_resource():
     return render_template('resources/create_resource.html', form=form)
 
 
+@resources.route('/close/<int:resource_id>', methods=['GET', 'POST'])
+@login_required
+def close_resource(resource_id):
+    resource = Resource.query.get_or_404(resource_id)
+    closed_details = ClosedResourceDetail.query.filter_by(
+        resource_id=resource_id).all()
+    closed_form = ClosedResourceDetailForm()
+    if closed_form.validate_on_submit():
+        ClosedResourceDetail.create_closed_resource(
+            closed_form.explanation.data,
+            closed_form.connection.data,
+            resource_id,
+            current_user.id)
+        return redirect(url_for('resources.read_resource',
+                        resource_id=resource_id))
+
+    return render_template('resources/read_resource.html',
+                           resource=resource,
+                           reviews=resource.reviews,
+                           current_user_id=current_user.id,
+                           closed_form=closed_form,
+                           closed_details=closed_details,
+                           show_modal=True)
+
+
 @resources.route('/read/<int:resource_id>')
 @login_required
 def read_resource(resource_id):
     resource = Resource.query.get_or_404(resource_id)
+    closed_details = ClosedResourceDetail.query.filter_by(
+        resource_id=resource_id).all()
+    closed_form = ClosedResourceDetailForm()
     return render_template('resources/read_resource.html',
                            resource=resource,
                            reviews=resource.reviews,
-                           current_user_id=current_user.id)
+                           current_user_id=current_user.id,
+                           closed_form=closed_form,
+                           closed_details=closed_details)
 
 
 @resources.route('/review/create/<int:resource_id>', methods=['GET', 'POST'])
@@ -67,11 +98,16 @@ def create_review(resource_id):
         db.session.commit()
         return redirect(url_for('resources.read_resource',
                                 resource_id=resource.id))
+    closed_details = ClosedResourceDetail.query.filter_by(
+        resource_id=resource_id).all()
+    closed_form = ClosedResourceDetailForm()
     return render_template('resources/create_review.html',
                            resource=resource,
                            reviews=resource.reviews,
                            current_user_id=current_user.id,
-                           form=form)
+                           form=form,
+                           closed_form=closed_form,
+                           closed_details=closed_details)
 
 
 @resources.route('/review/update/<int:review_id>', methods=['GET', 'POST'])
@@ -95,11 +131,16 @@ def update_review(review_id):
     else:
         form.content.data = review.content
         form.rating.data = review.rating
+    closed_details = ClosedResourceDetail.query.filter_by(
+        resource_id=resource.id).all()
+    closed_form = ClosedResourceDetailForm()
     return render_template('resources/create_review.html',
                            resource=resource,
                            reviews=resource.reviews,
                            current_user_id=current_user.id,
-                           form=form)
+                           form=form,
+                           closed_form=closed_form,
+                           closed_details=closed_details)
 
 
 @resources.route('/review/delete/<int:review_id>')
