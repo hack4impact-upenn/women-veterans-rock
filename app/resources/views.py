@@ -11,7 +11,8 @@ from datetime import datetime
 @resources.route('/')
 @login_required
 def index():
-    return render_template('resources/index.html')
+    return render_template('resources/index.html',
+                           resources=Resource.query.all())
 
 
 @resources.route('/create', methods=['GET', 'POST'])

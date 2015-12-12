@@ -1,18 +1,12 @@
 {% extends 'layouts/base.html' %}
 
 {% block content %}
-    <div class="ui centered grid map-grid">
-        <div class="fourteen wide column">
-            <div class="centered row">
-                <h1>User Map</h1>
-            </div>
-            <div class="centered row">
-                <button class="ui left attached button" >Users</button>
-                <button class="right attached ui button">Resources</button>
-            </div>
-            <div class="centered row">
-                <div id="map"></div>
-            </div>
+    <div class="ui centered padded grid map-grid">
+        <div class="twelve wide column">
+            <h1 class="ui dividing header">User Map</h1>
+        </div>
+        <div class="twelve wide column">
+            <div id="map"></div>
         </div>
     </div>
     <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=true"></script>
