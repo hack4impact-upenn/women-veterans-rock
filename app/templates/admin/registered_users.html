@@ -33,7 +33,7 @@
                 </div>
             </div>
 
-            {# Use overflow-x: scroll so that mobile views don't freak out # when the table is too wide #}
+            { Use overflow-x: scroll so that mobile views don't freak out # when the table is too wide }
             <div style="overflow-x: scroll;">
                 <table class="ui searchable sortable unstackable selectable celled table">
                     <thead>
@@ -48,9 +48,8 @@
                     <tbody>
                         {% for u in users | sort(attribute='last_name') %}
                             <tr>
-                                <td onclick="window.location.href = '{{ url_for('admin.user_info', user_id=u.id) }}';">{{ u.first_name }}</td>
-                                <td onclick="window.location.href = '{{ url_for('admin.user_info', user_id=u.id) }}';">{{ u.last_name }}</td>
-                                <td onclick="window.location.href = '{{ url_for('admin.user_info', user_id=u.id) }}';">{{ u.email }}</td>
+                                <td><a href="{{ url_for('admin.user_info', user_id=u.id) }}">{{ u.first_name }}</a></td>
+                                <td<<a href="{{ url_for('admin.user_info', user_id=u.id) }}">{{ u.email }}</a></td>
                                 <td class="user role">{{ u.role.name }}</td>
                                 <td class="user donor level">
                                     <div class="ui selection dropdown donor-level">
@@ -71,7 +70,6 @@
             </div>
         </div>
     </div>
-
 
     <script type="text/javascript">
         $(document).ready(function () {
@@ -108,8 +106,5 @@
 
 
         });
-
-
-
     </script>
 {% endblock %}

@@ -71,10 +71,10 @@ class DonorLevel(db.Model):
             'Supporter',
             'Benefactor'
         }
-        for dl in donor_levels:
-            donor_level = DonorLevel.query.filter_by(name=dl).first()
+        for value in donor_levels:
+            donor_level = DonorLevel.query.filter_by(name=value).first()
             if donor_level is None:
-                donor_level = DonorLevel(name=dl)
+                donor_level = DonorLevel(name=value)
             db.session.add(donor_level)
         db.session.commit()
 
