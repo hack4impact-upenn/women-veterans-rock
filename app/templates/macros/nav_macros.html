@@ -19,7 +19,7 @@
 
 {% macro page_items(current_user) %}
     {% if current_user.is_authenticated() %}
-        <div class="item ui mini search">
+        <div class="item ui search">
             <div class="ui icon input">
                 <input class="prompt" type="text" placeholder="Search...">
                 <i class="search icon"></i>
@@ -35,6 +35,14 @@
         </div>
         <a class="item" href="/users">Users</a>
         <a class="item" href="/account/donate">Donate</a>
+
+        <script>
+            $('.ui.search').search({
+                apiSettings: {
+                    url: '/search/{query}'
+                }
+            });
+        </script>
     {% endif %}
 {% endmacro %}
 

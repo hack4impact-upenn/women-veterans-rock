@@ -17,12 +17,8 @@ def user_map():
     return render_template('main/map.html', users=User.query.all())
 
 
-@main.route('/search')
-def search():
-    return render_template('main/search.html')
-
-
 @main.route('/search/<query>')
+@login_required
 def search_query(query):
     looking_for = '%'+query+'%'
     users = User.query.filter((User.first_name.ilike(looking_for)) |
