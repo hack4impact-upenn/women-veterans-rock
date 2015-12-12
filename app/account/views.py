@@ -285,15 +285,13 @@ def edit_profile():
         current_user.birthday = form.birthday.data
 
         # Remove current affiliation tags.
-        for affiliation_tag in current_user.tags:
-            if affiliation_tag.type == "AffiliationTag":
-                current_user.tags.remove(affiliation_tag)
+        current_user.tags = [tag for tag in current_user.tags
+                             if tag.type != "AffiliationTag"]
 
         # Add new affiliation tags.
         for affiliation_tag_id in form.affiliations.data:
             affiliation_tag = AffiliationTag.query.get(affiliation_tag_id)
             current_user.tags.append(affiliation_tag)
-            db.session.add(affiliation_tag)
 
         db.session.add(current_user)
         db.session.commit()
@@ -314,7 +312,7 @@ def edit_profile():
         'account/edit_profile.html',
         user=current_user,
         form=form,
-        affiliations=AffiliationTag.query.all())
+        affiliations=AffiliationTag.query.order_by(AffiliationTag.name).all())
 
 
 @account.route('/donate')
