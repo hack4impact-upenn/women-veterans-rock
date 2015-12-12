@@ -45,8 +45,8 @@ class ResourceForm(Form):
 
 
 class ReviewForm(Form):
-    choices=[(1,'1'),(2,'2'),(3,'3'),(4,'4'),(5,'5')]
-    rating = RadioField('Rating', choices=choices)
+    choices=[(1, '1'), (2, '2'), (3, '3'), (4, '4'), (5, '5')]
+    rating = RadioField('Rating', choices=choices, validators=[ InputRequired() ])
     content = StringField('Tell us more about your experience:', description=" ", validators=[
         InputRequired()
     ])
