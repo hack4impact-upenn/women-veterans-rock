@@ -2,7 +2,8 @@ from flask.ext.wtf import Form
 from wtforms.fields import (
     StringField,
     IntegerField,
-    SubmitField
+    SubmitField,
+    RadioField,
 )
 from wtforms.validators import InputRequired, Length, URL, Optional,\
     NumberRange
@@ -44,11 +45,9 @@ class ResourceForm(Form):
 
 
 class ReviewForm(Form):
-    rating = IntegerField('Rating (1-5)', validators=[
-        InputRequired(),
-        NumberRange(1, 5)
-    ])
-    content = StringField('Content', validators=[
+    choices=[(1,'1'),(2,'2'),(3,'3'),(4,'4'),(5,'5')]
+    rating = RadioField('Rating', choices=choices)
+    content = StringField('Tell us more about your experience:', description=" ", validators=[
         InputRequired()
     ])
     submit = SubmitField('Finish Your Review')

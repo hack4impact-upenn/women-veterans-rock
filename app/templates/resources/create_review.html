@@ -3,26 +3,39 @@
 
 {% block form %}
     <div class="ten wide column">
-        <h2 class="ui dividing header">Your Review</h2>
+        
+        <div class="ui segment">
+            <h2 class="ui dividing header">Your Review</h2>
+            {% set flashes = {
+                'error':   get_flashed_messages(category_filter=['form-error']),
+                'warning': get_flashed_messages(category_filter=['form-check-email']),
+                'info':    get_flashed_messages(category_filter=['form-info']),
+                'success': get_flashed_messages(category_filter=['form-success'])
+            } %}
+            {{ f.begin_form(form, flashes) }}
+                <h5 class="ui header">Rating
+                  <div class="sub header">1 = Needs Improvement</div>
+                  <div class="sub header">5 = Perfect Experience!</div>
+                </h5>
+                <div name="rating" id="rating">
+                <div class="inline fields">
+                    {% for subfield in form.rating %}
+                        <div class="field">
+                            {{ subfield }}
+                            <label>{{ subfield.label }}</label>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="ui divider"></div>
+                {{ f.render_form_field(form.content) }}
+                {{ f.render_form_field(form.submit) }}
 
-        {% set flashes = {
-            'error':   get_flashed_messages(category_filter=['form-error']),
-            'warning': get_flashed_messages(category_filter=['form-check-email']),
-            'info':    get_flashed_messages(category_filter=['form-info']),
-            'success': get_flashed_messages(category_filter=['form-success'])
-        } %}
+                {{ f.form_message(flashes['error'], header='Something went wrong.', class='error') }}
+                {{ f.form_message(flashes['warning'], header='Check your email.', class='warning') }}
+                {{ f.form_message(flashes['info'], header='Information', class='info') }}
+                {{ f.form_message(flashes['success'], header='Success!', class='success') }}
 
-        {{ f.begin_form(form, flashes) }}
-
-            {{ f.render_form_field(form.rating) }}
-            {{ f.render_form_field(form.content) }}
-            {{ f.render_form_field(form.submit) }}
-
-            {{ f.form_message(flashes['error'], header='Something went wrong.', class='error') }}
-            {{ f.form_message(flashes['warning'], header='Check your email.', class='warning') }}
-            {{ f.form_message(flashes['info'], header='Information', class='info') }}
-            {{ f.form_message(flashes['success'], header='Success!', class='success') }}
-
-        {{ f.end_form(form) }}
+            {{ f.end_form(form) }}
+        </div>
     </div>
 {% endblock %}

@@ -58,6 +58,7 @@ def create_review(resource_id):
     resource = Resource.query.get_or_404(resource_id)
     form = ReviewForm()
     if form.validate_on_submit():
+
         review = ResourceReview(timestamp=datetime.now(),
                                 content=form.content.data,
                                 rating=form.rating.data)
@@ -67,7 +68,9 @@ def create_review(resource_id):
         db.session.commit()
         return redirect(url_for('resources.read_resource',
                                 resource_id=resource.id))
-    return render_template('resources/create_review.html',
+    else:
+        print form.rating.data
+        return render_template('resources/create_review.html',
                            resource=resource,
                            reviews=resource.reviews,
                            current_user_id=current_user.id,
