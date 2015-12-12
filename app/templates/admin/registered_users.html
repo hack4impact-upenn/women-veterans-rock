@@ -33,13 +33,13 @@
                 </div>
             </div>
 
-            { Use overflow-x: scroll so that mobile views don't freak out # when the table is too wide }
+            {# Use overflow-x: scroll so that mobile views don't freak out
+             # when the table is too wide #}
             <div style="overflow-x: scroll;">
                 <table class="ui searchable sortable unstackable selectable celled table">
                     <thead>
                         <tr>
-                            <th>First name</th>
-                            <th class="sorted ascending">Last name</th>
+                            <th>Full Name</th>
                             <th>Email address</th>
                             <th>Account type</th>
                             <th>Donor Level</th>
@@ -48,8 +48,8 @@
                     <tbody>
                         {% for u in users | sort(attribute='last_name') %}
                             <tr>
-                                <td><a href="{{ url_for('admin.user_info', user_id=u.id) }}">{{ u.first_name }}</a></td>
-                                <td<<a href="{{ url_for('admin.user_info', user_id=u.id) }}">{{ u.email }}</a></td>
+                                <td><a href="{{ url_for('admin.user_info', user_id=u.id) }}">{{ u.full_name() }}</a></td>
+                                <td><a href="{{ url_for('admin.user_info', user_id=u.id) }}">{{ u.email }}</a></td>
                                 <td class="user role">{{ u.role.name }}</td>
                                 <td class="user donor level">
                                     <div class="ui selection dropdown donor-level">
@@ -57,8 +57,8 @@
                                         <i class="dropdown icon"></i>
                                         <div class="text">{{ u.donor_level.name }}</div>
                                         <div class="menu">
-                                            {% for dl in donor_levels | sort(attribute='name') %}
-                                                <div class="item" data-value="{{ dl.name }}" data-user="{{ u.id }}">{{ dl.name }}</div>
+                                            {% for donor_level in donor_levels | sort(attribute='name') %}
+                                                <div class="item" data-value="{{ donor_level.name }}" data-user="{{ u.id }}">{{ donor_level.name }}</div>
                                             {%endfor%}
                                         </div>
                                     </div>
@@ -100,7 +100,7 @@
                         donor_level: value,
                         csrf_token: "{{ csrf_token() }}"
                     };
-                    $.post("{{ url_for('admin.update_donor_level') }}", donor_level_json_obj)
+                    $.post("{{ url_for('admin.update_donor_level') }}", donor_level_json_obj);
                 }
              });
 

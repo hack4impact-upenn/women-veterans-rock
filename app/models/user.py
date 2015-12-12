@@ -71,11 +71,11 @@ class DonorLevel(db.Model):
             'Supporter',
             'Benefactor'
         }
-        for value in donor_levels:
-            donor_level = DonorLevel.query.filter_by(name=value).first()
+        for name in donor_levels:
+            donor_level = DonorLevel.query.filter_by(name=name).first()
             if donor_level is None:
-                donor_level = DonorLevel(name=value)
-            db.session.add(donor_level)
+                donor_level = DonorLevel(name=name)
+                db.session.add(donor_level)
         db.session.commit()
 
     def __repr__(self):
