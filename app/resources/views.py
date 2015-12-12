@@ -42,9 +42,9 @@ def create_resource():
     return render_template('resources/create_resource.html', form=form)
 
 
-@resources.route('/read/<int:resource_id>', methods=['GET', 'POST'])
+@resources.route('/close/<int:resource_id>', methods=['POST'])
 @login_required
-def read_resource(resource_id):
+def close_resource(resource_id):
     resource = Resource.query.get_or_404(resource_id)
     closed_details = ClosedResourceDetail.query.filter_by(
         resource_id=resource_id).all()
@@ -57,6 +57,22 @@ def read_resource(resource_id):
             current_user.id)
         return redirect(url_for('resources.read_resource',
                         resource_id=resource_id))
+
+    return render_template('resources/read_resource.html',
+                           resource=resource,
+                           reviews=resource.reviews,
+                           current_user_id=current_user.id,
+                           closed_form=closed_form,
+                           closed_details=closed_details)
+
+
+@resources.route('/read/<int:resource_id>')
+@login_required
+def read_resource(resource_id):
+    resource = Resource.query.get_or_404(resource_id)
+    closed_details = ClosedResourceDetail.query.filter_by(
+        resource_id=resource_id).all()
+    closed_form = ClosedResourceDetailForm()
     return render_template('resources/read_resource.html',
                            resource=resource,
                            reviews=resource.reviews,
@@ -83,14 +99,6 @@ def create_review(resource_id):
     closed_details = ClosedResourceDetail.query.filter_by(
         resource_id=resource_id).all()
     closed_form = ClosedResourceDetailForm()
-    if closed_form.validate_on_submit():
-        ClosedResourceDetail.create_closed_resource(
-            closed_form.explanation.data,
-            closed_form.connection.data,
-            resource_id,
-            current_user.id)
-        return redirect(url_for('resources.read_resource',
-                        resource_id=resource_id))
     return render_template('resources/create_review.html',
                            resource=resource,
                            reviews=resource.reviews,
@@ -121,17 +129,9 @@ def update_review(review_id):
     else:
         form.content.data = review.content
         form.rating.data = review.rating
-        closed_details = ClosedResourceDetail.query.filter_by(
-            resource_id=resource.id).all()
+    closed_details = ClosedResourceDetail.query.filter_by(
+        resource_id=resource.id).all()
     closed_form = ClosedResourceDetailForm()
-    if closed_form.validate_on_submit():
-        ClosedResourceDetail.create_closed_resource(
-            closed_form.explanation.data,
-            closed_form.connection.data,
-            resource.id,
-            current_user.id)
-        return redirect(url_for('resources.read_resource',
-                        resource_id=resource.id))
     return render_template('resources/create_review.html',
                            resource=resource,
                            reviews=resource.reviews,

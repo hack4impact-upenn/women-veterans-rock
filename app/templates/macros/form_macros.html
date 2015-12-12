@@ -34,7 +34,7 @@
 {% endmacro %}
 
 {# Set up the form, including hidden fields and error states #}
-{% macro begin_form(form, flashes, method='POST', extra_classes='', enctype=None) %}
+{% macro begin_form(form, flashes, action='', method='POST', extra_classes='', enctype=None) %}
     {# Set proper enctype #}
     {% if enctype is none and (form | selectattr('type', 'equalto', 'FileField') | list | length > 0) %}
         {% set enctype = 'multipart/form-data' %}
@@ -42,7 +42,7 @@
         {% set enctype = '' %}
     {% endif %}
 
-    <form action="" method="{{ method }}" enctype="{{ enctype }}" class="ui form {{ extra_classes }}
+    <form action="{{ action }}" method="{{ method }}" enctype="{{ enctype }}" class="ui form {{ extra_classes }}
         {% if form.errors or flashes['error'] %} error
         {% elif flashes['warning'] %} warning
         {% elif flashes['info'] %} info

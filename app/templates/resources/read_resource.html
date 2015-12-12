@@ -46,9 +46,7 @@
                             'info':    get_flashed_messages(category_filter=['form-info']),
                             'success': get_flashed_messages(category_filter=['form-success'])
                         } %}
-
-                        {{ f.begin_form(closed_form, flashes) }}
-
+                        {{ f.begin_form(closed_form, flashes, action='/resources/close/' + resource.id|string) }}
                             {{ f.render_form_field(closed_form.explanation) }}
                             {{ f.render_form_field(closed_form.connection) }}
                             {{ f.render_form_field(closed_form.submit) }}
@@ -110,10 +108,10 @@
                 </table>
                 {% if review.user_id is equalto current_user_id %}
                     <a href="{{ url_for('resources.update_review', review_id=review.id) }}">
-                        <button class="ui button"><i class="write icon"></i></button>
+                        <button class="ui button"><i class="write icon ok"></i></button>
                     </a>
                     <a href="{{ url_for('resources.delete_review', review_id=review.id) }}">
-                        <button class="ui button"><i class="trash icon"></i></button>
+                        <button class="ui button"><i class="trash icon ok"></i></button>
                     </a>
                 {% endif %}
             {% else %}
@@ -127,5 +125,8 @@
             $('.ui.modal').modal('show');
         });
         $('.ui.accordion').accordion();
+        {%  if closed_form.errors %}
+            $('.ui.modal').modal('show');
+        {% endif %}
     </script>
 {% endblock %}
