@@ -1,14 +1,13 @@
 {% extends 'layouts/base.html' %}
 
 {% block content %}
-    <div class="ui centered grid map-grid">
-        <div class="fourteen wide column">
-            <div class="centered row">
-                <h1>Resources Map</h1>
-            </div>
-            <div class="centered row">
-                <div id="map"></div>
-            </div>
+    <div class="ui centered padded grid map-grid">
+        <div class="twelve wide column">
+                <h1 class="ui dividing header">Resources Map</h1>
+        </div>
+        <div class="twelve wide column">
+            <div id="map"></div>
+        </div>
         </div>
     </div>
     <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=true"></script>
