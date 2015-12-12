@@ -24,12 +24,14 @@
                     <div class="column">{{ f.render_form_field(form.birthday) }}</div>
                     <div class="column">{{ f.render_form_field(form.facebook_link) }}</div>
                     <div class="column">{{ f.render_form_field(form.linkedin_link) }}</div>
+                    <div class="column">{{ f.render_form_field(form.affiliations) }}</div>
                 </div>
            
                 {{ f.form_message(flashes['error'], header='Something went wrong.', class='error') }}
                 {{ f.form_message(flashes['warning'], header='Check your email.', class='warning') }}
                 {{ f.form_message(flashes['info'], header='Information', class='info') }}
                 {{ f.form_message(flashes['success'], header='Success!', class='success') }}
+
                 {{ f.render_form_field(form.submit) }}
             {{ f.end_form(form) }}
         </div>
